@@ -10,6 +10,10 @@
 #include "RigidBody.h"
 #include "CollisionShape.h"
 
+/** \brief Box
+ *
+ * test test test
+ */
 class Box : public RigidBody, public CollisionShape
 {
 private:

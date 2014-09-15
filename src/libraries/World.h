@@ -18,28 +18,40 @@
 /** \brief Physics World
  *
  * contains all rigid bodies.
- * PhysicWorld is Singleton to ensure that there is only one physic world at a time
+ * World is Singleton to ensure that there is only one physic world at a time
  */
 class World : public Singleton<World> {
-friend class Singleton<World>;
+	friend class Singleton<World>;
 
 private:
-	Contact contacts;
+	Contact contacts;			/**< list of all contacts inside the world */
 
-	ForceRegistry forceReg;
+	ForceRegistry forceReg;		/**< registry that contains information about  which forces appear to which rigid bodies */
 
-	ContactGen contactGen;
+	ContactGen contactGen;		/**< class which updates the contact list in each iteration */
 
-	ContactResolver resolver;
+	ContactResolver resolver;	/**< contact resolution */
 
-	RigidBody bodies;
+	RigidBody bodies;			/**< list of all rigid bodies in the world */
 
 
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void genContacts();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void runPhysics();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void startFrame();
 
 };

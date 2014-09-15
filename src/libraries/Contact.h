@@ -8,50 +8,91 @@
 #include <assert.h>
 
 #include "RigidBody.h"
-#include "Vector3.h"
-#include "Matrix3.h"
+//#include "Vector3.h"
+//#include "Matrix3.h"
+#include <glm/glm.hpp>
 
+/** \brief
+ *
+ * ...
+ */
 class Contact
 {
 private:
-	RigidBody body1;
+	RigidBody body1;			/**< ... */
 
-	RigidBody body2;
+	RigidBody body2;			/**< ... */
 
-	double friction;
+	double friction;			/**< ... */
 
-	double restitution;
+	double restitution;			/**< ... */
 
-	Vector3 contactPoint;
+	glm::vec3 contactPoint;		/**< ... */
 
-	Vector3 contactNormal;
+	glm::vec3 contactNormal;	/**< ... */
 
-	double penetration;
+	double penetration;			/**< ... */
 
-	Matrix3 contactToWorld;
+	glm::mat3 contactToWorld;	/**< ... */
 
-	Vector3 contactVelocity;
+	glm::vec3 contactVelocity;	/**< ... */
 
-	double desiredVelocity;
+	double desiredVelocity;		/**< ... */
 
 
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void setBodyData();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void calcInternData();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void swapBodies();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void calcdesiredVeloc();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void calcLocalVeloc();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void calcContactBasis();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void applyImpulse();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void applyVelocChange();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void applyPosChange();
 
 };

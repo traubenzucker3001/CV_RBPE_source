@@ -10,12 +10,16 @@
 #include "RigidBody.h"
 #include "ForceGen.h"
 
+/** \brief
+ *
+ * ...
+ */
 class ForceRegEntry
 {
 private:
-	RigidBody body;
+	RigidBody body;		/**< one RigidBody */
 
-	ForceGen forces;
+	ForceGen forces;	/**< list of forces that appear on the RigidBody */
 
 };
 #endif

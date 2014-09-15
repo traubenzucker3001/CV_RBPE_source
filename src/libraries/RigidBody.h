@@ -7,53 +7,68 @@
 #include <iostream>
 #include <assert.h>
 
-#include "Vector3.h"
-#include "Quaternion.h"
-#include "Matrix3.h"
+//#include "Vector3.h"
+//#include "Quaternion.h"
+//#include "Matrix3.h"
 #include "CollisionShape.h"
-#include "Matrix4.h"
+//#include "Matrix4.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
+/** \brief
+ *
+ * ...
+ */
 class RigidBody
 {
 private:
-	Vector3 position;
+	glm::vec3 position;				/**< ... */
 
-	Quaternion orientation;
+	glm::quat orientation;			/**< ... */
 
-	Vector3 velocity;
+	glm::vec3 velocity;				/**< ... */
 
-	Vector3 rotation;
+	glm::vec3 rotation;				/**< ... */
 
-	double mass;
+	double mass;					/**< ... */
 
-	Matrix3 inertiaTensor;
+	glm::mat3 inertiaTensor;			/**< ... */
 
-	CollisionShape shape;
+	CollisionShape shape;			/**< ... */
 
-	double linearDamp;
+	double linearDamp;				/**< ... */
 
-	double angularDamp;
+	double angularDamp;				/**< ... */
 
-	Matrix4 transformMatrix;
+	glm::mat4 transformMatrix;		/**< ... */
 
-	Vector3 forceToBeApplied;
+	glm::vec3 forceToBeApplied;		/**< ... */
 
-	Vector3 torgueToBeApplied;
+	glm::vec3 torgueToBeApplied;	/**< ... */
 
-	Vector3 acceleration;
+	glm::vec3 acceleration;			/**< ... */
 
-	Vector3 lastFrameAcc;
+	glm::vec3 lastFrameAcc;			/**< ... */
 
-	double inverseMass;
+	double inverseMass;				/**< ... */
 
-	Matrix3 inverseInertiaTensor;
+	glm::vec3 inverseInertiaTensor;	/**< ... */
 
-	bool isStatic;
+	bool isStatic;					/**< ... */
 
 
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void calcInternData();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void integrate();
 
 };

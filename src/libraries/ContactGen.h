@@ -7,9 +7,17 @@
 #include <iostream>
 #include <assert.h>
 
+/** \brief
+ *
+ * ...
+ */
 class ContactGen
 {
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void addContact();
 
 };

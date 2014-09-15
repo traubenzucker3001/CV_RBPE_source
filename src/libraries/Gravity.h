@@ -8,15 +8,24 @@
 #include <assert.h>
 
 #include "ForceGen.h"
-#include "Vector3.h"
+//#include "Vector3.h"
+#include <glm/glm.hpp>
 
+/** \brief
+ *
+ * ...
+ */
 class Gravity : public ForceGen
 {
 private:
-	Vector3 gravity;
+	glm::vec3 gravity;	/**< gravity value */
 
 
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void updateForce();
 
 };

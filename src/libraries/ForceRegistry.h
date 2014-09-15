@@ -9,19 +9,39 @@
 
 #include "ForceRegEntry.h"
 
+/** \brief
+ *
+ * ...
+ */
 class ForceRegistry
 {
 private:
-	ForceRegEntry register;
+	ForceRegEntry register;		/**< list of entries */
 
 
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void add();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void remove();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void clear();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void updateForces();
 
 };

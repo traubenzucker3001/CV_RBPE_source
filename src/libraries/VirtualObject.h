@@ -9,13 +9,21 @@
 
 #include "RigidBody.h"
 
+/** \brief
+ *
+ * ...
+ */
 class VirtualObject
 {
 private:
-	RigidBody physicBody;
+	RigidBody physicBody;	/**< RigidBody as physics component of this object */
 
 
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void update();
 
 };

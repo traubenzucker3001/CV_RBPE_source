@@ -7,9 +7,8 @@
 #include <iostream>
 #include <assert.h>
 
-#include <glm/glm.hpp>
-
 //#include "Vector3.h"
+#include <glm/glm.hpp>
 
 /** \brief Collision Shape
  *

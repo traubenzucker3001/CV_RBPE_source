@@ -21,6 +21,10 @@ template <typename C>
  class Singleton {
 
  public:
+	/** \brief
+	 *
+	 * ...
+	 */
     static C* getInstance (){
 
        if (!_instance)
@@ -28,14 +32,22 @@ template <typename C>
        return _instance;
     }
 
+	/** \brief
+	 *
+	 * ...
+	 */
     virtual ~Singleton () {
        _instance = 0;
     }
 
  private:
-    static C* _instance;
+    static C* _instance;	/**< ... */
 
  protected:
+	/** \brief
+	 *
+	 * ...
+	 */
     Singleton () { }
  };
 

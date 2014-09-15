@@ -7,15 +7,35 @@
 #include <iostream>
 #include <assert.h>
 
+/** \brief
+ *
+ * ...
+ */
 class ContactResolver
 {
 public:
+	/** \brief
+	 *
+	 * ...
+	 */
 	void prepareContacts();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void resolveContacts();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void adjustVeloc();
 
+	/** \brief
+	 *
+	 * ...
+	 */
 	void adjustPos();
 
 };

@@ -12,12 +12,12 @@
 
 /** \brief Box
  *
- * test test test
+ * CollisionShape in box form
  */
 class Box : public RigidBody, public CollisionShape
 {
 private:
-	double halfsize;
+	double halfsize;	/**< defines the size of the box */
 
 };
 #endif

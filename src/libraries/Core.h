@@ -9,6 +9,10 @@
 
 #include "World.h"
 
+/** \brief Engine Core
+ *
+ * initial class. every "important" configs can be done/set here
+ */
 class Core
 {
 private:

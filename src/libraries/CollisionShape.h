@@ -7,12 +7,18 @@
 #include <iostream>
 #include <assert.h>
 
-#include "Vector3.h"
+#include <glm/glm.hpp>
 
+//#include "Vector3.h"
+
+/** \brief Collision Shape
+ *
+ * represents the shape of the RigidBody
+ */
 class CollisionShape
 {
 private:
-	Vector3 origin;
+	glm::vec3 origin;	/**< origin of the shape = position of RigidBody */
 
 };
 #endif

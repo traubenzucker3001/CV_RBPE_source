@@ -13,8 +13,16 @@
 #include "ContactResolver.h"
 #include "RigidBody.h"
 
-class World
-{
+#include "designPatterns/Singleton.h"
+
+/** \brief Physics World
+ *
+ * contains all rigid bodies.
+ * PhysicWorld is Singleton to ensure that there is only one physic world at a time
+ */
+class World : public Singleton<World> {
+friend class Singleton<World>;
+
 private:
 	Contact contacts;
 

@@ -22,11 +22,17 @@ private:
 
 
 public:
-	/** \brief
+	/** \brief constructor
 	 *
 	 * ...
 	 */
-	void updateForce();
+	Gravity(const glm::vec3 &gravity);
+
+	/** \brief
+	 *
+	 * acts gravity to a RigidBody over a given duration
+	 */
+	virtual void updateForce(RigidBody* body, double duration);
 
 };
 #endif

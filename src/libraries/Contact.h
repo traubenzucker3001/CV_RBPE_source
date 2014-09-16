@@ -19,43 +19,43 @@
 class Contact
 {
 private:
-	RigidBody body1;			/**< ... */
+	RigidBody *body1;			/**< involved body 1 */
 
-	RigidBody body2;			/**< ... */
+	RigidBody *body2;			/**< involved body 2 */
 
-	double friction;			/**< ... */
+	double friction;			/**< friction coefficient */
 
-	double restitution;			/**< ... */
+	double restitution;			/**< restitution coefficient */
 
-	glm::vec3 contactPoint;		/**< ... */
+	glm::vec3 contactPoint;		/**< contact position */
 
-	glm::vec3 contactNormal;	/**< ... */
+	glm::vec3 contactNormal;	/**< contact normal */
 
-	double penetration;			/**< ... */
+	double penetration;			/**< penetration */
 
-	glm::mat3 contactToWorld;	/**< ... */
+	glm::mat3 contactToWorld;	/**< conversion help */
 
-	glm::vec3 contactVelocity;	/**< ... */
+	glm::vec3 contactVelocity;	/**< contact velocity */
 
-	double desiredVelocity;		/**< ... */
+	double desiredVelocity;		/**< desired velocity to resolve contact */
 
 
 public:
-	/** \brief
+	/** \brief set contact data
 	 *
-	 * ...
+	 * set data that does not depend on contact position
 	 */
-	void setBodyData();
+	void setBodyData(RigidBody *oneIN, RigidBody *twoIN, double fricIN, double restiIN);
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	void calcInternData();
+	void calcInternData(double duration);
 
-	/** \brief
+	/** \brief swap RigidBodies
 	 *
-	 * ...
+	 * swaps the bodies and changes the corresponding data
 	 */
 	void swapBodies();
 

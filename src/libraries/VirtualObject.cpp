@@ -7,6 +7,6 @@
 #include "VirtualObject.h"
 
 
-void VirtualObject::update()
-{
+void VirtualObject::update(){
+
 }

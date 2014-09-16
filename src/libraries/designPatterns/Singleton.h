@@ -1,9 +1,3 @@
-/*
- * Singleton.h
- *
- *  Created on: 15.09.2014
- *      Author: Daniel
- */
 
 #ifndef SINGLETON_H_
 #define SINGLETON_H_
@@ -21,9 +15,9 @@ template <typename C>
  class Singleton {
 
  public:
-	/** \brief
+	/** \brief getter
 	 *
-	 * ...
+	 * get the only instance of the corresponding class
 	 */
     static C* getInstance (){
 
@@ -32,7 +26,7 @@ template <typename C>
        return _instance;
     }
 
-	/** \brief
+	/** \brief destructor
 	 *
 	 * ...
 	 */
@@ -41,10 +35,10 @@ template <typename C>
     }
 
  private:
-    static C* _instance;	/**< ... */
+    static C* _instance;	/**< own instance of the corresponding class */
 
  protected:
-	/** \brief
+	/** \brief constructor
 	 *
 	 * ...
 	 */

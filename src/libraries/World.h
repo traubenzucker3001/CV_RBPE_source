@@ -24,18 +24,30 @@ class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
-	Contact contacts;			/**< list of all contacts inside the world */
+	Contact *contacts;					/**< list of all contacts inside the world */
 
-	ForceRegistry forceReg;		/**< registry that contains information about  which forces appear to which rigid bodies */
+	ForceRegistry *forceReg;			/**< registry that contains information about  which forces appear to which rigid bodies */
 
-	ContactGen contactGen;		/**< class which updates the contact list in each iteration */
+	ContactGen *contactGen;				/**< class which updates the contact list in each iteration */
 
-	ContactResolver resolver;	/**< contact resolution */
+	ContactResolver *resolver;			/**< contact resolution */
 
-	RigidBody bodies;			/**< list of all rigid bodies in the world */
+	std::vector<RigidBodyReg> bodies;	/**< list of all rigid bodies in the world */
 
 
 public:
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	World();
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
+	~World();
+
 	/** \brief
 	 *
 	 * ...
@@ -46,11 +58,11 @@ public:
 	 *
 	 * ...
 	 */
-	void runPhysics();
+	void runPhysics(double duration);
 
 	/** \brief
 	 *
-	 * ...
+	 * Initials world for a simulation frame. clears the force and torque accumulators for bodies.
 	 */
 	void startFrame();
 

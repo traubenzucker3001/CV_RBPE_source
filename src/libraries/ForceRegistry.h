@@ -9,6 +9,7 @@
 
 #include "ForceRegEntry.h"
 
+
 /** \brief
  *
  * ...
@@ -16,25 +17,24 @@
 class ForceRegistry
 {
 private:
-	ForceRegEntry register;		/**< list of entries */
-
+	std::vector<ForceRegEntry> regist;		/**< list of entries */
 
 public:
-	/** \brief
+	/** \brief add entry
 	 *
-	 * ...
+	 * adds new entry to list
 	 */
-	void add();
+	void add(RigidBody *body, ForceGen *forceGen);
 
-	/** \brief
+	/** \brief remove entry
 	 *
-	 * ...
+	 * removes an entry from list
 	 */
-	void remove();
+	void remove(RigidBody *body, ForceGen *forceGen);
 
-	/** \brief
+	/** \brief clear list
 	 *
-	 * ...
+	 * clears the hole list
 	 */
 	void clear();
 
@@ -42,7 +42,7 @@ public:
 	 *
 	 * ...
 	 */
-	void updateForces();
+	void updateForces(double duration);
 
 };
 #endif

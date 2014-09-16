@@ -14,11 +14,17 @@
 class ForceGen
 {
 public:
-	/** \brief
+	/** \brief update
+	 *
+	 * apply force to given rigidBody
+	 */
+	virtual void updateForce(RigidBody *body, double duration);
+
+	/** \brief destructor
 	 *
 	 * ...
 	 */
-	void updateForce();
+	virtual ~ForceGen();
 
 };
 #endif

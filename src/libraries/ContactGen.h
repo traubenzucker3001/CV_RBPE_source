@@ -11,8 +11,10 @@
  *
  * ...
  */
-class ContactGen
-{
+class ContactGen {
+private:
+	bool isGPU;		/**< ... */
+
 public:
 	/** \brief
 	 *

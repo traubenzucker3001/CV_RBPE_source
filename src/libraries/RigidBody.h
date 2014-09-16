@@ -33,7 +33,7 @@ private:
 
 	double mass;					/**< ... */
 
-	glm::mat3 inertiaTensor;			/**< ... */
+	glm::mat3 inertiaTensor;		/**< ... */
 
 	CollisionShape shape;			/**< ... */
 
@@ -71,5 +71,34 @@ public:
 	 */
 	void integrate();
 
+	/** \brief
+	 *
+	 * ...
+	 */
+	void clearAccu();
+
+	/** \brief
+	 *
+	 * ...
+	 */
+	void addForce(glm::vec3 forceIN);
+
+	//getter + setter
+
+	bool isIsStatic() const {
+		return isStatic;
+	}
+
+	void setIsStatic(bool isStatic) {
+		this->isStatic = isStatic;
+	}
+
+	double getMass() const {
+		return mass;
+	}
+
+	void setMass(double mass) {
+		this->mass = mass;
+	}
 };
 #endif

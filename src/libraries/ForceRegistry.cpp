@@ -7,18 +7,23 @@
 #include "ForceRegistry.h"
 
 
-void ForceRegistry::add()
-{
+void ForceRegistry::add(RigidBody *body, ForceGen *forceGen){
+
+	ForceRegEntry newEntry = ForceRegEntry(body, forceGen);
+	regist.push_back(newEntry);
 }
 
-void ForceRegistry::remove()
-{
+void ForceRegistry::remove(RigidBody *body, ForceGen *forceGen){
+
+
 }
 
-void ForceRegistry::clear()
-{
+void ForceRegistry::clear(){
+
+
 }
 
-void ForceRegistry::updateForces()
-{
+void ForceRegistry::updateForces(double duration){
+
+
 }

@@ -6,4 +6,14 @@
 
 #include "ForceRegEntry.h"
 
+ForceRegEntry::ForceRegEntry(RigidBody *bodyIN, ForceGen *forceGen){
 
+	body = bodyIN;
+	forces = forceGen;
+}
+
+ForceRegEntry::~ForceRegEntry(){
+
+	delete body;
+	delete forces;
+}

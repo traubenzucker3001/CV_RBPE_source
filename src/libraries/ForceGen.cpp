@@ -7,6 +7,7 @@
 #include "ForceGen.h"
 
 
-void ForceGen::updateForce()
-{
+void ForceGen::updateForce(RigidBody *body, double duration){
+
+
 }

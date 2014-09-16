@@ -19,5 +19,17 @@ class CollisionShape
 private:
 	glm::vec3 origin;	/**< origin of the shape = position of RigidBody */
 
+public:
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	CollisionShape(glm::vec3 origIN);
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
+	~CollisionShape();
 };
 #endif

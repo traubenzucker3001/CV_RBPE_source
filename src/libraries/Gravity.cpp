@@ -5,8 +5,19 @@
 #include <assert.h>
 
 #include "Gravity.h"
+#include "RigidBody.h"
 
+Gravity::Gravity(const glm::vec3 &gravIN){
+	gravity = gravIN;
+}
 
-void Gravity::updateForce()
-{
+void Gravity::updateForce(RigidBody* body, double duration){
+
+	//wenn nicht static
+	if (body->isIsStatic() == false){
+		//kraft zu body hinzufügen
+		body->addForce(gravity * body->getMass());
+	}
+	return;
+
 }

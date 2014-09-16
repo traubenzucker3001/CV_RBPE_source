@@ -10,7 +10,7 @@
 #include "RigidBody.h"
 #include "CollisionShape.h"
 
-/** \brief Box
+/** \brief sphere
  *
  * CollisionShape in sphere form
  */

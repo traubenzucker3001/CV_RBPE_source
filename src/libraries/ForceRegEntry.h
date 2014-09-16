@@ -17,9 +17,21 @@
 class ForceRegEntry
 {
 private:
-	RigidBody body;		/**< one RigidBody */
+	RigidBody *body;	/**< one RigidBody */
 
-	ForceGen forces;	/**< list of forces that appear on the RigidBody */
+	ForceGen *forces;	/**< list of forces that appear on the RigidBody */
 
+public:
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	ForceRegEntry(RigidBody *bodyIN, ForceGen *forceGen);
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
+	~ForceRegEntry();
 };
 #endif

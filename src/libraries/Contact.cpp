@@ -7,38 +7,54 @@
 #include "Contact.h"
 
 
-void Contact::setBodyData()
-{
+void Contact::setBodyData(RigidBody *oneIN, RigidBody *twoIN, double fricIN, double restiIN) {
+
+	body1 = oneIN;
+	body2 = twoIN;
+	friction = fricIN;
+	restitution = restiIN;
 }
 
-void Contact::calcInternData()
-{
+void Contact::calcInternData(double duration){
+
+
 }
 
-void Contact::swapBodies()
-{
+void Contact::swapBodies(){
+
+	contactNormal = contactNormal * -1;
+
+	RigidBody *temp = body1;
+	body1 = body2;
+	body2 = temp;
 }
 
-void Contact::calcdesiredVeloc()
-{
+void Contact::calcdesiredVeloc(){
+
+
 }
 
-void Contact::calcLocalVeloc()
-{
+void Contact::calcLocalVeloc(){
+
+
 }
 
-void Contact::calcContactBasis()
-{
+void Contact::calcContactBasis(){
+
+
 }
 
-void Contact::applyImpulse()
-{
+void Contact::applyImpulse(){
+
+
 }
 
-void Contact::applyVelocChange()
-{
+void Contact::applyVelocChange(){
+
+
 }
 
-void Contact::applyPosChange()
-{
+void Contact::applyPosChange(){
+
+
 }

@@ -7,6 +7,8 @@
 #include "ContactGen.h"
 
 
-void ContactGen::addContact()
-{
+void ContactGen::addContact(){
+
+	//von hier verden einzelne parts der koll.erkenn. angesteuert
+	//auf cpu oder gpu
 }

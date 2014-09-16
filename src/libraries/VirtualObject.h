@@ -9,9 +9,9 @@
 
 #include "RigidBody.h"
 
-/** \brief
+/** \brief virtual object
  *
- * ...
+ * connection between physical and graphical representation
  */
 class VirtualObject
 {

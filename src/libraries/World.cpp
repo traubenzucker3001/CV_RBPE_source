@@ -15,7 +15,6 @@ World::World(){
 	forceReg = new ForceRegistry;
 	contactGen = new ContactGen;
 	resolver = new ContactResolver;
-	//bodies = ;
 
 }
 
@@ -41,6 +40,7 @@ void World::runPhysics(double duration){
 
 void World::startFrame(){
 
+	/*
 	RigidBodyReg *bodyReg = bodies;
 	while (bodyReg){
 		//remove all forces from accumulator
@@ -50,4 +50,12 @@ void World::startFrame(){
 		//get next body
 		bodyReg = bodyReg->next;
 	}
+	*/
+}
+
+void World::addBody(RigidBody &body){
+
+	//überdiesen weg neue bodies erzeugen oder nur in liste anhängen?!
+	//RigidBody newBody = RigidBody();
+	bodies.push_back(body);		//bzw. newBody
 }

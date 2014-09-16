@@ -32,7 +32,7 @@ private:
 
 	ContactResolver *resolver;			/**< contact resolution */
 
-	std::vector<RigidBodyReg> bodies;	/**< list of all rigid bodies in the world */
+	std::vector<RigidBody> bodies;	/**< list of all rigid bodies in the world */
 
 
 public:
@@ -65,6 +65,12 @@ public:
 	 * Initials world for a simulation frame. clears the force and torque accumulators for bodies.
 	 */
 	void startFrame();
+
+	/** \brief
+	 *
+	 * adds new rigid body to the world
+	 */
+	void addBody(RigidBody &body);
 
 };
 #endif

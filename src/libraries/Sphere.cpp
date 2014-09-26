@@ -6,4 +6,15 @@
 
 #include "Sphere.h"
 
+/*
+Sphere::Sphere(double radiusIN){
 
+	radius = radiusIN;
+}
+
+Sphere::~Sphere(){
+
+	delete radius;
+
+}
+*/

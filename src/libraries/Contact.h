@@ -16,12 +16,10 @@
  *
  * ...
  */
-class Contact
-{
-private:
-	RigidBody *body1;			/**< involved body 1 */
+class Contact{
 
-	RigidBody *body2;			/**< involved body 2 */
+private:
+	RigidBody *collBodies[2];	/**< involved bodies */
 
 	double friction;			/**< friction coefficient */
 
@@ -39,6 +37,7 @@ private:
 
 	double desiredVelocity;		/**< desired velocity to resolve contact */
 
+	glm::vec3 relatContPos[2];	/**< position of contact point in world space relative to center of body1 */
 
 public:
 	/** \brief set contact data
@@ -47,9 +46,9 @@ public:
 	 */
 	void setBodyData(RigidBody *oneIN, RigidBody *twoIN, double fricIN, double restiIN);
 
-	/** \brief
+	/** \brief calculate intern data
 	 *
-	 * ...
+	 * calculate relative-contact-position and contact velocity
 	 */
 	void calcInternData(double duration);
 
@@ -59,21 +58,21 @@ public:
 	 */
 	void swapBodies();
 
-	/** \brief
+	/** \brief calculate derived velocity
 	 *
-	 * ...
+	 * calculate necessary velocity to resolve the contact
 	 */
-	void calcdesiredVeloc();
+	void calcDesiredVeloc(double duration);
 
-	/** \brief
+	/** \brief calculate local velocity
 	 *
-	 * ...
+	 * calculate velocity at contact point from given body
 	 */
-	void calcLocalVeloc();
+	glm::vec3 calcLocalVeloc(unsigned int bodyIndex, double duration);
 
-	/** \brief
+	/** \brief calculate contact basis
 	 *
-	 * ...
+	 * calculate an orthonormal basis for the contact point
 	 */
 	void calcContactBasis();
 
@@ -83,17 +82,26 @@ public:
 	 */
 	void applyImpulse();
 
-	/** \brief
+	/** \brief apply velocity change
 	 *
-	 * ...
+	 * impulse based contact resolution
 	 */
-	void applyVelocChange();
+	void applyVelocChange(glm::vec3 velocityChange[2], glm::vec3 rotationChange[2]);
 
-	/** \brief
+	/** \brief apply position change
 	 *
-	 * ...
+	 * penetration resolution of the contact
 	 */
-	void applyPosChange();
+	void applyPosChange(glm::vec3 velocityChange[2], glm::vec3 rotationDirection[2], double rotationAmount[2], double penetration);
 
+
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
+	double getDesiredVelocity() const {
+		return desiredVelocity;
+	}
+
+	void setDesiredVelocity(double desiredVelocity) {
+		this->desiredVelocity = desiredVelocity;
+	}
 };
 #endif

@@ -35,11 +35,11 @@ private:
 
 public:
 
-	/** \brief default constructor
+	/** \brief constructor
 	 *
 	 * ...
 	 */
-	Core();
+	Core(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN);
 
 	/** \brief destructor
 	 *
@@ -47,14 +47,14 @@ public:
 	 */
 	~Core();
 
-	/** \brief creates the Engine
+	/** \brief change engine parameters
 	 *
 	 * sets "important" values and initials every necessary part of the Engine
 	 */
-	void createEngine(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN);
+	void changeEngine(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN);
 
-	//getter + setter
 
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	bool isCalcIterations() const {
 		return calcIterations;
 	}
@@ -102,5 +102,6 @@ public:
 	void setVelocityIterations(double velocityIterations) {
 		this->velocityIterations = velocityIterations;
 	}
+
 };
 #endif

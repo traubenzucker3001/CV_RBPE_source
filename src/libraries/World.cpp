@@ -12,10 +12,9 @@ World::World(){
 
 	unsigned int temp = Core::getInstance()->getMaxContacts();
 	contacts = new Contact[temp];
-	forceReg = new ForceRegistry;
-	contactGen = new ContactGen;
-	resolver = new ContactResolver;
-
+	forceReg = new ForceRegistry();
+	contactGen = new ContactGen();
+	resolver = new ContactResolver();
 }
 
 World::~World(){
@@ -27,35 +26,63 @@ World::~World(){
 	delete bodies;
 }
 
-void World::genContacts(){
+unsigned int World::genContacts(){
 
+    unsigned limit = Core::getInstance()->getMaxContacts();
 
+    Contact *nextContact = contacts;
+
+    for(int i; i<sizeof(contacts); i++){
+
+    	/*
+    	 unsigned used = reg->gen->addContact(nextContact, limit);
+    	 limit -= used;
+    	 nextContact += used;
+
+    	 // We've run out of contacts to fill. This means we're missing
+    	 // contacts.
+    	 if (limit <= 0) break;
+    	 */
+    }
+
+    //return the number of contacts used.
+    return Core::getInstance()->getMaxContacts() - limit;
 }
 
 void World::runPhysics(double duration){
 
+	// First apply the force generators
+	//registry.updateForces(duration);
 
+	//integrate objects
+	for(typename std::vector<RigidBody>::iterator it = bodies.begin(); it != bodies.end(); ++it){
 
+		it->integrate(duration);
+	}
+	//generate contacts
+	unsigned int numContacts = genContacts();
+
+	// And process them
+	/*
+	if (Core::getInstance()->isCalcIterations() == true){
+
+		resolver->setIterations(numContacts * 4);
+	}
+	*/
+	resolver->resolveContacts(contacts, numContacts, duration);
 }
 
 void World::startFrame(){
 
-	/*
-	RigidBodyReg *bodyReg = bodies;
-	while (bodyReg){
-		//remove all forces from accumulator
-		bodyReg->body->clearAccu();
-		bodyReg->body->calcInternData();
+	for(typename std::vector<RigidBody>::iterator it = bodies.begin(); it != bodies.end(); ++it){
 
-		//get next body
-		bodyReg = bodyReg->next;
+		//remove all forces from accumulator
+		it->clearAccu();
+		it->calcInternData();
 	}
-	*/
 }
 
-void World::addBody(RigidBody &body){
+void World::addBody(RigidBody *body){
 
-	//überdiesen weg neue bodies erzeugen oder nur in liste anhängen?!
-	//RigidBody newBody = RigidBody();
-	bodies.push_back(body);		//bzw. newBody
+	bodies.push_back(body);
 }

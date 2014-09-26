@@ -28,11 +28,13 @@ public:
 	 */
 	Gravity(const glm::vec3 &gravity);
 
+	~Gravity();
+
 	/** \brief
 	 *
 	 * acts gravity to a RigidBody over a given duration
 	 */
-	virtual void updateForce(RigidBody* body, double duration);
+	void updateForce(RigidBody* body, double duration);
 
 };
 #endif

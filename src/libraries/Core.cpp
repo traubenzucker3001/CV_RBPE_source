@@ -6,15 +6,15 @@
 
 #include "Core.h"
 
-Core::Core(){
+Core::Core(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN){
 
-	physicsWorld = new World;
-	velocityIterations = NULL;		//festen wert setzten
-	velocityEpsilon = NULL;			//festen wert setzten
-	positionIterations = NULL;		//festen wert setzten
-	positionEpsilon = NULL;			//festen wert setzten
-	calcIterations = true;
-	maxContacts = NULL;				//festen wert setzten
+	physicsWorld = new World();
+	velocityIterations = viIN;
+	velocityEpsilon = veIN;
+	positionIterations = piIN;
+	positionEpsilon = peIN;
+	calcIterations = ciIN;
+	maxContacts = mcIN;
 }
 
 Core::~Core(){
@@ -29,7 +29,9 @@ Core::~Core(){
 }
 
 //mit constructor und createEngine etwas doppelt-gemoppelt
-void Core::createEngine(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN){
+//geändert in change engine
+//ändern kann man aber auch einfach per setter, also immernoch nicht optimal
+void Core::changeEngine(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN){
 
 	setVelocityIterations(viIN);
 	setVelocityEpsilon(veIN);
@@ -39,5 +41,6 @@ void Core::createEngine(double viIN, double veIN , double piIN, double peIN, boo
 	setMaxContacts(mcIN);
 }
 
-//getter + setter
-//siehe .h
+
+// <<<<<<<<<< getter + setter >>>>>>>>>> //
+//siehe Core.h

@@ -21,31 +21,31 @@ template <typename C>
 	 */
     static C* getInstance (){
 
-       if (!_instance)
-          _instance = new C ();
-       return _instance;
+       if (!instance)
+          instance = new C ();
+       return instance;
     }
 
 	/** \brief destructor
 	 *
-	 * ...
+	 * sets the only instance to 0
 	 */
     virtual ~Singleton () {
-       _instance = 0;
+       instance = 0;
     }
 
  private:
-    static C* _instance;	/**< own instance of the corresponding class */
+    static C* instance;		/**< own instance of the corresponding class */
 
  protected:
 	/** \brief constructor
 	 *
-	 * ...
+	 * creates the only instance of the class if not already existing
 	 */
     Singleton () { }
  };
 
- template <typename C> C* Singleton <C>::_instance = 0;
+ template <typename C> C* Singleton <C>::instance = 0;
 
 
 

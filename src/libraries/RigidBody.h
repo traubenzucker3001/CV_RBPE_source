@@ -23,42 +23,56 @@
 class RigidBody
 {
 private:
-	glm::vec3 position;				/**< ... */
+	glm::vec3 position;					/**< position */
 
-	glm::quat orientation;			/**< ... */
+	glm::dquat orientation;				/**< orientation */
 
-	glm::vec3 velocity;				/**< ... */
+	glm::vec3 velocity;					/**< velocity */
 
-	glm::vec3 rotation;				/**< ... */
+	glm::vec3 rotation;					/**< rotation */
 
-	double mass;					/**< ... */
+	double mass;						/**< mass */
 
-	glm::mat3 inertiaTensor;		/**< ... */
+	glm::mat3 inertiaTensor;			/**< inertia tensor */
 
-	CollisionShape shape;			/**< ... */
+	CollisionShape *shape;				/**< shape, sphere or box */
 
-	double linearDamp;				/**< ... */
+	double linearDamp;					/**< linear damping */
 
-	double angularDamp;				/**< ... */
+	double angularDamp;					/**< angular damping */
 
-	glm::mat4 transformMatrix;		/**< ... */
+	glm::mat4 transformMatrix;			/**< ... */
 
-	glm::vec3 forceToBeApplied;		/**< ... */
+	glm::vec3 forceToBeApplied;			/**< ... */
 
-	glm::vec3 torgueToBeApplied;	/**< ... */
+	glm::vec3 torgueToBeApplied;		/**< ... */
 
-	glm::vec3 acceleration;			/**< ... */
+	glm::vec3 acceleration;				/**< acceleration */
 
-	glm::vec3 lastFrameAcc;			/**< ... */
+	glm::vec3 lastFrameVeloc;			/**< last frame velocity */
 
-	double inverseMass;				/**< ... */
+	double inverseMass;					/**< inverse mass */
 
-	glm::vec3 inverseInertiaTensor;	/**< ... */
+	glm::mat3 inverseInertiaTensorL;	/**< inverse inertia tensor in body coordinates */
 
-	bool isStatic;					/**< ... */
+	glm::mat3 inverseInertiaTensorW;	/**< inverse inertia tensor in world coordinates. */
+
+	bool isStatic;						/**< true if this is a static object */
 
 
 public:
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	RigidBody(double massIN, bool staticIN, double linDampIN, double angDampIN, bool shapeIN);
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
+	~RigidBody();
+
 	/** \brief
 	 *
 	 * ...
@@ -69,7 +83,7 @@ public:
 	 *
 	 * ...
 	 */
-	void integrate();
+	void integrate(double duration);
 
 	/** \brief
 	 *
@@ -83,8 +97,31 @@ public:
 	 */
 	void addForce(glm::vec3 forceIN);
 
-	//getter + setter
+	/** \brief calculate transform matrix
+	 *
+	 * creates a transform matrix from a position and orientation
+	 */
+	void calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::dquat oIN);
 
+	/** \brief transform inertia tensor
+	 *
+	 * transform inertia tensor by a quaternion.
+	 */
+	void transInertiaTensor(glm::mat3 iitIN, glm::dquat oIN, glm::mat3 itIN, glm::mat4 tmIN);
+
+	/** \brief add velocity
+	 *
+	 * ...
+	 */
+	void addVelocity(glm::vec3 velocIN);
+
+	/** \brief add rotation
+	 *
+	 * ...
+	 */
+	void addRotation(glm::vec3 rotatIN);
+
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	bool isIsStatic() const {
 		return isStatic;
 	}
@@ -99,6 +136,70 @@ public:
 
 	void setMass(double mass) {
 		this->mass = mass;
+	}
+
+	const glm::dquat& getOrientation() const {
+		return orientation;
+	}
+
+	void setOrientation(const glm::dquat& orientation) {
+		this->orientation = orientation;
+	}
+
+	const glm::vec3& getPosition() const {
+		return position;
+	}
+
+	void setPosition(const glm::vec3& position) {
+		this->position = position;
+	}
+
+	const glm::vec3& getRotation() const {
+		return rotation;
+	}
+
+	void setRotation(const glm::vec3& rotation) {
+		this->rotation = rotation;
+	}
+
+	const glm::vec3& getVelocity() const {
+		return velocity;
+	}
+
+	void setVelocity(const glm::vec3& velocity) {
+		this->velocity = velocity;
+	}
+
+	const glm::vec3& getLastFrameVeloc() const {
+		return lastFrameVeloc;
+	}
+
+	void setLastFrameVeloc(const glm::vec3& lastFrameVeloc) {
+		this->lastFrameVeloc = lastFrameVeloc;
+	}
+
+	double getInverseMass() const {
+		return inverseMass;
+	}
+
+	void setInverseMass(double inverseMass) {
+		this->inverseMass = inverseMass;
+	}
+
+	const glm::mat3& getInverseInertiaTensorL() const {
+		return inverseInertiaTensorL;
+	}
+
+	void setInverseInertiaTensorL(const glm::mat3& inverseInertiaTensorL) {
+		this->inverseInertiaTensorL = inverseInertiaTensorL;
+	}
+
+	const glm::mat3& getInverseInertiaTensorW() const {
+		return inverseInertiaTensorW;
+	}
+
+	void setInverseInertiaTensorW(const glm::mat3& inverseInertiaTensorW) {
+		this->inverseInertiaTensorW = inverseInertiaTensorW;
 	}
 };
 #endif

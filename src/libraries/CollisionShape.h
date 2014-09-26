@@ -16,7 +16,8 @@
  */
 class CollisionShape
 {
-private:
+protected:
+//private:
 	glm::vec3 origin;	/**< origin of the shape = position of RigidBody */
 
 public:
@@ -30,6 +31,17 @@ public:
 	 *
 	 * ...
 	 */
-	~CollisionShape();
+	virtual ~CollisionShape();
+
+	virtual void calcParticles() = 0;
+
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
+	const glm::vec3& getOrigin() const {
+		return origin;
+	}
+
+	void setOrigin(const glm::vec3& origin) {
+		this->origin = origin;
+	}
 };
 #endif

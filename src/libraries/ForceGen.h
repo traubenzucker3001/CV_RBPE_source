@@ -18,7 +18,7 @@ public:
 	 *
 	 * apply force to given rigidBody
 	 */
-	virtual void updateForce(RigidBody *body, double duration);
+	virtual void updateForce(RigidBody *body, double duration) = 0;
 
 	/** \brief destructor
 	 *

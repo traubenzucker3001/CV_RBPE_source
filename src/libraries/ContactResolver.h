@@ -22,9 +22,9 @@ private:
 
 	double *positionEpsilon;		/**< ..., defined in Core */
 
-	double calcVelocIter;			/**< counts number of used velocity iterations */
+	double countVelocIter;			/**< counts number of used velocity iterations */
 
-	double calcPosIter;				/**< counts number of used position iterations */
+	double countPosIter;			/**< counts number of used position iterations */
 
 public:
 	/** \brief constructor
@@ -43,25 +43,25 @@ public:
 	 *
 	 * ...
 	 */
-	void prepareContacts(Contact *contArray, unsigned int numContacts, double duration);
+	void prepareContacts(Contact *contArray[], unsigned int numContacts, double duration);
 
 	/** \brief resolver
 	 *
 	 * resolves the contacts
 	 */
-	void resolveContacts(Contact *contArray, unsigned int numContacts, double duration);
+	void resolveContacts(Contact *contArray[], unsigned int numContacts, double duration);
 
-	/** \brief
+	/** \brief adjust velocity
 	 *
 	 * ...
 	 */
-	void adjustVeloc(Contact *contArray, unsigned int numContacts, double duration);
+	void adjustVeloc(Contact *contArray[], unsigned int numContacts, double duration);
 
-	/** \brief
+	/** \brief adjust position
 	 *
 	 * ...
 	 */
-	void adjustPos(Contact *contArray, unsigned int numContacts, double duration);
+	void adjustPos(Contact *contArray[], unsigned int numContacts, double duration);
 
 };
 #endif

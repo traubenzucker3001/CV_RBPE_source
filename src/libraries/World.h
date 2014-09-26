@@ -24,7 +24,7 @@ class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
-	Contact *contacts;					/**< list of all contacts inside the world */
+	Contact *contacts[];					/**< list of all contacts inside the world */
 
 	ForceRegistry *forceReg;			/**< registry that contains information about  which forces appear to which rigid bodies */
 
@@ -32,7 +32,7 @@ private:
 
 	ContactResolver *resolver;			/**< contact resolution */
 
-	std::vector<RigidBody> bodies;	/**< list of all rigid bodies in the world */
+	std::vector<RigidBody*> bodies;		/**< list of all rigid bodies in the world */
 
 
 public:
@@ -52,7 +52,7 @@ public:
 	 *
 	 * ...
 	 */
-	void genContacts();
+	unsigned int genContacts();
 
 	/** \brief
 	 *
@@ -70,7 +70,7 @@ public:
 	 *
 	 * adds new rigid body to the world
 	 */
-	void addBody(RigidBody &body);
+	void addBody(RigidBody *body);
 
 };
 #endif

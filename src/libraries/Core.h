@@ -51,8 +51,9 @@ public:
 	 *
 	 * sets "important" values and initials every necessary part of the Engine
 	 */
+	/*
 	void changeEngine(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN);
-
+	*/
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	bool isCalcIterations() const {

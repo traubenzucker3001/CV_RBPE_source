@@ -28,6 +28,7 @@ Core::~Core(){
 	delete maxContacts;
 }
 
+/*
 //mit constructor und createEngine etwas doppelt-gemoppelt
 //geändert in change engine
 //ändern kann man aber auch einfach per setter, also immernoch nicht optimal
@@ -40,6 +41,7 @@ void Core::changeEngine(double viIN, double veIN , double piIN, double peIN, boo
 	setCalcIterations(ciIN);
 	setMaxContacts(mcIN);
 }
+*/
 
 
 // <<<<<<<<<< getter + setter >>>>>>>>>> //

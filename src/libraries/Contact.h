@@ -86,13 +86,13 @@ public:
 	 *
 	 * impulse based contact resolution
 	 */
-	void applyVelocChange(glm::vec3 velocityChange[2], glm::vec3 rotationChange[2]);
+	void applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2]);
 
 	/** \brief apply position change
 	 *
 	 * penetration resolution of the contact
 	 */
-	void applyPosChange(glm::vec3 velocityChange[2], glm::vec3 rotationDirection[2], double rotationAmount[2], double penetration);
+	void applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[2], double rotatAmount[2], double penetration);
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //

@@ -5,6 +5,7 @@ project(${ProjectId})
 
 include_directories(
     ${GLM_INCLUDE_PATH}
+
     ${EXTERNAL_LIBRARY_PATHS}
     ${CMAKE_SOURCE_DIR}/src/libraries/
 )

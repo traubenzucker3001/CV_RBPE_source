@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <CVK.../CVKFramework.h>
+#include <CVK_Framework.h>
 
 using namespace std;
 
@@ -18,7 +18,7 @@ int main() {
 
 	//...
 
-	glewInit();
+	//glewInit();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;

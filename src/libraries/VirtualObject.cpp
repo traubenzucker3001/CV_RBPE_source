@@ -7,6 +7,31 @@
 #include "VirtualObject.h"
 
 
-void VirtualObject::update(){
+	VirtualObject::VirtualObject(){
 
-}
+	}
+
+	VirtualObject::VirtualObject(double radiusIN){
+
+	}
+
+	VirtualObject::VirtualObject(double halfsizeIN){
+
+	}
+
+	VirtualObject::~VirtualObject(){
+
+	}
+
+	void VirtualObject::update(){
+
+	}
+
+	void VirtualObject::translate(){
+
+	}
+
+	void VirtualObject::scale(){
+
+	}
+

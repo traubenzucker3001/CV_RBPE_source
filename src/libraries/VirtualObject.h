@@ -5,7 +5,7 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include <assert.h>
+#include <CVK_Framework.h>
 
 #include "RigidBody.h"
 
@@ -16,15 +16,60 @@
 class VirtualObject
 {
 private:
-	RigidBody physicBody;	/**< RigidBody as physics component of this object */
+	RigidBody physicBody;		/**< RigidBody as physics component of this object */
+
+	CVK::Geometry graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
+
+	//eig  überflüssig wenn model matrix habe
+	glm::vec3 position;			/**< position */
+
+	glm::mat4 modelMatrix;		/**< model matrix */
 
 
 public:
+	/** \brief default constructor
+	 *
+	 * ...
+	 */
+	VirtualObject();
+
+	/** \brief constructor
+	 *
+	 * for sphere as graphics component
+	 * ...
+	 */
+	VirtualObject(double radiusIN);
+
+	/** \brief constructor
+	 *
+	 * for box as graphics component
+	 * ...
+	 */
+	VirtualObject(double halfsizeIN);
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
+	~VirtualObject();
+
 	/** \brief
 	 *
 	 * ...
 	 */
 	void update();
+
+	/** \brief
+	 *
+	 * ...
+	 */
+	void translate();
+
+	/** \brief
+	 *
+	 * ...
+	 */
+	void scale();
 
 };
 #endif

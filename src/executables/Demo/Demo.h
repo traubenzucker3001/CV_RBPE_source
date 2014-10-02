@@ -7,7 +7,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "VirtualObject.h"
+#include "PhysicEngine/VirtualObject.h"
 #include "Core.h"
 #include "Timing.h"
 

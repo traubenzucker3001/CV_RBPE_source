@@ -5,7 +5,7 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include <CVK_Framework.h>
+#include <CVK_Framework/CVK_Framework.h>
 
 #include "RigidBody.h"
 

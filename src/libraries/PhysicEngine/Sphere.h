@@ -17,21 +17,21 @@
 class Sphere : public CollisionShape		//noch mal schaun ob vererbung korrekt!!
 {
 private:
-	double radius;	/**< defines the size of the sphere */
+	float radius;	/**< defines the size of the sphere */
 
 public:
-	Sphere(glm::vec3 origIN,  double radiusIN) : CollisionShape(origIN){radius = radiusIN;}
+	Sphere(glm::vec3 origIN,  float radiusIN) : CollisionShape(origIN){radius = radiusIN;}
 
 	~Sphere();
 
 	void calcParticles();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	double getRadius() const {
+	float getRadius() const {
 		return radius;
 	}
 
-	void setRadius(double radius) {
+	void setRadius(float radius) {
 		this->radius = radius;
 	}
 };

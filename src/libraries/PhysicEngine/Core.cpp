@@ -6,7 +6,7 @@
 
 #include "Core.h"
 
-Core::Core(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN){
+Core::Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned int mcIN){
 
 	physicsWorld = new World();
 	velocityIterations = viIN;

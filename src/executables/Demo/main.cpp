@@ -1,12 +1,12 @@
 #include <iostream>
-#include <CVK_Framework.h>
+//#include <CVK_Framework.h>
 
 using namespace std;
 
 int main() {
 
 	//cout << "Hallo Test!" << endl;
-
+/*
 	glfwInit();
 	CVK::useOpenGL33CoreProfile();
 	int w,h;
@@ -21,6 +21,7 @@ int main() {
 	//glewInit();
 	glfwDestroyWindow(window);
 	glfwTerminate();
+	*/
 	return 0;
 }
 

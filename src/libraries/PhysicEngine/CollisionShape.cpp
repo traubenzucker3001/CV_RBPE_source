@@ -11,5 +11,5 @@ CollisionShape::CollisionShape(glm::vec3 origIN){
 }
 
 CollisionShape::~CollisionShape(){
-	delete origin;
+	//delete origin;
 }

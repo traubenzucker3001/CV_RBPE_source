@@ -11,7 +11,7 @@ Gravity::Gravity(const glm::vec3 &gravIN){
 	gravity = gravIN;
 }
 
-void Gravity::updateForce(RigidBody* body, double duration){
+void Gravity::updateForce(RigidBody* body, float duration){
 
 	//wenn nicht static
 	if (body->isIsStatic() == false){

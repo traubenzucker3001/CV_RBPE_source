@@ -11,8 +11,8 @@
  *
  * Timing is Singleton to ensure that there is only one instance at a time
  */
-class Timing : public Singleton<Core> {
-	friend class Singleton<World>;
+class Timing : public Singleton<Timing> {
+	friend class Singleton<Timing>;
 
 private:
 	unsigned int frameNum;				/**< counts frame numbers */

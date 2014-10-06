@@ -17,21 +17,21 @@
 class Box : public CollisionShape			//noch mal schaun ob vererbung korrekt!!
 {
 private:
-	double halfsize;	/**< defines the size of the box */
+	float halfsize;	/**< defines the size of the box */
 
 public:
-	Box(double halfsizeIN);
+	Box(float halfsizeIN);
 
 	~Box();
 
 	void calcParticles();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	double getHalfsize() const {
+	float getHalfsize() const {
 		return halfsize;
 	}
 
-	void setHalfsize(double halfsize) {
+	void setHalfsize(float halfsize) {
 		this->halfsize = halfsize;
 	}
 };

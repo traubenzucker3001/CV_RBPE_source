@@ -58,7 +58,7 @@ public:
 	 *
 	 * ...
 	 */
-	void runPhysics(double duration);
+	void runPhysics(float duration);
 
 	/** \brief
 	 *

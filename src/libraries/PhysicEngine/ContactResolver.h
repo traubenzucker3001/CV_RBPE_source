@@ -14,17 +14,17 @@
 class ContactResolver
 {
 private:
-	double *velocityIterations;		/**< defines number of velocity iteration steps, defined in Core */
+	float *velocityIterations;		/**< defines number of velocity iteration steps, defined in Core */
 
-	double *velocityEpsilon;		/**< ..., defined in Core */
+	float *velocityEpsilon;		/**< ..., defined in Core */
 
-	double *positionIterations;		/**< defines number of position iteration steps, defined in Core */
+	float *positionIterations;		/**< defines number of position iteration steps, defined in Core */
 
-	double *positionEpsilon;		/**< ..., defined in Core */
+	float *positionEpsilon;		/**< ..., defined in Core */
 
-	double countVelocIter;			/**< counts number of used velocity iterations */
+	float countVelocIter;			/**< counts number of used velocity iterations */
 
-	double countPosIter;			/**< counts number of used position iterations */
+	float countPosIter;			/**< counts number of used position iterations */
 
 public:
 	/** \brief constructor
@@ -43,25 +43,25 @@ public:
 	 *
 	 * ...
 	 */
-	void prepareContacts(Contact *contArray[], unsigned int numContacts, double duration);
+	void prepareContacts(Contact *contArray[], unsigned int numContacts, float duration);
 
 	/** \brief resolver
 	 *
 	 * resolves the contacts
 	 */
-	void resolveContacts(Contact *contArray[], unsigned int numContacts, double duration);
+	void resolveContacts(Contact *contArray[], unsigned int numContacts, float duration);
 
 	/** \brief adjust velocity
 	 *
 	 * ...
 	 */
-	void adjustVeloc(Contact *contArray[], unsigned int numContacts, double duration);
+	void adjustVeloc(Contact *contArray[], unsigned int numContacts, float duration);
 
 	/** \brief adjust position
 	 *
 	 * ...
 	 */
-	void adjustPos(Contact *contArray[], unsigned int numContacts, double duration);
+	void adjustPos(Contact *contArray[], unsigned int numContacts, float duration);
 
 };
 #endif

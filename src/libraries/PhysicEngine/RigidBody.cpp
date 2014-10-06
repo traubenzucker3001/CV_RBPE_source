@@ -6,13 +6,13 @@
 
 #include "RigidBody.h"
 
-RigidBody::RigidBody(double massIN, bool staticIN, double linDampIN, double angDampIN, bool shapeIN){
+RigidBody::RigidBody(float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN){
 
 	isStatic = staticIN;
 	linearDamp = linDampIN;
 	angularDamp = angDampIN;
 	mass = massIN;
-	inverseMass = ((double)1.0)/mass;
+	inverseMass = ((float)1.0)/mass;
 	//box oder sphere collision shape
 	//true => kugel
 	if(shapeIN == true){
@@ -60,7 +60,7 @@ void RigidBody::calcInternData(){
 	transInertiaTensor(inverseInertiaTensorW, orientation, inertiaTensor, transformMatrix);
 }
 
-void RigidBody::integrate(double duration){
+void RigidBody::integrate(float duration){
 
 	//Calculate linear acceleration from force inputs.
 	lastFrameVeloc = acceleration;

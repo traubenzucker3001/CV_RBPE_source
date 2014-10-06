@@ -31,15 +31,15 @@ private:
 
 	glm::vec3 rotation;					/**< rotation */
 
-	double mass;						/**< mass */
+	float mass;						/**< mass */
 
 	glm::mat3 inertiaTensor;			/**< inertia tensor */
 
 	CollisionShape *shape;				/**< shape, sphere or box */
 
-	double linearDamp;					/**< linear damping */
+	float linearDamp;					/**< linear damping */
 
-	double angularDamp;					/**< angular damping */
+	float angularDamp;					/**< angular damping */
 
 	glm::mat4 transformMatrix;			/**< ... */
 
@@ -51,7 +51,7 @@ private:
 
 	glm::vec3 lastFrameVeloc;			/**< last frame velocity */
 
-	double inverseMass;					/**< inverse mass */
+	float inverseMass;					/**< inverse mass */
 
 	glm::mat3 inverseInertiaTensorL;	/**< inverse inertia tensor in body coordinates */
 
@@ -65,7 +65,7 @@ public:
 	 *
 	 * ...
 	 */
-	RigidBody(double massIN, bool staticIN, double linDampIN, double angDampIN, bool shapeIN);
+	RigidBody(float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN);
 
 	/** \brief destructor
 	 *
@@ -83,7 +83,7 @@ public:
 	 *
 	 * ...
 	 */
-	void integrate(double duration);
+	void integrate(float duration);
 
 	/** \brief
 	 *
@@ -130,11 +130,11 @@ public:
 		this->isStatic = isStatic;
 	}
 
-	double getMass() const {
+	float getMass() const {
 		return mass;
 	}
 
-	void setMass(double mass) {
+	void setMass(float mass) {
 		this->mass = mass;
 	}
 
@@ -178,11 +178,11 @@ public:
 		this->lastFrameVeloc = lastFrameVeloc;
 	}
 
-	double getInverseMass() const {
+	float getInverseMass() const {
 		return inverseMass;
 	}
 
-	void setInverseMass(double inverseMass) {
+	void setInverseMass(float inverseMass) {
 		this->inverseMass = inverseMass;
 	}
 

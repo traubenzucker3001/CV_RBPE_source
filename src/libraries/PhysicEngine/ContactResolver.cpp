@@ -34,7 +34,7 @@ ContactResolver::~ContactResolver(){
 	delete positionEpsilon;
 }
 
-void ContactResolver::prepareContacts(Contact *contArray[], unsigned int numCont, double duration){
+void ContactResolver::prepareContacts(Contact *contArray[], unsigned int numCont, float duration){
 
 	Contact* lastContact = contArray + numCont;
 	for(Contact* contact=contArray; contact < lastContact; contact++){
@@ -43,7 +43,7 @@ void ContactResolver::prepareContacts(Contact *contArray[], unsigned int numCont
 	    }
 }
 
-void ContactResolver::resolveContacts(Contact *contArray[], unsigned int numCont, double duration){
+void ContactResolver::resolveContacts(Contact *contArray[], unsigned int numCont, float duration){
 
 	if (numCont == 0){
 		return;
@@ -55,7 +55,7 @@ void ContactResolver::resolveContacts(Contact *contArray[], unsigned int numCont
 	adjustVeloc(contArray, numCont, duration);
 }
 
-void ContactResolver::adjustVeloc(Contact *contArray[], unsigned int numContacts, double duration){
+void ContactResolver::adjustVeloc(Contact *contArray[], unsigned int numContacts, float duration){
 
 	glm::vec3 velocChange[2], rotatChange[2];
 	glm::vec3 temp;
@@ -64,7 +64,7 @@ void ContactResolver::adjustVeloc(Contact *contArray[], unsigned int numContacts
 	countVelocIter = 0;
 	while(countVelocIter < velocityIterations){
 		//finde kontakt mit größter geschwindigkeitsänderung
-	    double velocPrecision = velocityEpsilon;
+		float velocPrecision = velocityEpsilon;
 	    unsigned int index = numContacts;
 	    for(unsigned int i = 0; i < numContacts; i++){
 	    	if (contArray[i]->getDesiredVelocity() > velocPrecision){
@@ -138,12 +138,12 @@ void ContactResolver::adjustVeloc(Contact *contArray[], unsigned int numContacts
 	}
 }
 
-void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, double duration){
+void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, float duration){
 
 	unsigned int i,index;
 	glm::vec3 velocChange[2], rotatChange[2];
-	double rotatAmount[2];
-	double posPrecision;
+	float rotatAmount[2];
+	float posPrecision;
 	glm::vec3 temp;
 
 	// TODO: Remove this
@@ -178,7 +178,7 @@ void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, 
 	            temp = temp + velocChange[0];
 
 	            //x*vector.x + y*vector.y + z*vector.z;
-	            double temp1 = (temp.x*contArray[i]->contactNormal.x) + (temp.x*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
+	            float temp1 = (temp.x*contArray[i]->contactNormal.x) + (temp.x*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
 	            contArray[i]->penetration = contArray[i]->penetration - rotatAmount[0] * temp1;
 	    	}
 	    	else if(contArray[i]->collBodies[0] == contArray[index]->collBodies[1]){
@@ -188,7 +188,7 @@ void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, 
 	            temp += velocChange[1];
 
 	            //x*vector.x + y*vector.y + z*vector.z;
-	            double temp2 = (temp.x*contArray[i]->contactNormal.x) + (temp.y*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
+	            float temp2 = (temp.x*contArray[i]->contactNormal.x) + (temp.y*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
 	            contArray[i]->penetration = contArray[i]->penetration - rotatAmount[1] * temp2;
 	    	}
 	        if(contArray[i]->collBodies[1]){
@@ -199,7 +199,7 @@ void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, 
 	                temp = temp + velocChange[0];
 
 	                //x*vector.x + y*vector.y + z*vector.z;
-	                double temp3 = (temp.x*contArray[i]->contactNormal.x) + (temp.y*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
+	                float temp3 = (temp.x*contArray[i]->contactNormal.x) + (temp.y*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
 	                contArray[i]->penetration = contArray[i]->penetration + rotatAmount[0] * temp3;
 	        	}
 	            else if(contArray[i]->collBodies[1] == contArray[index]->collBodies[1]){
@@ -209,7 +209,7 @@ void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, 
 	                temp = temp + velocChange[1];
 
 	                //x*vector.x + y*vector.y + z*vector.z;
-	                double temp4 = (temp.x*contArray[i]->contactNormal.x) + (temp.y*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
+	                float temp4 = (temp.x*contArray[i]->contactNormal.x) + (temp.y*contArray[i]->contactNormal.y) + (temp.z*contArray[i]->contactNormal.z);
 	                contArray[i]->penetration = contArray[i]->penetration + rotatAmount[1] * temp4;
 	            }
 	        }

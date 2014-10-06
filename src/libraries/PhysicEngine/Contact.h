@@ -21,21 +21,21 @@ class Contact{
 private:
 	RigidBody *collBodies[2];	/**< involved bodies */
 
-	double friction;			/**< friction coefficient */
+	float friction;			/**< friction coefficient */
 
-	double restitution;			/**< restitution coefficient */
+	float restitution;			/**< restitution coefficient */
 
 	glm::vec3 contactPoint;		/**< contact position */
 
 	glm::vec3 contactNormal;	/**< contact normal */
 
-	double penetration;			/**< penetration */
+	float penetration;			/**< penetration */
 
 	glm::mat3 contactToWorld;	/**< conversion help */
 
 	glm::vec3 contactVelocity;	/**< contact velocity */
 
-	double desiredVelocity;		/**< desired velocity to resolve contact */
+	float desiredVelocity;		/**< desired velocity to resolve contact */
 
 	glm::vec3 relatContPos[2];	/**< position of contact point in world space relative to center of body1 */
 
@@ -44,13 +44,13 @@ public:
 	 *
 	 * set data that does not depend on contact position
 	 */
-	void setBodyData(RigidBody *oneIN, RigidBody *twoIN, double fricIN, double restiIN);
+	void setBodyData(RigidBody *oneIN, RigidBody *twoIN, float fricIN, float restiIN);
 
 	/** \brief calculate intern data
 	 *
 	 * calculate relative-contact-position and contact velocity
 	 */
-	void calcInternData(double duration);
+	void calcInternData(float duration);
 
 	/** \brief swap RigidBodies
 	 *
@@ -62,13 +62,13 @@ public:
 	 *
 	 * calculate necessary velocity to resolve the contact
 	 */
-	void calcDesiredVeloc(double duration);
+	void calcDesiredVeloc(float duration);
 
 	/** \brief calculate local velocity
 	 *
 	 * calculate velocity at contact point from given body
 	 */
-	glm::vec3 calcLocalVeloc(unsigned int bodyIndex, double duration);
+	glm::vec3 calcLocalVeloc(unsigned int bodyIndex, float duration);
 
 	/** \brief calculate contact basis
 	 *
@@ -92,15 +92,15 @@ public:
 	 *
 	 * penetration resolution of the contact
 	 */
-	void applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[2], double rotatAmount[2], double penetration);
+	void applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[2], float rotatAmount[2], float penetration);
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	double getDesiredVelocity() const {
+	float getDesiredVelocity() const {
 		return desiredVelocity;
 	}
 
-	void setDesiredVelocity(double desiredVelocity) {
+	void setDesiredVelocity(float desiredVelocity) {
 		this->desiredVelocity = desiredVelocity;
 	}
 };

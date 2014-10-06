@@ -42,7 +42,7 @@ public:
 	 *
 	 * ...
 	 */
-	void updateForces(double duration);
+	void updateForces(float duration);
 
 };
 #endif

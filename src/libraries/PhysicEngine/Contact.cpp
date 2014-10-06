@@ -5,10 +5,11 @@
 #include <assert.h>
 
 #include "Contact.h"
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 
-void Contact::setBodyData(RigidBody *oneIN, RigidBody *twoIN, double fricIN, double restiIN) {
+void Contact::setBodyData(RigidBody *oneIN, RigidBody *twoIN, float fricIN, float restiIN) {
 
 	collBodies[0] = oneIN;
 	collBodies[1] = twoIN;
@@ -16,7 +17,7 @@ void Contact::setBodyData(RigidBody *oneIN, RigidBody *twoIN, double fricIN, dou
 	restitution = restiIN;
 }
 
-void Contact::calcInternData(double duration){
+void Contact::calcInternData(float duration){
 
 	//wenn erster body NULL dann swappen
 	if (collBodies[0] == NULL){
@@ -41,26 +42,26 @@ void Contact::calcInternData(double duration){
 
 void Contact::swapBodies(){
 
-	contactNormal = contactNormal * -1;
+	contactNormal = contactNormal * -1.0f;
 
 	RigidBody *temp = collBodies[0];
 	collBodies[0] = collBodies[1];
 	collBodies[1] = temp;
 }
 
-void Contact::calcDesiredVeloc(double duration){
+void Contact::calcDesiredVeloc(float duration){
 
 	//???
 	//geschwindigkeitslimit
-	const static double velocLimit = 0.25;
+	const static float velocLimit = 0.25;
 
 	//berechne durch letzten frame geschwindigkeit induzierte beschleunigung
-	double lastFrameVeloc = collBodies[0]->getLastFrameVeloc() * duration * contactNormal;
+	float lastFrameVeloc = collBodies[0]->getLastFrameVeloc() * duration * contactNormal;
 	if (collBodies[1] != NULL){
 		lastFrameVeloc = lastFrameVeloc - collBodies[1]->getLastFrameVeloc() * duration * contactNormal;
 	}
 	//wenn velocity sehr klein, restitution limitieren
-	double restitu = restitution;
+	float restitu = restitution;
 	if (abs(contactVelocity.x) < velocLimit){
 		restitu = 0.0;
 	}
@@ -68,7 +69,7 @@ void Contact::calcDesiredVeloc(double duration){
 	desiredVelocity = -contactVelocity.x -restitu * (contactVelocity.x - lastFrameVeloc);
 }
 
-glm::vec3 Contact::calcLocalVeloc(unsigned int bodyIndex, double duration){
+glm::vec3 Contact::calcLocalVeloc(unsigned int bodyIndex, float duration){
 
 	RigidBody *body = collBodies[bodyIndex];
 
@@ -103,7 +104,7 @@ void Contact::calcContactBasis(){
 	//wenn x-achse oder y-achse näher an z-achse
 	if(abs(contactNormal.x) > abs(contactNormal.y)){
 		//skalierungsfaktor, damit ergebnis normalisiert ist
-	    const double scale1 = 1.0 / sqrt(contactNormal.z * contactNormal.z + contactNormal.x * contactNormal.x);
+	    const float scale1 = 1.0 / sqrt(contactNormal.z * contactNormal.z + contactNormal.x * contactNormal.x);
 
 	    //neue x-achse orthogonal zu welt-y-achse
 	    contTangent[0].x = contactNormal.z*scale1;
@@ -117,7 +118,7 @@ void Contact::calcContactBasis(){
 	}
 	else{
 		//skalierungsfaktor, damit ergebnis normalisiert ist
-	    const double scale2 = 1.0 / sqrt(contactNormal.z * contactNormal.z + contactNormal.y * contactNormal.y);
+	    const float scale2 = 1.0 / sqrt(contactNormal.z * contactNormal.z + contactNormal.y * contactNormal.y);
 
 	    //neue x-achse orthogonal zu welt-x-achse
 	    contTangent[0].x = 0;
@@ -157,7 +158,7 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	    deltaVelocW1 = deltaVelocW1 % relatContPos[0];
 
 	    //geschwindigkeitsänderung in kontakt koordinaten
-	    double deltaVelocL = deltaVelocW1 * contactNormal;
+	    float deltaVelocL = deltaVelocW1 * contactNormal;
 
 	    //addiere lineare geschwindigkeitsänderung
 	    deltaVelocL = deltaVelocL + collBodies[0]->getInverseMass();
@@ -186,7 +187,7 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 
 	//sonst, wenn reibung vorhanden
 	else{
-		double inverseMass = collBodies[0]->getInverseMass();
+		float inverseMass = collBodies[0]->getInverseMass();
 
 		//erzeuge schiefsymmetrische matrix für konvertierung zw. linera und angular Anteil
 	    glm::mat3 impulseToTorque;
@@ -242,7 +243,7 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	    contImpulse = impulseMatrix * targetVeloc;
 
 	    //prüfen ob reibung überstiegen/überwunden
-	    double planarImpulse = sqrt(contImpulse.y * contImpulse.y + contImpulse.z * contImpulse.z);
+	    float planarImpulse = sqrt(contImpulse.y * contImpulse.y + contImpulse.z * contImpulse.z);
 	    if (planarImpulse > contImpulse.x * friction){
 
 	    	//dynamic friction
@@ -285,15 +286,15 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	}
 }
 
-void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[2], double rotatAmount[2], double penetration){
+void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[2], float rotatAmount[2], float penetration){
 
-	double angularLimit = 1000;
-	double angularMotion[2],linearMotion[2];
+	float angularLimit = 1000;
+	float angularMotion[2],linearMotion[2];
 	int index;
 
-	double totalInertia = 0;
-	double linearInertia[2];
-	double angularInertia[2];
+	float totalInertia = 0;
+	float linearInertia[2];
+	float angularInertia[2];
 
 	//inertia von jedem objekt in richtung contact normal
 	for (int i = 0; i < 2; i++) {
@@ -314,7 +315,7 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 	        totalInertia = totalInertia + linearInertia[i] + angularInertia[i];
 		}
 	}
-	double inverseMass[2];
+	float inverseMass[2];
 
 	totalInertia = angularInertia[0] + collBodies[0]->getInverseMass();
 
@@ -328,17 +329,17 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 	    //angulare bewegung limitieren
 	    glm::vec3 projection = relatContPos[1];
 	    //x*vector.x + y*vector.y + z*vector.z
-	    double temp1 = (-relatContPos[1].x * contactNormal.x) + (-relatContPos[1].y * contactNormal.y) + (-relatContPos[1].z * contactNormal.z);
+	    float temp1 = (-relatContPos[1].x * contactNormal.x) + (-relatContPos[1].y * contactNormal.y) + (-relatContPos[1].z * contactNormal.z);
 	    projection.x = projection.x + (contactNormal.x * temp1);
 	    projection.y = projection.y + (contactNormal.y * temp1);
 	    projection.z = projection.z + (contactNormal.z * temp1);
 
 	    //sqrt(x*x+y*y+z*z)
-	    double mag1 = sqrt(relatContPos[0].x*relatContPos[0].x + relatContPos[0].y*relatContPos[0].y + relatContPos[0].z*relatContPos[0].z);
-	    double max1 = angularLimit * mag1;
+	    float mag1 = sqrt(relatContPos[0].x*relatContPos[0].x + relatContPos[0].y*relatContPos[0].y + relatContPos[0].z*relatContPos[0].z);
+	    float max1 = angularLimit * mag1;
 
 	    if(abs(angularMotion[1]) > max1){
-	    	double temp = angularMotion[1] + linearMotion[1];
+	    	float temp = angularMotion[1] + linearMotion[1];
 	        angularMotion[1]=angularMotion[1]>0?max1:-max1;	//ändern
 	        linearMotion[1]  =temp - angularMotion[1];
 	    }
@@ -348,17 +349,17 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 
 	//angulare bewegung limitieren
 	glm::vec3 projection = relatContPos[0];
-	double temp2 = (-relatContPos[0].x * contactNormal.x) + (-relatContPos[0].y * contactNormal.y) + (-relatContPos[0].z * contactNormal.z);
+	float temp2 = (-relatContPos[0].x * contactNormal.x) + (-relatContPos[0].y * contactNormal.y) + (-relatContPos[0].z * contactNormal.z);
 	projection.x = projection.x + (contactNormal.x * temp2);
 	projection.y = projection.y + (contactNormal.y * temp2);
 	projection.z = projection.z + (contactNormal.z * temp2);
 
 	//sqrt(x*x+y*y+z*z)
-	double mag2 = sqrt(relatContPos[0].x*relatContPos[0].x + relatContPos[0].y*relatContPos[0].y + relatContPos[0].z*relatContPos[0].z);
-	double max2 = angularLimit * mag2;
+	float mag2 = sqrt(relatContPos[0].x*relatContPos[0].x + relatContPos[0].y*relatContPos[0].y + relatContPos[0].z*relatContPos[0].z);
+	float max2 = angularLimit * mag2;
 
 	if(abs(angularMotion[0]) > max2){
-		double pp=angularMotion[0]+linearMotion[0];
+		float pp=angularMotion[0]+linearMotion[0];
 	    angularMotion[0]=angularMotion[0]>0?max2:-max2;	//ändern
 	    linearMotion[0]=pp-angularMotion[0];
 	}
@@ -392,10 +393,10 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 	    collBodies[index]->setPosition(pos);
 
 	    glm::dquat ori = collBodies[index]->getOrientation();
-	    double temp4 = rotatAmount[index] * 0.5;
+	    float temp4 = rotatAmount[index] * 0.5;
 	    //ori.addScaledVector(rotatDirection[index], temp4);
 	    //quaternion + vector
-	    ori = glm::???;
+	    //ori = glm::???;
 	    collBodies[index]->setOrientation(ori);
 
 		}

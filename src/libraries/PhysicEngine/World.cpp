@@ -49,7 +49,7 @@ unsigned int World::genContacts(){
     return Core::getInstance()->getMaxContacts() - limit;
 }
 
-void World::runPhysics(double duration){
+void World::runPhysics(float duration){
 
 	// First apply the force generators
 	//registry.updateForces(duration);

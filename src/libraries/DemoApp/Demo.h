@@ -8,6 +8,7 @@
 #include <assert.h>
 
 #include "PhysicEngine/VirtualObject.h"
+#include "VirtualObject.h"
 #include "Core.h"
 #include "Timing.h"
 

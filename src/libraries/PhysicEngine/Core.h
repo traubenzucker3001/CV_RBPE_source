@@ -20,13 +20,13 @@ class Core : public Singleton<Core> {
 private:
 	World *physicsWorld;		/**< physics world that contains all rigid bodies */
 
-	double velocityIterations;	/**< defines number of velocity iteration steps */
+	float velocityIterations;	/**< defines number of velocity iteration steps */
 
-	double velocityEpsilon;		/**< ... */
+	float velocityEpsilon;		/**< ... */
 
-	double positionIterations;	/**< defines number of position iteration steps */
+	float positionIterations;	/**< defines number of position iteration steps */
 
-	double positionEpsilon;		/**< ... */
+	float positionEpsilon;		/**< ... */
 
 	bool calcIterations;		/**< ... */
 
@@ -39,7 +39,7 @@ public:
 	 *
 	 * ...
 	 */
-	Core(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN);
+	Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned int mcIN);
 
 	/** \brief destructor
 	 *
@@ -72,35 +72,35 @@ public:
 		this->maxContacts = maxContacts;
 	}
 
-	double getPositionEpsilon() const {
+	float getPositionEpsilon() const {
 		return positionEpsilon;
 	}
 
-	void setPositionEpsilon(double positionEpsilon) {
+	void setPositionEpsilon(float positionEpsilon) {
 		this->positionEpsilon = positionEpsilon;
 	}
 
-	double getPositionIterations() const {
+	float getPositionIterations() const {
 		return positionIterations;
 	}
 
-	void setPositionIterations(double positionIterations) {
+	void setPositionIterations(float positionIterations) {
 		this->positionIterations = positionIterations;
 	}
 
-	double getVelocityEpsilon() const {
+	float getVelocityEpsilon() const {
 		return velocityEpsilon;
 	}
 
-	void setVelocityEpsilon(double velocityEpsilon) {
+	void setVelocityEpsilon(float velocityEpsilon) {
 		this->velocityEpsilon = velocityEpsilon;
 	}
 
-	double getVelocityIterations() const {
+	float getVelocityIterations() const {
 		return velocityIterations;
 	}
 
-	void setVelocityIterations(double velocityIterations) {
+	void setVelocityIterations(float velocityIterations) {
 		this->velocityIterations = velocityIterations;
 	}
 

@@ -11,13 +11,13 @@
 
 	}
 
-	VirtualObject::VirtualObject(double radiusIN){
+	VirtualObject::VirtualObject(float radiusIN){
 
 	}
 
-	VirtualObject::VirtualObject(double halfsizeIN){
+	//VirtualObject::VirtualObject(double halfsizeIN){
 
-	}
+	//}
 
 	VirtualObject::~VirtualObject(){
 

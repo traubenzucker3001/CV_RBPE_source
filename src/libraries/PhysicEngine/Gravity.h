@@ -34,7 +34,7 @@ public:
 	 *
 	 * acts gravity to a RigidBody over a given duration
 	 */
-	void updateForce(RigidBody* body, double duration);
+	void updateForce(RigidBody* body, float duration);
 
 };
 #endif

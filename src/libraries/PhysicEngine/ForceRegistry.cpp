@@ -23,7 +23,7 @@ void ForceRegistry::clear(){
 
 }
 
-void ForceRegistry::updateForces(double duration){
+void ForceRegistry::updateForces(float duration){
 
 
 }

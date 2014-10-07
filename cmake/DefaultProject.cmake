@@ -11,6 +11,9 @@ find_package(GLFW3 REQUIRED)
 find_package(GLM REQUIRED)
 #find_package(CVK REQUIRED)
 find_package(ASSIMP REQUIRED)
+#---include cuda---
+find_package(CUDA REQUIRED)
+#-keine FindCUDA.cmake nötig, cmake hat dafür eigenes package-
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 GENERATE_SUBDIRS(ALL_LIBRARIES ${CMAKE_SOURCE_DIR}/src/libraries)

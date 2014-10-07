@@ -3,6 +3,10 @@ get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId})
 
+#---'Target "x" links to itself.' meldung unterdrücken---
+cmake_policy(SET CMP0038 OLD)
+cmake_policy(SET CMP0022 OLD)
+
 include_directories(
 	${OpenGL3_INCLUDE_PATH}
     ${GLEW_INCLUDE_PATH}
@@ -10,6 +14,7 @@ include_directories(
     ${GLM_INCLUDE_PATH}
 	${ASSIMP_INCLUDE_PATH}
 	#${CVK_INCLUDE_PATH}
+	${CUDA_INCLUDE_PATH}
     ${EXTERNAL_LIBRARY_PATHS}
     ${CMAKE_SOURCE_DIR}/src/libraries/
 )
@@ -30,4 +35,5 @@ target_link_libraries(
     ${GLEW_LIBRARIES}
     ${OpenGL3_LIBRARIES}
     ${ASSIMP_LIBRARIES}
+    ${CUDA_LIBRARIES}
 )

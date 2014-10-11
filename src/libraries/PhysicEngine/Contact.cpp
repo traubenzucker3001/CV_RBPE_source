@@ -56,9 +56,11 @@ void Contact::calcDesiredVeloc(float duration){
 	const static float velocLimit = 0.25;
 
 	//berechne durch letzten frame geschwindigkeit induzierte beschleunigung
-	float lastFrameVeloc = collBodies[0]->getLastFrameVeloc() * duration * contactNormal;
+	//float lastFrameVeloc = collBodies[0]->getLastFrameVeloc() * duration * contactNormal;
+	float lastFrameVeloc = glm::dot(collBodies[0]->getLastFrameVeloc(), contactNormal) * duration;
 	if (collBodies[1] != NULL){
-		lastFrameVeloc = lastFrameVeloc - collBodies[1]->getLastFrameVeloc() * duration * contactNormal;
+		//lastFrameVeloc = lastFrameVeloc - collBodies[1]->getLastFrameVeloc() * duration * contactNormal;
+		lastFrameVeloc = lastFrameVeloc - glm::dot(collBodies[1]->getLastFrameVeloc(), contactNormal) * duration;
 	}
 	//wenn velocity sehr klein, restitution limitieren
 	float restitu = restitution;
@@ -74,7 +76,8 @@ glm::vec3 Contact::calcLocalVeloc(unsigned int bodyIndex, float duration){
 	RigidBody *body = collBodies[bodyIndex];
 
 	//berechne geschwindigkeit an contact point
-	glm::vec3 veloc = body->getRotation() % relatContPos[bodyIndex];
+	//glm::vec3 veloc = body->getRotation() % relatContPos[bodyIndex];
+	glm::vec3 veloc = glm::mod(body->getRotation(), relatContPos[bodyIndex]);
 	veloc = veloc + body->getVelocity();
 
 	//geschwindigkeit in kontakt koordinaten
@@ -153,12 +156,16 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	//wenn reibung = 0
 	if (friction == 0.0){
 		//erzeuge vektor in welt koordinaten mit geschwindigkeitsänderung pro einheit impuls in richtung contact normal
-	    glm::vec3 deltaVelocW1 = relatContPos[0] % contactNormal;
+	    //glm::vec3 deltaVelocW1 = relatContPos[0] % contactNormal;
+	    glm::vec3 deltaVelocW1 = glm::mod(relatContPos[0], contactNormal);
 	    deltaVelocW1 = inverseInerTens[0] * deltaVelocW1;
-	    deltaVelocW1 = deltaVelocW1 % relatContPos[0];
+	    //deltaVelocW1 = deltaVelocW1 % relatContPos[0];
+	    deltaVelocW1 = glm::mod(deltaVelocW1, relatContPos[0]);
 
 	    //geschwindigkeitsänderung in kontakt koordinaten
-	    float deltaVelocL = deltaVelocW1 * contactNormal;
+	    //float deltaVelocL = deltaVelocW1 * contactNormal;
+	    //float deltaVelocL = (deltaVelocW1.x * contactNormal.x) + (deltaVelocW1.y * contactNormal.y) + (deltaVelocW1.z * contactNormal.z);
+	    float deltaVelocL = glm::dot(deltaVelocW1, contactNormal);
 
 	    //addiere lineare geschwindigkeitsänderung
 	    deltaVelocL = deltaVelocL + collBodies[0]->getInverseMass();
@@ -169,12 +176,15 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	    	inverseInerTens[1] = collBodies[1]->getInverseInertiaTensorW();
 
 	    	//erzeuge vektor wie oben
-	        glm::vec3 deltaVelocW2 = relatContPos[1] % contactNormal;
+	        //glm::vec3 deltaVelocW2 = relatContPos[1] % contactNormal;
+	        glm::vec3 deltaVelocW2 = glm::mod(relatContPos[1], contactNormal);
 	        deltaVelocW2 = inverseInerTens[1] * deltaVelocW2;
-	        deltaVelocW2 = deltaVelocW2 % relatContPos[1];
+	        //deltaVelocW2 = deltaVelocW2 % relatContPos[1];
+	        deltaVelocW2 = glm::mod(deltaVelocW2, relatContPos[1]);
 
 	        //addiere geschwindigkeitsänderung durch rotation
-	        deltaVelocL = deltaVelocL + deltaVelocW2 * contactNormal;
+	        //deltaVelocL = deltaVelocL + deltaVelocW2 * contactNormal;
+	        deltaVelocL = deltaVelocL + glm::dot(deltaVelocW2, contactNormal);
 
 	        //addiere lineare geschwindigkeitsänderung
 	         deltaVelocL = deltaVelocL + collBodies[1]->getInverseMass();
@@ -234,7 +244,7 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	    deltaVeloc[2][2] = deltaVeloc[2][2] + inverseMass;
 
 	    //invertiere um impuls pro einheit geschwindigkeit zu bekommen
-	    glm::vec3 impulseMatrix = glm::inverse(deltaVeloc);
+	    glm::mat3 impulseMatrix = glm::inverse(deltaVeloc);
 
 	    //finde zielgeschwindigkeit
 	    glm::vec3 targetVeloc(desiredVelocity, -contactVelocity.y, -contactVelocity.z);
@@ -260,7 +270,8 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 	glm::vec3 impulse = contactToWorld * contImpulse;
 
 	//aufteilen in linear und angular komponente
-	glm::vec3 impulsiveTorque = relatContPos[0] % impulse;
+	//glm::vec3 impulsiveTorque = relatContPos[0] % impulse;
+	glm::vec3 impulsiveTorque = glm::mod(relatContPos[0], impulse);
 	rotatChange[0] = inverseInerTens[0] * impulsiveTorque;
 	velocChange[0].x = velocChange[0].y = velocChange[0].z = 0;
 	velocChange[0].x = velocChange[0].x + (impulse.x * collBodies[0]->getInverseMass());
@@ -273,7 +284,8 @@ void Contact::applyVelocChange(glm::vec3 velocChange[2], glm::vec3 rotatChange[2
 
 	if (collBodies[1] != NULL){
 		//linear und angular änderung feststellen
-	    glm::vec3 impulsiveTorque = impulse % relatContPos[1];
+	    //glm::vec3 impulsiveTorque = impulse % relatContPos[1];
+	    glm::vec3 impulsiveTorque = glm::mod(impulse, relatContPos[1]);
 	    rotatChange[1] = inverseInerTens[1] * impulsiveTorque;
 	    velocChange[1].x = velocChange[1].y = velocChange[1].z = 0;
 	    velocChange[1].x = velocChange[1].x + (impulse.x * -collBodies[1]->getInverseMass());
@@ -303,10 +315,13 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 			inverseInerTens = collBodies[i]->getInverseInertiaTensorW();
 
 	        //selbe prozedur wie bei reibungsloser geschwindigkeit
-			glm::vec3 angularInertiaW = relatContPos[i] % contactNormal;
+			//glm::vec3 angularInertiaW = relatContPos[i] % contactNormal;
+			glm::vec3 angularInertiaW = glm::mod(relatContPos[i], contactNormal);
 	        angularInertiaW = inverseInerTens * angularInertiaW;
-	        angularInertiaW = angularInertiaW % relatContPos[i];
-	        angularInertia[i] = angularInertiaW * contactNormal;
+	        //angularInertiaW = angularInertiaW % relatContPos[i];
+	        angularInertiaW = glm::mod(angularInertiaW, relatContPos[i]);
+	        //angularInertia[i] = angularInertiaW * contactNormal;
+	        angularInertia[i] = glm::dot(angularInertiaW, contactNormal);
 
 	        //inverse masse als lineare komponente
 	        linearInertia[i] = collBodies[i]->getInverseMass();

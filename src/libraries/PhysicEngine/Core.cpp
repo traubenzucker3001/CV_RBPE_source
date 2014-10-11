@@ -6,6 +6,17 @@
 
 #include "Core.h"
 
+Core::Core(){
+
+	physicsWorld = new World();
+	velocityIterations = NULL;
+	velocityEpsilon = NULL;
+	positionIterations = NULL;
+	positionEpsilon = NULL;
+	calcIterations = NULL;
+	maxContacts = NULL;
+}
+
 Core::Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned int mcIN){
 
 	physicsWorld = new World();

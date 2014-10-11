@@ -18,10 +18,11 @@
  */
 class Contact{
 
-private:
+//private:		//eig private, verursacht aber noch fehler in resolver
+public:
 	RigidBody *collBodies[2];	/**< involved bodies */
 
-	float friction;			/**< friction coefficient */
+	float friction;				/**< friction coefficient */
 
 	float restitution;			/**< restitution coefficient */
 

@@ -28,16 +28,20 @@ ContactResolver::ContactResolver(){
 
 ContactResolver::~ContactResolver(){
 
+	/*
 	delete velocityIterations;
 	delete velocityEpsilon;
 	delete positionIterations;
 	delete positionEpsilon;
+	*/
 }
 
 void ContactResolver::prepareContacts(Contact *contArray[], unsigned int numCont, float duration){
 
-	Contact* lastContact = contArray + numCont;
+	Contact* lastContact = contArray; + numCont;
+	//!!ab hier weiter korrigieren!!
 	for(Contact* contact=contArray; contact < lastContact; contact++){
+	//for(){
 
 	        contact->calcInternData(duration);
 	    }

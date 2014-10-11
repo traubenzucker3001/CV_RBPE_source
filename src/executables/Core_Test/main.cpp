@@ -11,7 +11,7 @@ int main() {
 
 	//Core core = new Core();
 	glm::vec3 *vec = new glm::vec3(1,2,3);
-	//CollisionShape *test = new Sphere(vec,2);
+	CollisionShape *test = new Sphere(vec,2);
 	//Sphere *test2 = new Sphere(vec,2);
 	//test->getOrigin();
 	//test->

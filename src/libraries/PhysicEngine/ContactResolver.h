@@ -7,6 +7,8 @@
 #include <iostream>
 #include <assert.h>
 
+#include "Contact.h"
+
 /** \brief
  *
  * ...
@@ -14,15 +16,17 @@
 class ContactResolver
 {
 private:
-	float *velocityIterations;		/**< defines number of velocity iteration steps, defined in Core */
+	//vllt doch wieder als pointer
+	float velocityIterations;	/**< defines number of velocity iteration steps, defined in Core */
 
-	float *velocityEpsilon;		/**< ..., defined in Core */
+	float velocityEpsilon;		/**< ..., defined in Core */
 
-	float *positionIterations;		/**< defines number of position iteration steps, defined in Core */
+	float positionIterations;	/**< defines number of position iteration steps, defined in Core */
 
-	float *positionEpsilon;		/**< ..., defined in Core */
+	float positionEpsilon;		/**< ..., defined in Core */
+	//
 
-	float countVelocIter;			/**< counts number of used velocity iterations */
+	float countVelocIter;		/**< counts number of used velocity iterations */
 
 	float countPosIter;			/**< counts number of used position iterations */
 

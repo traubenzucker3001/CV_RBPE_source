@@ -7,6 +7,7 @@
 #include <iostream>
 #include <assert.h>
 
+#include "DesignPatterns/Singleton.h"
 #include "World.h"
 
 /** \brief Engine Core
@@ -34,6 +35,11 @@ private:
 
 
 public:
+	/** \brief default constructor
+	 *
+	 * ...
+	 */
+	Core();
 
 	/** \brief constructor
 	 *

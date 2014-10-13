@@ -5,7 +5,7 @@
 #include <vector>
 #include <list>
 #include <iostream>
-//#include <CVK_Framework/CVK_Framework.h>
+#include <CVK_Framework/CVK_Framework.h>
 
 #include "RigidBody.h"
 
@@ -18,7 +18,7 @@ class VirtualObject
 private:
 	RigidBody* physicBody;		/**< RigidBody as physics component of this object */
 
-	//CVK::Geometry graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
+	CVK::Geometry graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
 	//eig  überflüssig wenn model matrix habe
 	glm::vec3 position;			/**< position */

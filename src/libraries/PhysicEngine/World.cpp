@@ -55,7 +55,7 @@ void World::runPhysics(float duration){
 	//registry.updateForces(duration);
 
 	//integrate objects
-	for(typename std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); ++it){
+	for(std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); ++it){
 
 		(*it)->integrate(duration);
 	}
@@ -74,7 +74,7 @@ void World::runPhysics(float duration){
 
 void World::startFrame(){
 
-	for(typename std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); it++){
+	for(std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); it++){
 
 		//remove all forces from accumulator
 		(*it)->clearAccu();

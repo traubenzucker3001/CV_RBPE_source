@@ -7,17 +7,17 @@
 #include "VirtualObject.h"
 
 
-	VirtualObject::VirtualObject(){
+	VirtualObject::VirtualObject(RigidBody* physBody){
 
+		physicBody = physBody;
 	}
 
-	VirtualObject::VirtualObject(float radiusIN){
+	/*
+	VirtualObject::VirtualObject(bool shape, float shapeSize){
 
+		physicBody = ;
 	}
-
-	//VirtualObject::VirtualObject(double halfsizeIN){
-
-	//}
+	*/
 
 	VirtualObject::~VirtualObject(){
 

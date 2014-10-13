@@ -38,12 +38,11 @@ ContactResolver::~ContactResolver(){
 
 void ContactResolver::prepareContacts(Contact *contArray[], unsigned int numCont, float duration){
 
-	Contact* lastContact = contArray; + numCont;
-	//!!ab hier weiter korrigieren!!
-	for(Contact* contact=contArray; contact < lastContact; contact++){
-	//for(){
+	//Contact* lastContact = contArray + numCont;
+	//for(Contact* contact=contArray[0]; contact < lastContact; contact++){
+	for(int i=0; i < numCont; i++){
 
-	        contact->calcInternData(duration);
+	        contArray[i]->calcInternData(duration);
 	    }
 }
 

@@ -20,6 +20,7 @@ Timing::Timing(){
 
 Timing::~Timing(){
 
+	/*
 	delete frameNum;
 	delete lastFrameTimeStamp;
 	delete lastFrameDuration;
@@ -27,6 +28,7 @@ Timing::~Timing(){
 	delete lastFrameClockTicks;
 	delete averageFrameDuration;
 	delete framesPerSec;
+	*/
 }
 
 //wenn konstruktor habe, dann brauch eig kein init

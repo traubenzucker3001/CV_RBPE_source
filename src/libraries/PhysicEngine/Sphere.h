@@ -22,7 +22,7 @@ private:
 public:
 	Sphere(glm::vec3 origIN,  float radiusIN) : CollisionShape(origIN){radius = radiusIN;}
 
-	~Sphere();
+	virtual ~Sphere();
 
 	void calcParticles();
 

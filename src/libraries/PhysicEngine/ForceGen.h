@@ -7,6 +7,8 @@
 #include <iostream>
 #include <assert.h>
 
+#include "RigidBody.h"
+
 /** \brief
  *
  * ...

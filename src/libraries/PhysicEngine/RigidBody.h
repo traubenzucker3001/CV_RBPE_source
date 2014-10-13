@@ -31,7 +31,7 @@ private:
 
 	glm::vec3 rotation;					/**< rotation */
 
-	float mass;						/**< mass */
+	float mass;							/**< mass */
 
 	glm::mat3 inertiaTensor;			/**< inertia tensor */
 
@@ -65,7 +65,7 @@ public:
 	 *
 	 * ...
 	 */
-	RigidBody(float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN);
+	RigidBody(glm::vec3 posIN, float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN, float shapeSize);
 
 	/** \brief destructor
 	 *

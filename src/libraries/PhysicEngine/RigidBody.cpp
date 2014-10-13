@@ -5,9 +5,14 @@
 #include <assert.h>
 
 #include "RigidBody.h"
+#include "World.h"
+#include "CollisionShape.h"
+#include "Sphere.h"
+#include "Box.h"
 
-RigidBody::RigidBody(float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN){
+RigidBody::RigidBody(glm::vec3 posIN, float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN, float shapeSize){
 
+	position = posIN;
 	isStatic = staticIN;
 	linearDamp = linDampIN;
 	angularDamp = angDampIN;
@@ -15,12 +20,13 @@ RigidBody::RigidBody(float massIN, bool staticIN, float linDampIN, float angDamp
 	inverseMass = ((float)1.0)/mass;
 	//box oder sphere collision shape
 	//true => kugel
+	glm::vec3 origin = posIN;
 	if(shapeIN == true){
-		shape = new Sphere();
+		shape = new Sphere(origin, shapeSize);
 	}
 	//false => box
 	else{
-		shape = new Box();
+		shape = new Box(origin, shapeSize);
 	}
 	//neuen body an world hängen
 	World::getInstance()->addBody(this);
@@ -28,13 +34,16 @@ RigidBody::RigidBody(float massIN, bool staticIN, float linDampIN, float angDamp
 
 RigidBody::~RigidBody(){
 
+	/*
 	delete position;
 	delete orientation;
 	delete velocity;
 	delete rotation;
 	delete mass;
 	delete inertiaTensor;
+	*/
 	delete shape;
+	/*
 	delete linearDamp;
 	delete angularDamp;
 	delete transformMatrix;
@@ -46,6 +55,7 @@ RigidBody::~RigidBody(){
 	delete inverseInertiaTensorL;
 	delete inverseInertiaTensorW;
 	delete isStatic;
+	*/
 }
 
 void RigidBody::calcInternData(){

@@ -6,15 +6,22 @@
 
 #include "Sphere.h"
 
+using namespace std;
+
 /*
 Sphere::Sphere(double radiusIN){
 
 	radius = radiusIN;
 }
+*/
 
 Sphere::~Sphere(){
 
-	delete radius;
-
+	//delete radius;
 }
-*/
+
+
+void Sphere::calcParticles(){
+
+	cout << "sphere" << endl;
+}

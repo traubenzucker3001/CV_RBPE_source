@@ -31,12 +31,12 @@ Core::Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned 
 Core::~Core(){
 
 	delete physicsWorld;
-	delete velocityIterations;
-	delete velocityEpsilon;
-	delete positionIterations;
-	delete positionEpsilon;
-	delete calcIterations;
-	delete maxContacts;
+	//delete velocityIterations;
+	//delete velocityEpsilon;
+	//delete positionIterations;
+	//delete positionEpsilon;
+	//delete calcIterations;
+	//delete maxContacts;
 }
 
 /*

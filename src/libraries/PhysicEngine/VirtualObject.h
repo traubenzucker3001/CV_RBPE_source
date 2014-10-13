@@ -16,7 +16,7 @@
 class VirtualObject
 {
 private:
-	RigidBody physicBody;		/**< RigidBody as physics component of this object */
+	RigidBody* physicBody;		/**< RigidBody as physics component of this object */
 
 	//CVK::Geometry graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
@@ -31,21 +31,14 @@ public:
 	 *
 	 * ...
 	 */
-	VirtualObject();
+	VirtualObject(RigidBody* physBody);
 
 	/** \brief constructor
 	 *
 	 * for sphere as graphics component
 	 * ...
 	 */
-	VirtualObject(float radiusIN);
-
-	/** \brief constructor
-	 *
-	 * for box as graphics component
-	 * ...
-	 */
-	//VirtualObject(double halfsizeIN);
+	//VirtualObject(bool shape, float shapeSize);
 
 	/** \brief destructor
 	 *

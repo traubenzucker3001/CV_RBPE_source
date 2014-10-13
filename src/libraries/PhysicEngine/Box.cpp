@@ -6,4 +6,13 @@
 
 #include "Box.h"
 
+using namespace std;
 
+Box::~Box(){
+
+}
+
+void Box::calcParticles(){
+
+	cout << "box" << endl;
+}

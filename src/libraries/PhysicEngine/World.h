@@ -24,7 +24,7 @@ class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
-	Contact *contacts[];				/**< list of all contacts inside the world */
+	Contact *contacts;				/**< list of all contacts inside the world */
 
 	ForceRegistry *forceReg;			/**< registry that contains information about  which forces appear to which rigid bodies */
 

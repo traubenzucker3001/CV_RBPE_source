@@ -20,9 +20,9 @@ private:
 	float halfsize;	/**< defines the size of the box */
 
 public:
-	Box(float halfsizeIN);
+	Box(glm::vec3 origIN, float halfsizeIN) : CollisionShape(origIN){halfsize = halfsizeIN;}
 
-	~Box();
+	virtual ~Box();
 
 	void calcParticles();
 

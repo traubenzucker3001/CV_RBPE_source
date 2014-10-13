@@ -7,6 +7,8 @@
 #include <iostream>
 #include <assert.h>
 
+#include "DesignPatterns/Singleton.h"
+
 /** \brief timing
  *
  * Timing is Singleton to ensure that there is only one instance at a time

@@ -23,14 +23,14 @@ World::~World(){
 	delete forceReg;
 	delete contactGen;
 	delete resolver;
-	delete bodies;
+	//delete bodies;
 }
 
 unsigned int World::genContacts(){
 
     unsigned limit = Core::getInstance()->getMaxContacts();
 
-    Contact *nextContact = contacts;
+    Contact nextContact = contacts[0];
 
     for(int i; i<sizeof(contacts); i++){
 
@@ -55,9 +55,9 @@ void World::runPhysics(float duration){
 	//registry.updateForces(duration);
 
 	//integrate objects
-	for(typename std::vector<RigidBody>::iterator it = bodies.begin(); it != bodies.end(); ++it){
+	for(typename std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); ++it){
 
-		it->integrate(duration);
+		(*it)->integrate(duration);
 	}
 	//generate contacts
 	unsigned int numContacts = genContacts();
@@ -69,16 +69,16 @@ void World::runPhysics(float duration){
 		resolver->setIterations(numContacts * 4);
 	}
 	*/
-	resolver->resolveContacts(contacts, numContacts, duration);
+	resolver->resolveContacts(&contacts, numContacts, duration);
 }
 
 void World::startFrame(){
 
-	for(typename std::vector<RigidBody>::iterator it = bodies.begin(); it != bodies.end(); ++it){
+	for(typename std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); it++){
 
 		//remove all forces from accumulator
-		it->clearAccu();
-		it->calcInternData();
+		(*it)->clearAccu();
+		(*it)->calcInternData();
 	}
 }
 

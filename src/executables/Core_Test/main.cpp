@@ -1,7 +1,10 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-//#include "PhysicEngine/CollisionShape.h"
+
+#include "PhysicEngine/CollisionShape.h"
+#include "PhysicEngine/Sphere.h"
+#include "PhysicEngine/Box.h"
 
 using namespace std;
 
@@ -10,8 +13,9 @@ int main() {
 	cout << "Hallo Test!" << endl;
 
 	//Core core = new Core();
-	glm::vec3 *vec = new glm::vec3(1,2,3);
-	CollisionShape *test = new Sphere(vec,2);
+	glm::vec3 vec = glm::vec3(1,2,3);
+	CollisionShape *test = new Sphere(vec,2.0f);
+	test->calcParticles();
 	//Sphere *test2 = new Sphere(vec,2);
 	//test->getOrigin();
 	//test->

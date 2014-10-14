@@ -42,6 +42,8 @@ public:
 	 */
 	void initGraphics();
 
+	//setView ?!
+
 	/** \brief display function
 	 *
 	 * called each frame, ...
@@ -54,6 +56,7 @@ public:
 	 */
 	void update();
 
+	// <<<<<<<<<< callback funcs >>>>>>>>>> //
 	/** \brief key callback function
 	 *
 	 * ...

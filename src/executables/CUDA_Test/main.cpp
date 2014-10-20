@@ -20,7 +20,8 @@ int main() {
 		c[i] = 0;
 	}
 
-	VecAddCPU(a,b,c,SIZE);
+	//funktion wieder entfernt
+	//VecAddCPU(a,b,c,SIZE);
 
 	for(int i=0; i<10; ++i){
 

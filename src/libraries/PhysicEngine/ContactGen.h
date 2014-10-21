@@ -14,6 +14,7 @@
 class ContactGen {
 private:
 	bool isGPU;		/**< ... */
+	int deviceID;	/**< ... */
 
 public:
 	/** \brief
@@ -22,5 +23,16 @@ public:
 	 */
 	void addContact();
 
+	/** \brief start detection on CPU
+	*
+	* ...
+	*/
+	void startCPU();
+
+	/** \brief start detection on GPU
+	*
+	* ...
+	*/
+	void startGPU();
 };
 #endif

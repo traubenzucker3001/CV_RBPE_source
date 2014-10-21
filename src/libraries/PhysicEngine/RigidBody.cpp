@@ -137,12 +137,12 @@ void RigidBody::addForce(glm::vec3 forceIN){
 	forceToBeApplied = forceToBeApplied + forceIN;
 }
 
-void RigidBody::calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::dquat oIN){
+void RigidBody::calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::quat oIN){
 
 	//TODO
 }
 
-void RigidBody::transInertiaTensor(glm::mat3 iitIN, glm::dquat oIN, glm::mat3 itIN, glm::mat4 tmIN){
+void RigidBody::transInertiaTensor(glm::mat3 iitIN, glm::quat oIN, glm::mat3 itIN, glm::mat4 tmIN){
 
 	//TODO
 }

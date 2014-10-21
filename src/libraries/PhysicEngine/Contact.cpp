@@ -107,7 +107,7 @@ void Contact::calcContactBasis(){
 	//wenn x-achse oder y-achse näher an z-achse
 	if(abs(contactNormal.x) > abs(contactNormal.y)){
 		//skalierungsfaktor, damit ergebnis normalisiert ist
-	    const float scale1 = 1.0 / sqrt(contactNormal.z * contactNormal.z + contactNormal.x * contactNormal.x);
+	    const float scale1 = 1.0f / sqrt(contactNormal.z * contactNormal.z + contactNormal.x * contactNormal.x);
 
 	    //neue x-achse orthogonal zu welt-y-achse
 	    contTangent[0].x = contactNormal.z*scale1;
@@ -121,7 +121,7 @@ void Contact::calcContactBasis(){
 	}
 	else{
 		//skalierungsfaktor, damit ergebnis normalisiert ist
-	    const float scale2 = 1.0 / sqrt(contactNormal.z * contactNormal.z + contactNormal.y * contactNormal.y);
+	    const float scale2 = 1.0f / sqrt(contactNormal.z * contactNormal.z + contactNormal.y * contactNormal.y);
 
 	    //neue x-achse orthogonal zu welt-x-achse
 	    contTangent[0].x = 0;
@@ -407,8 +407,8 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 
 	    collBodies[index]->setPosition(pos);
 
-	    glm::dquat ori = collBodies[index]->getOrientation();
-	    float temp4 = rotatAmount[index] * 0.5;
+	    glm::quat ori = collBodies[index]->getOrientation();
+	    float temp4 = rotatAmount[index] * 0.5f;
 	    //ori.addScaledVector(rotatDirection[index], temp4);
 	    //quaternion + vector
 	    //ori = glm::???;

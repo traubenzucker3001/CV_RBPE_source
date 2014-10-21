@@ -25,7 +25,7 @@ class RigidBody
 private:
 	glm::vec3 position;					/**< position */
 
-	glm::dquat orientation;				/**< orientation */
+	glm::quat orientation;				/**< orientation */
 
 	glm::vec3 velocity;					/**< velocity */
 
@@ -101,13 +101,13 @@ public:
 	 *
 	 * creates a transform matrix from a position and orientation
 	 */
-	void calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::dquat oIN);
+	void calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::quat oIN);
 
 	/** \brief transform inertia tensor
 	 *
 	 * transform inertia tensor by a quaternion.
 	 */
-	void transInertiaTensor(glm::mat3 iitIN, glm::dquat oIN, glm::mat3 itIN, glm::mat4 tmIN);
+	void transInertiaTensor(glm::mat3 iitIN, glm::quat oIN, glm::mat3 itIN, glm::mat4 tmIN);
 
 	/** \brief add velocity
 	 *
@@ -138,11 +138,11 @@ public:
 		this->mass = mass;
 	}
 
-	const glm::dquat& getOrientation() const {
+	const glm::quat& getOrientation() const {
 		return orientation;
 	}
 
-	void setOrientation(const glm::dquat& orientation) {
+	void setOrientation(const glm::quat& orientation) {
 		this->orientation = orientation;
 	}
 

@@ -33,6 +33,8 @@ private:
 
 	unsigned int maxContacts;	/**< defines max number of contacts in the world */
 
+	int deviceID;				/**< ... */
+
 
 public:
 	/** \brief default constructor
@@ -60,6 +62,12 @@ public:
 	/*
 	void changeEngine(double viIN, double veIN , double piIN, double peIN, bool ciIN, unsigned int mcIN);
 	*/
+
+	/** \brief 
+	*
+	* ...
+	*/
+	void initCUDA();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	bool isCalcIterations() const {
@@ -110,5 +118,12 @@ public:
 		this->velocityIterations = velocityIterations;
 	}
 
+	int getDeviceId() const {
+		return deviceID;
+	}
+
+	void setDeviceId(int deviceId) {
+		deviceID = deviceId;
+	}
 };
 #endif

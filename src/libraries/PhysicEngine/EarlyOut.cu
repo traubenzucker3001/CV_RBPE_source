@@ -15,3 +15,6 @@ void copyToGPU(){
 
 //uniform grid generation
 //...
+void gridGen(){
+
+}

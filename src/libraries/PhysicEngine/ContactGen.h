@@ -13,15 +13,17 @@
  */
 class ContactGen {
 private:
-	bool isGPU;		/**< ... */
-	int deviceID;	/**< ... */
+	//bool isGPU;			/**< ... */
+
+	//in core verschoben
+	//int deviceID = 0;		/**< ... */
 
 public:
 	/** \brief
 	 *
 	 * ...
 	 */
-	void addContact();
+	void addContact(bool isGPU);
 
 	/** \brief start detection on CPU
 	*

@@ -8,4 +8,6 @@
 
 void copyToGPU();
 
+void gridGen();
+
 #endif /* EARLYOUT_H_ */

@@ -6,6 +6,7 @@
 
 #include "ContactGen.h"
 #include "EarlyOut.h"
+#include "Core.h"
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <glm\glm.hpp>
@@ -13,7 +14,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 
-void ContactGen::addContact(){
+void ContactGen::addContact(bool isGPU){
 
 	//von hier verden einzelne parts der koll.erkenn. angesteuert
 	//auf cpu oder gpu
@@ -27,11 +28,13 @@ void ContactGen::addContact(){
 
 void ContactGen::startCPU(){
 
+
 }
 
 void ContactGen::startGPU(){
-	cudaGetDevice(&deviceID);
 
+	//cudaGetDevice(&temp);
+	
 	//arrays auf host anlegen
 	glm::vec3 *h_pos;
 	glm::quat *h_ori;
@@ -44,9 +47,14 @@ void ContactGen::startGPU(){
 
 	//iterator über body-vector und werte in arrays schreiben
 
+
 	//werte aus arrays in texturen übertragen
-	cudaMemcpy(g_array1, h_pos, N*sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(g_array1, h_ori, N*sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(g_array1, h_array, N*sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(g_array1, h_array, N*sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(, h_pos, N*sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(, h_ori, N*sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(, h_array, N*sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(, h_array, N*sizeof(float), cudaMemcpyHostToDevice);
+	
+	//tests
+	uint3 test;
+	texture<float, 2, cudaReadModeElementType> oldPosTex;
 }

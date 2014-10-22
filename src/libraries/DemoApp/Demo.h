@@ -7,16 +7,20 @@
 #include <iostream>
 #include <assert.h>
 
+#include <glm\glm.hpp>
+
 #include "PhysicEngine/VirtualObject.h"
 #include "PhysicEngine/Core.h"
 #include "DemoApp/Timing.h"
+#include "CVK_Framework/CVK_Framework.h"
 
 /** \brief Demo
  *
  * ...
  */
-class Demo
-{
+class Demo : public Singleton<Demo> {
+	friend class Singleton<Demo>;
+
 private:
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
 
@@ -28,8 +32,23 @@ private:
 
 	Timing *time;								/**< time data */
 
+	GLFWwindow* window;
+
+	CVK::Trackball camera;
+
+	//nicht nur VO positionen, sondern auch größe der scene/simulationsdomain, um gitter richtig drüber legen zu können
+	glm::vec3 sceneMIN;
+	glm::vec3 sceneMAX;
+
 
 public:
+
+	/** \brief constructor
+	*
+	* ...
+	*/
+	Demo();
+
 	/** \brief initial physics
 	 *
 	 * ...
@@ -67,7 +86,7 @@ public:
 	 *
 	 * ...
 	 */
-	void resizeCallback();
+	void resizeCallback(GLFWwindow *window, int w, int h);
 
 	/** \brief mouse button callback function
 	 *

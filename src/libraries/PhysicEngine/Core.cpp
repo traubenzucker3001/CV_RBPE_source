@@ -4,6 +4,9 @@
 #include <iostream>
 #include <assert.h>
 
+#include <cuda.h>
+#include <cuda_runtime.h>
+
 #include "Core.h"
 
 Core::Core(){
@@ -15,6 +18,8 @@ Core::Core(){
 	positionEpsilon = NULL;
 	calcIterations = NULL;
 	maxContacts = NULL;
+	deviceID = 0;
+
 }
 
 Core::Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned int mcIN){
@@ -26,6 +31,7 @@ Core::Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned 
 	positionEpsilon = peIN;
 	calcIterations = ciIN;
 	maxContacts = mcIN;
+	deviceID = 0;
 }
 
 Core::~Core(){
@@ -54,6 +60,14 @@ void Core::changeEngine(double viIN, double veIN , double piIN, double peIN, boo
 }
 */
 
+void Core::initCUDA(){
+	cudaGetDevice(&deviceID);
+
+	if (deviceID < 0){
+		printf("kein CUDA kompatibles Gerät gefunden found\n");
+		//exit(EXIT_SUCCESS);
+	}
+}
 
 // <<<<<<<<<< getter + setter >>>>>>>>>> //
 //siehe Core.h

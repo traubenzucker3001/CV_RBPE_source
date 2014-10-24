@@ -3,8 +3,8 @@
 #ifndef UNIFORMGRID_H_
 #define UNIFORMGRID_H_
 
-class UniformGrid : public Singleton<Demo> {
-	friend class Singleton<Demo>;
+class UniformGrid : public Singleton<UniformGrid> {
+	friend class Singleton<UniformGrid>;
 
 private:
 	int indexGrid;

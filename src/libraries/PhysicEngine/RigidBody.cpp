@@ -22,11 +22,11 @@ RigidBody::RigidBody(glm::vec3 posIN, float massIN, bool staticIN, float linDamp
 	//true => kugel
 	glm::vec3 origin = posIN;
 	if(shapeIN == true){
-		shape = new Sphere(origin, shapeSize);
+		shape = new Sphere(origin, shapeSize, mass);
 	}
 	//false => box
 	else{
-		shape = new Box(origin, shapeSize);
+		shape = new Box(origin, shapeSize, mass);
 	}
 	//neuen body an world hängen
 	World::getInstance()->addBody(this);
@@ -156,6 +156,60 @@ void RigidBody::addRotation(glm::vec3 rotatIN){
 
 	rotation = rotation + rotatIN;
 }
+
+
+//+
+void RigidBody::updatePartValues(){
+	updateRotMatrix();
+	shape->applyRotationToParticles();
+
+	//Update particle velocity
+	//for (int i=0; i<numberOfParticles; i++) {
+	std:vector<Particle*> temp = shape->getBodyParticle();
+	for(std::vector<Particle*>::iterator it = temp.begin(); it != temp.end(); ++it){
+		(*it)->updateVelocity(position, velocity, angularVelocity);
+	}
+}
+
+//+
+void RigidBody::updateMomenta(float duration) {
+	force = {0.0f, 0.0f, 0.0f}; //reset forces
+	force.x = force.x + mass * -9.81f; //force of gravity
+
+	float torque[3] = {0.0f, 0.0f, 0.0f};
+
+	//iterator über shape->bodyparticles
+	for (int i=0; i<numberOfParticles; i++) {
+		float* particleForce = particles[i]->calculateForces();
+		force[0] += particleForce[0];
+		force[1] += particleForce[1];
+		force[2] += particleForce[2];
+
+		float* particlePos = particles[i]->getPosition();
+		float relativePos[3];
+		relativePos[0] = particlePos[0] - position[0];
+		relativePos[1] = particlePos[1] - position[1];
+		relativePos[2] = particlePos[2] - position[2];
+
+		torque[0] += relativePos[1]*particleForce[2] - relativePos[2]*particleForce[1];
+		torque[1] += relativePos[2]*particleForce[0] - relativePos[0]*particleForce[2];
+		torque[2] += relativePos[0]*particleForce[1] - relativePos[1]*particleForce[0];
+	}
+
+	for (int i=0; i<3; i++) {
+
+		//zusätzl. var für lin. momenta von body nötig
+		linearMomentum[i] += force[i] * delta;
+		if (linearMomentum[i] > 0.0f) {
+			linearMomentum[i] = std::min(linearMomentum[i],terminalMomentum);
+		} else {
+			linearMomentum[i] = std::max(linearMomentum[i],-terminalMomentum);
+		}
+
+		angularMomentum[i] += torque[i] * delta;
+	}
+}
+
 
 // <<<<<<<<<< getter + setter >>>>>>>>>> //
 //siehe RigidBody.h

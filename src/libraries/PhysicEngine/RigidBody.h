@@ -59,6 +59,11 @@ private:
 
 	bool isStatic;						/**< true if this is a static object */
 
+	//+
+	glm::mat3 rotationMatrix;
+	glm::vec3 angularVelocity;
+	glm::vec3 force;
+
 
 public:
 	/** \brief constructor
@@ -120,6 +125,11 @@ public:
 	 * ...
 	 */
 	void addRotation(glm::vec3 rotatIN);
+
+	//+
+	void updatePartValues();
+	void updateRotMatrix();
+	void updateMomenta(float duration);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	bool isIsStatic() const {

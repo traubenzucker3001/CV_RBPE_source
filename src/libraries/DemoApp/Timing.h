@@ -30,9 +30,21 @@ private:
 	double averageFrameDuration;		/**< average frame duration */
 
 	float framesPerSec;					/**< frames per second */
-
+	
+	/*
+	int frameRefCount;
+	int t1;
+	int t2;
+	int totalElapsedTime;
+	*/
 
 public:
+
+	void beginFrame();
+	void endFrame();
+	float getFPS();
+	bool isTimeToUpdate();
+
 	/** \brief constructor
 	 *
 	 * ...

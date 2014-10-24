@@ -29,6 +29,9 @@ void Demo::initGraphics(){
 
 	//CVK::Trackball cam = camera;
 
+	//gitter erstellen
+	createGrid();
+
 	//init GLFW, GLEW
 	glfwInit();
 	CVK::useOpenGL33CoreProfile();
@@ -111,9 +114,33 @@ void Demo::initGraphics(){
 }
 
 void Demo::display(){
+
 }
 
-void Demo::update(){
+void Demo::update(float duration){
+
+	//for (int i=0; i<totalNumberOfBodies; i++) {
+	std::vector<RigidBody*> temp = World::getInstance()->getBodies()();
+	for(std::vector<RigidBody*>::iterator it = temp.begin(); it != temp.end(); ++it){
+
+		(*it)->updatePartValues();
+	}
+
+	updateGrid();
+
+	//for (int i=0; i<totalNumberOfBodies; i++) {
+	std::vector<RigidBody*> temp2 = World::getInstance()->getBodies()();
+	for(std::vector<RigidBody*>::iterator it = temp2.begin(); it != temp2.end(); ++it){
+
+				(*it)->updateMomenta(duration);
+	}
+
+	//for (int i=0; i<totalNumberOfBodies; i++) {
+	std::vector<RigidBody*> temp3 = World::getInstance()->getBodies()();
+	for(std::vector<RigidBody*>::iterator it = temp3.begin(); it != temp3.end(); ++it){
+
+				(*it)->performStep(duration);
+	}
 }
 
 // <<<<<<<<<< callback funcs >>>>>>>>>> //

@@ -24,6 +24,8 @@ class Demo : public Singleton<Demo> {
 private:
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
 
+	int virtObjNum;
+
 	Core *physicsCore;							/**< physics engine core */
 
 	int windowWidth;							/**< window width */
@@ -35,6 +37,10 @@ private:
 	GLFWwindow* window;
 
 	CVK::Trackball camera;
+
+	//partikel radius, weld größe, ...
+	float partRadius;
+	float worldSize;
 
 	//nicht nur VO positionen, sondern auch größe der scene/simulationsdomain, um gitter richtig drüber legen zu können
 	glm::vec3 sceneMIN;
@@ -73,7 +79,7 @@ public:
 	 *
 	 * called each frame, ...
 	 */
-	void update();
+	void update(float duration);
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
 	/** \brief key callback function
@@ -100,5 +106,21 @@ public:
 	 */
 	void mouseMotionCallback();
 
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
+	float getPartRadius() const {
+		return partRadius;
+	}
+
+	void setPartRadius(float partRadius) {
+		this->partRadius = partRadius;
+	}
+
+	float getWorldSize() const {
+		return worldSize;
+	}
+
+	void setWorldSize(float worldSize) {
+		this->worldSize = worldSize;
+	}
 };
 #endif

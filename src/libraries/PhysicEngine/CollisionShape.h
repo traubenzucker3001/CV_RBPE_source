@@ -12,6 +12,8 @@
 //#include "Sphere.h"
 //#include "Box.h"
 
+//!überlegen ob nicht raus lassen und sphere/box direkt von body erben!
+
 /** \brief Collision Shape
  *
  * represents the shape of the RigidBody
@@ -21,6 +23,13 @@ class CollisionShape
 protected:
 //private:
 	glm::vec3 origin;	/**< origin of the shape = position of RigidBody */
+
+	//+
+	std::vector<Particle*> bodyParticle;
+
+	int bPartNum;
+
+	float mass;
 
 public:
 	/** \brief constructor
@@ -37,6 +46,8 @@ public:
 
 	virtual void calcParticles() = 0;
 
+	virtual void applyRotationToParticles() = 0;
+
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	const glm::vec3& getOrigin() const {
 		return origin;
@@ -44,6 +55,14 @@ public:
 
 	void setOrigin(const glm::vec3& origin) {
 		this->origin = origin;
+	}
+
+	const std::vector<Particle*>& getBodyParticle() const {
+		return bodyParticle;
+	}
+
+	void setBodyParticle(const std::vector<Particle*>& bodyParticle) {
+		this->bodyParticle = bodyParticle;
 	}
 };
 #endif

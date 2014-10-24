@@ -12,6 +12,7 @@
 #include <glm\glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <vector_types.h>
 
 
 void ContactGen::addContact(bool isGPU){
@@ -45,6 +46,8 @@ void ContactGen::startGPU(){
 	d_posTex;
 	d_oriTex;
 
+	
+
 	//iterator über body-vector und werte in arrays schreiben
 
 
@@ -57,4 +60,6 @@ void ContactGen::startGPU(){
 	//tests
 	uint3 test;
 	texture<float, 2, cudaReadModeElementType> oldPosTex;
+	cudaTextureObject_t tex = 0;
+	cudaCreateTextureObject();
 }

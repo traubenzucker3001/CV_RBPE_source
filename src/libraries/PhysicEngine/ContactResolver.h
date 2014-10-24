@@ -9,6 +9,8 @@
 
 #include "Contact.h"
 
+//wahrscheinl. überflüssig bei part.algorithmus
+
 /** \brief
  *
  * ...

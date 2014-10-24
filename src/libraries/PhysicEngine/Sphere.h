@@ -25,6 +25,7 @@ public:
 	virtual ~Sphere();
 
 	void calcParticles();
+	void applyRotationToParticles(glm::mat3 rotMatrix);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	float getRadius() const {

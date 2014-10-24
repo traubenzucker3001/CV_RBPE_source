@@ -12,6 +12,7 @@
 #include "ContactGen.h"
 #include "ContactResolver.h"
 #include "RigidBody.h"
+#include "Particle.h"
 
 #include "designPatterns/Singleton.h"
 
@@ -33,6 +34,13 @@ private:
 	ContactResolver *resolver;			/**< contact resolution */
 
 	std::vector<RigidBody*> bodies;		/**< list of all rigid bodies in the world */
+
+
+	int bodyNum;
+
+	std::vector<Particle*> allParticles;
+
+	int aPartNum;
 
 
 public:
@@ -72,5 +80,37 @@ public:
 	 */
 	void addBody(RigidBody *body);
 
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
+	const std::vector<Particle*>& getAllParticles() const {
+		return allParticles;
+	}
+
+	void setAllParticles(const std::vector<Particle*>& allParticles) {
+		this->allParticles = allParticles;
+	}
+
+	const std::vector<RigidBody*>& getBodies() const {
+		return bodies;
+	}
+
+	void setBodies(const std::vector<RigidBody*>& bodies) {
+		this->bodies = bodies;
+	}
+
+	int getBodyNum() const {
+		return bodyNum;
+	}
+
+	void setBodyNum(int bodyNum) {
+		this->bodyNum = bodyNum;
+	}
+
+	int getAPartNum() const {
+		return aPartNum;
+	}
+
+	void setAPartNum(int partNum) {
+		this->aPartNum = partNum;
+	}
 };
 #endif

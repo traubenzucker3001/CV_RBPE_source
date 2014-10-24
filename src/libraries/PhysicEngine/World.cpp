@@ -51,6 +51,8 @@ unsigned int World::genContacts(){
 
 void World::runPhysics(float duration){
 
+	//abändern für partikel algorithmus
+
 	// First apply the force generators
 	//registry.updateForces(duration);
 

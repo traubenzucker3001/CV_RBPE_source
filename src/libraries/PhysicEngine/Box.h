@@ -25,6 +25,7 @@ public:
 	virtual ~Box();
 
 	void calcParticles();
+	void applyRotatToPart(glm::mat3 rotMatrix);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	float getHalfsize() const {

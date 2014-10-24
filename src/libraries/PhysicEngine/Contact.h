@@ -12,6 +12,8 @@
 //#include "Matrix3.h"
 #include <glm/glm.hpp>
 
+//wahrscheinl. überflüssig bei part.algorithmus
+
 /** \brief
  *
  * ...

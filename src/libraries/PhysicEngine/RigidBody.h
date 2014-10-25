@@ -1,3 +1,4 @@
+/*
 #ifndef RIGID_BODY_H
 #define RIGID_BODY_H
 
@@ -20,47 +21,47 @@
  *
  * ...
  */
-class RigidBody
+/*class RigidBody
 {
 private:
 	glm::vec3 position;					/**< position */
 
-	glm::quat orientation;				/**< orientation */
+/*	glm::quat orientation;				/**< orientation */
 
-	glm::vec3 velocity;					/**< velocity */
+/*	glm::vec3 velocity;					/**< velocity */
 
-	glm::vec3 rotation;					/**< rotation */
+/*	glm::vec3 rotation;					/**< rotation */
 
-	float mass;							/**< mass */
+/*	float mass;							/**< mass */
 
-	glm::mat3 inertiaTensor;			/**< inertia tensor */
+/*	glm::mat3 inertiaTensor;			/**< inertia tensor */
 
-	CollisionShape *shape;				/**< shape, sphere or box */
+/*	CollisionShape *shape;				/**< shape, sphere or box */
 
-	float linearDamp;					/**< linear damping */
+/*	float linearDamp;					/**< linear damping */
 
-	float angularDamp;					/**< angular damping */
+/*	float angularDamp;					/**< angular damping */
 
-	glm::mat4 transformMatrix;			/**< ... */
+/*	glm::mat4 transformMatrix;			/**< ... */
 
-	glm::vec3 forceToBeApplied;			/**< ... */
+/*	glm::vec3 forceToBeApplied;			/**< ... */
 
-	glm::vec3 torgueToBeApplied;		/**< ... */
+/*	glm::vec3 torgueToBeApplied;		/**< ... */
 
-	glm::vec3 acceleration;				/**< acceleration */
+/*	glm::vec3 acceleration;				/**< acceleration */
 
-	glm::vec3 lastFrameVeloc;			/**< last frame velocity */
+/*	glm::vec3 lastFrameVeloc;			/**< last frame velocity */
 
-	float inverseMass;					/**< inverse mass */
+/*	float inverseMass;					/**< inverse mass */
 
-	glm::mat3 inverseInertiaTensorL;	/**< inverse inertia tensor in body coordinates */
+/*	glm::mat3 inverseInertiaTensorL;	/**< inverse inertia tensor in body coordinates */
 
-	glm::mat3 inverseInertiaTensorW;	/**< inverse inertia tensor in world coordinates. */
+/*	glm::mat3 inverseInertiaTensorW;	/**< inverse inertia tensor in world coordinates. */
 
-	bool isStatic;						/**< true if this is a static object */
+/*	bool isStatic;						/**< true if this is a static object */
 
 	//+
-	glm::mat3 rotationMatrix;
+/*	glm::mat3 rotationMatrix;
 	glm::vec3 angularVelocity;
 	glm::vec3 force;
 
@@ -70,61 +71,61 @@ public:
 	 *
 	 * ...
 	 */
-	RigidBody(glm::vec3 posIN, float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN, float shapeSize);
+/*	RigidBody(glm::vec3 posIN, float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN, float shapeSize);
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	~RigidBody();
+/*	~RigidBody();
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	void calcInternData();
+/*	void calcInternData();
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	void integrate(float duration);
+/*	void integrate(float duration);
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	void clearAccu();
+/*	void clearAccu();
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	void addForce(glm::vec3 forceIN);
+/*	void addForce(glm::vec3 forceIN);
 
 	/** \brief calculate transform matrix
 	 *
 	 * creates a transform matrix from a position and orientation
 	 */
-	void calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::quat oIN);
+/*	void calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::quat oIN);
 
 	/** \brief transform inertia tensor
 	 *
 	 * transform inertia tensor by a quaternion.
 	 */
-	void transInertiaTensor(glm::mat3 iitIN, glm::quat oIN, glm::mat3 itIN, glm::mat4 tmIN);
+/*	void transInertiaTensor(glm::mat3 iitIN, glm::quat oIN, glm::mat3 itIN, glm::mat4 tmIN);
 
 	/** \brief add velocity
 	 *
 	 * ...
 	 */
-	void addVelocity(glm::vec3 velocIN);
+/*	void addVelocity(glm::vec3 velocIN);
 
 	/** \brief add rotation
 	 *
 	 * ...
 	 */
-	void addRotation(glm::vec3 rotatIN);
+/*	void addRotation(glm::vec3 rotatIN);
 
 	//+
 	void updatePartValues();

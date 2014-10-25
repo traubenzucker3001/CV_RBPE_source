@@ -2,6 +2,7 @@
 #ifndef RIGIDBODY2_H_
 #define RIGIDBODY2_H_
 
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -13,7 +14,7 @@ class RigidBody {
 private:
 
 	float mass;//
-	//float inverseMass;	//ka ob nötig
+	float inverseMass;	//ka ob nötig
 
 	glm::vec3 position;//
 	glm::vec3 velocity;//
@@ -32,7 +33,7 @@ private:
 
 	//
 	glm::vec3 linearMomentum;
-	float terminalMomentum;		//?
+	float terminalMom;		//?
 
 	glm::vec3 force;		//ehem. forcetobeapplied
 	//glm::vec3 torgueToBeApplied;	//ka ob nötig
@@ -41,8 +42,9 @@ private:
 
 	bool isStatic;
 
-	float linearDamp;
-	float angularDamp;
+	//später drum kümmern
+	//float linearDamp;
+	//float angularDamp;
 
 	glm::mat4 transformMatrix;
 
@@ -51,18 +53,20 @@ private:
 	//std:vector<Particle*> bodyParticles;
 	//int numberOfParticles;
 
+	static int count;
+
 public:
 
-	RigidBody();
+	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN);
 	~RigidBody();
 
-	void iterate(float duration);		//performStep
+	void iterate(float duration);		//performStep, mehrere schritte zusammenfassen
 
 	void updateRotationMatrix();
-	void updateInverseInertiaTensor() {};
+	void updateInverseInertiaTensor();
 
-	void updateParticleValues();	//runter in collshape greifen
-	void updateMomenta(float duration); //runter in collshape greifen
+	void updatePartValues();	//runter in collshape greifen
+	void updateMomenta(float duration); //runter in collshape greifen und schauen ob gravity klasse noch nötig
 
 	void reset(float newPosition);
 };

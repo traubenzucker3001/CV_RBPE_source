@@ -1,3 +1,4 @@
+/*
 #ifndef COLLISION_SHAPE_H
 #define COLLISION_SHAPE_H
 
@@ -18,14 +19,14 @@
  *
  * represents the shape of the RigidBody
  */
-class CollisionShape
+/*class CollisionShape
 {
 protected:
 //private:
 	glm::vec3 origin;	/**< origin of the shape = position of RigidBody */
 
 	//+
-	std::vector<Particle*> bodyParticle;
+/*	std::vector<Particle*> bodyParticle;
 
 	int bPartNum;
 
@@ -36,13 +37,13 @@ public:
 	 *
 	 * ...
 	 */
-	CollisionShape(glm::vec3 origIN);
+/*	CollisionShape(glm::vec3 origIN);
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	virtual ~CollisionShape();
+/*	virtual ~CollisionShape();
 
 	virtual void calcParticles() = 0;
 

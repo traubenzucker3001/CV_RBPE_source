@@ -1,3 +1,4 @@
+/*
 #ifndef DEMO_H
 #define DEMO_H
 
@@ -18,23 +19,23 @@
  *
  * ...
  */
-class Demo : public Singleton<Demo> {
+/*class Demo : public Singleton<Demo> {
 	friend class Singleton<Demo>;
 
 private:
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
 
-	int virtObjNum;
+/*	int virtObjNum;
 
 	Core *physicsCore;							/**< physics engine core */
 
-	int windowWidth;							/**< window width */
+/*	int windowWidth;							/**< window width */
 
-	int windowHeight;							/**< window height */
+/*	int windowHeight;							/**< window height */
 
-	Timing *time;								/**< time data */
+/*	Timing *time;								/**< time data */
 
-	GLFWwindow* window;
+/*	GLFWwindow* window;
 
 	CVK::Trackball camera;
 
@@ -53,19 +54,19 @@ public:
 	*
 	* ...
 	*/
-	Demo();
+/*	Demo();
 
 	/** \brief initial physics
 	 *
 	 * ...
 	 */
-	void initPhysics();
+/*	void initPhysics();
 
 	/** \brief initial graphics
 	 *
 	 * ...
 	 */
-	void initGraphics();
+/*	void initGraphics();
 
 	//setView ?!
 
@@ -73,38 +74,38 @@ public:
 	 *
 	 * called each frame, ...
 	 */
-	void display();
+/*	void display();
 
 	/** \brief update
 	 *
 	 * called each frame, ...
 	 */
-	void update(float duration);
+/*	void update(float duration);
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
 	/** \brief key callback function
 	 *
 	 * ...
 	 */
-	void keyCallback();
+/*	void keyCallback();
 
 	/** \brief window resize callback function
 	 *
 	 * ...
 	 */
-	void resizeCallback(GLFWwindow *window, int w, int h);
+/*	void resizeCallback(GLFWwindow *window, int w, int h);
 
 	/** \brief mouse button callback function
 	 *
 	 * ...
 	 */
-	void mouseButtonCallback();
+/*	void mouseButtonCallback();
 
 	/** \brief mouse motion callback function
 	 *
 	 * ...
 	 */
-	void mouseMotionCallback();
+/*	void mouseMotionCallback();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	float getPartRadius() const {

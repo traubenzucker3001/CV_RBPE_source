@@ -1,29 +1,56 @@
-/*
- * Timing2.cpp
- *
- *  Created on: 24.10.2014
- *      Author: Daniel
- */
 
-#ifndef TIMING2_CPP_
-#define TIMING2_CPP_
+// <<<<<<<<<< includes >>>>>>>>>> //
+#include <iostream>
 
-class Timing : public Singleton<Timing> {
-	friend class Singleton<Timing>;
+#include "Timing2.h"
 
-private:
+Timing::Timing(){
 
-	int frameCount;//
-	float fps;
+	frameNum = 0;
+	fps = 0;
+	startTime = 0;
+	endTime = 0;
+	totalTime = 0;
+	averageFrameDuration = 0;
 
-	//TODO vars
+}
 
-public:
+Timing::~Timing(){
 
-	Timing();
-	~Timing();
+	//...
+}
 
-	//TODO func
-};
+void Timing::startFrame(){
 
-#endif /* TIMING2_CPP_ */
+	startTime = getTime();
+	frameNum++;
+}
+
+void Timing::endFrame(){
+
+	endTime = getTime();
+	totalTime = totalTime + (endTime - startTime);
+}
+
+int Timing::getTime(){
+
+	int currTime;
+	currTime = glfwGetTime();
+
+	return currTime;
+}
+
+void Timing::updateAFD(){
+
+	//...
+}
+
+int Timing::updateFPS(){
+
+	fps = frameNum / ((float)totalTime / 1000.0f);
+
+	frameNum = 0;
+	totalTime = 0;
+
+	return fps;
+}

@@ -1,3 +1,4 @@
+/*
 #ifndef WORLD_H
 #define WORLD_H
 
@@ -21,22 +22,22 @@
  * contains all rigid bodies.
  * World is Singleton to ensure that there is only one physic world at a time
  */
-class World : public Singleton<World> {
+/*class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
 	Contact *contacts;				/**< list of all contacts inside the world */
 
-	ForceRegistry *forceReg;			/**< registry that contains information about  which forces appear to which rigid bodies */
+/*	ForceRegistry *forceReg;			/**< registry that contains information about  which forces appear to which rigid bodies */
 
-	ContactGen *contactGen;				/**< class which updates the contact list in each iteration */
+/*	ContactGen *contactGen;				/**< class which updates the contact list in each iteration */
 
-	ContactResolver *resolver;			/**< contact resolution */
+/*	ContactResolver *resolver;			/**< contact resolution */
 
-	std::vector<RigidBody*> bodies;		/**< list of all rigid bodies in the world */
+/*	std::vector<RigidBody*> bodies;		/**< list of all rigid bodies in the world */
 
 
-	int bodyNum;
+/*	int bodyNum;
 
 	std::vector<Particle*> allParticles;
 
@@ -48,37 +49,37 @@ public:
 	 *
 	 * ...
 	 */
-	World();
+/*	World();
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	~World();
+/*	~World();
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	unsigned int genContacts();
+/*	unsigned int genContacts();
 
 	/** \brief
 	 *
 	 * ...
 	 */
-	void runPhysics(float duration);
+/*	void runPhysics(float duration);
 
 	/** \brief
 	 *
 	 * Initials world for a simulation frame. clears the force and torque accumulators for bodies.
 	 */
-	void startFrame();
+/*	void startFrame();
 
 	/** \brief
 	 *
 	 * adds new rigid body to the world
 	 */
-	void addBody(RigidBody *body);
+/*	void addBody(RigidBody *body);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	const std::vector<Particle*>& getAllParticles() const {

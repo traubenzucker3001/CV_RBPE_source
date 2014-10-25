@@ -52,6 +52,10 @@ public:
 	 */
 	void update();
 
+	void updatePartValuesVO();	//bodies[i]->updateParticleValues();
+	void updateMomentaVO(float duration);	//bodies[i]->updateMomenta(delta);
+	void iterateVO(float duration);	//bodies[i]->iterateVO(duration);
+
 	/** \brief
 	 *
 	 * ...

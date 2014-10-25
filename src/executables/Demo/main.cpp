@@ -11,15 +11,15 @@ using namespace std;
 #define WIDTH 800
 #define HEIGHT 800
 
+//simulations parameter
 Demo *demo;
-
-//Kamera
-CVK::Trackball camera(WIDTH, HEIGHT);
+float dur = 0.01f;
+float termVeloc = 20.0f;
 
 int main() {
 
-	demo = new Demo();
-	demo->initGraphics();
+	demo = new Demo(WIDTH, HEIGHT);
+	demo->run();
 
 	//cout << "Hallo Test!" << endl;
 

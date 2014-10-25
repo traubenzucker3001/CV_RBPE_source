@@ -1,3 +1,4 @@
+/*
 #ifndef TIMING_H
 #define TIMING_H
 
@@ -13,23 +14,23 @@
  *
  * Timing is Singleton to ensure that there is only one instance at a time
  */
-class Timing : public Singleton<Timing> {
+/*class Timing : public Singleton<Timing> {
 	friend class Singleton<Timing>;
 
 private:
 	unsigned int frameNum;				/**< counts frame numbers */
 
-	unsigned int lastFrameTimeStamp;	/**< time stamp of last frame */
+/*	unsigned int lastFrameTimeStamp;	/**< time stamp of last frame */
 
-	unsigned int lastFrameDuration;		/**< duration of last frame */
+/*	unsigned int lastFrameDuration;		/**< duration of last frame */
 
-	unsigned long lastFrameClockStamp;	/**< clock stamp of last frame */
+/*	unsigned long lastFrameClockStamp;	/**< clock stamp of last frame */
 
-	unsigned long lastFrameClockTicks;	/**< clock ticks of last frame */
+/*	unsigned long lastFrameClockTicks;	/**< clock ticks of last frame */
 
-	double averageFrameDuration;		/**< average frame duration */
+/*	double averageFrameDuration;		/**< average frame duration */
 
-	float framesPerSec;					/**< frames per second */
+/*	float framesPerSec;					/**< frames per second */
 	
 	/*
 	int frameRefCount;
@@ -38,7 +39,7 @@ private:
 	int totalElapsedTime;
 	*/
 
-public:
+/*public:
 
 	void beginFrame();
 	void endFrame();
@@ -49,37 +50,37 @@ public:
 	 *
 	 * ...
 	 */
-	Timing();
+/*	Timing();
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	~Timing();
+/*	~Timing();
 
 	/** \brief initial time
 	 *
 	 * ...
 	 */
-	void initTime();
+/*	void initTime();
 
 	/** \brief update time
 	 *
 	 * ...
 	 */
-	void updateTime();
+/*	void updateTime();
 
 	/** \brief get time
 	 *
 	 * ...
 	 */
-	unsigned int getTime();
+/*	unsigned int getTime();
 
 	/** \brief get clock
 	 *
 	 * ...
 	 */
-	unsigned long getClock();
+/*	unsigned long getClock();
 
 };
 #endif

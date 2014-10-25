@@ -8,6 +8,7 @@
 #ifndef PARTICLE2_H_
 #define PARTICLE2_H_
 
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <glm/glm.hpp>
 
 class Particle {
@@ -15,7 +16,7 @@ class Particle {
 private:
 
 	glm::vec3 gridIndex;//
-	int particleIndex;//
+	int partIndex;//
 
 	glm::vec3 position;//
 	glm::vec3 velocity;//
@@ -26,11 +27,20 @@ private:
 
 public:
 
-	Particle();
-	~Particle;
+	Particle(glm::vec3 posIN, float massIN);
+	~Particle();
 
-	//TODO funcs
+	float* calculateForces();	//mehrere schritte zusammenfassen
 
+	void updateVelocity(float* bodyPosition, float* bodyVelocity, float* bodyAngularVelocity);
+	void applyRotation(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bodyPos);
+	void populateArray();
+
+	void reset(float* oldBodyPos, float* newBodyPos);
+
+	void updateGridIndex();
+
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 };
 
 #endif /* PARTICLE2_H_ */

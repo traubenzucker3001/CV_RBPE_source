@@ -2,7 +2,7 @@
 #include <iostream>
 #include <math.h>
 
-#include "UniformGrid.h"
+#include "UniformGrid2.h"
 
 using namespace std;
 

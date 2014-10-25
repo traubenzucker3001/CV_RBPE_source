@@ -6,7 +6,7 @@
 *
 * ...
 */
-static void initScene();
+static void initObjs();
 
 
 #endif /* SCENE_H_ */

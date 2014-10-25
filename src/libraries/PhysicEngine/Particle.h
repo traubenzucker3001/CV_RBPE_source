@@ -1,3 +1,4 @@
+/*
 #ifndef PARTICLE_H_
 #define PARTICLE_H_
 
@@ -7,12 +8,12 @@
  *
  * ...
  */
-class Particle {
+/*class Particle {
 
 private:
 	int gridIndex[3];	/**< ... */
 
-	int partIndex;
+/*	int partIndex;
 
 	glm::vec3 position;
 
@@ -32,7 +33,7 @@ public:
 	 *
 	 * ...
 	 */
-	Particle();
+/*	Particle();
 	Particle(glm::vec3 pos, float mass);
 
 	void populateArray();

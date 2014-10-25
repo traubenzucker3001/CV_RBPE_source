@@ -8,7 +8,7 @@
 using namespace std;
 
 //methode zur erstellung der szene
-static void initScene(){
+static void initObjs(){
 
 	//...
 

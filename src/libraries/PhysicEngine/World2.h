@@ -5,30 +5,52 @@
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include "UniformGrid2.h"
 
+/** \brief physics World
+ *
+ * ...
+ */
 class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
-	float worldSize;
-	float partRadius;
+	float worldSize;					/**< world size */
+	float partRadius;					/**< particle radius */
 
-	std::vector<RigidBody*> allBodies;
-	int allbodyNum;
+	float springCoeff;					/**< spring coefficient */
+	//welt oder jeder body einzeln?!
+	float dampCoeff;					/**< damping coefficient */
+	float gravity;						/**< gravity force value */
+
+	std::vector<RigidBody*> allBodies;	/**< list of all bodies in the world */
+	int allbodyNum;						/**< number of bodies in the world */
 	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser
-	Particle* allParticles;	//**
-	int allPartNum;
+	//**
+	Particle* allParticles;				/**< list of all particles in the world */
+	int allPartNum;						/**< number of particles in the world */
 
-	UniformGrid *grid;
+	UniformGrid *grid;					/**< uniform grid */
 
 public:
 
-	World(float wsIN, float prIN);
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	World(float wsIN, float prIN, float scIN, float dcIN);
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
 	~World();
 
+	/** \brief step physics simulation
+	 *
+	 * ...
+	 */
 	void stepPhysics(float duration);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-
 	const Particle*& getAllParticles() const {
 		return allParticles;
 	}
@@ -59,6 +81,30 @@ public:
 
 	void setWorldSize(float worldSize) {
 		this->worldSize = worldSize;
+	}
+
+	float getSpringCoeff() const {
+		return springCoeff;
+	}
+
+	void setSpringCoeff(float springCoeff) {
+		this->springCoeff = springCoeff;
+	}
+
+	float getDampCoeff() const {
+		return dampCoeff;
+	}
+
+	void setDampCoeff(float dampCoeff) {
+		this->dampCoeff = dampCoeff;
+	}
+
+	float getGravity() const {
+		return gravity;
+	}
+
+	void setGravity(float gravity) {
+		this->gravity = gravity;
 	}
 };
 

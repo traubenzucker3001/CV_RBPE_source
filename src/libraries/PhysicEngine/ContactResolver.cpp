@@ -1,3 +1,4 @@
+/*
 //
 #include <string>
 #include <vector>
@@ -34,7 +35,7 @@ ContactResolver::~ContactResolver(){
 	delete positionIterations;
 	delete positionEpsilon;
 	*/
-}
+/*}
 
 void ContactResolver::prepareContacts(Contact *contArray[], unsigned int numCont, float duration){
 
@@ -220,3 +221,4 @@ void ContactResolver::adjustPos(Contact *contArray[], unsigned int numContacts, 
 	    countPosIter++;
 	}
 }
+*/

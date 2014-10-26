@@ -3,10 +3,12 @@
 #define SPHERE2_H_
 
 // <<<<<<<<<< includes >>>>>>>>>> //
-
-
 #include "CollisionShape2.h"
 
+/** \brief Sphere
+ *
+ * CollisionShape in sphere form
+ */
 class Sphere : public CollisionShape {
 
 private:
@@ -15,13 +17,35 @@ private:
 
 public:
 
-	Sphere(glm::vec3 origIN,  float radiusIN) : CollisionShape(origIN){radius = radiusIN;}
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	Sphere(glm::vec3 origIN, float massIN, Particle* bPartIN, float numPartIN, float radiusIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){radius = radiusIN;}
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
 	virtual ~Sphere();
 
+	/** \brief create particles
+	 *
+	 * ...
+	 */
 	void calcParticles();
-	void applyRotationToParticles(glm::mat3 rotMatrix);
 
-	//void populateParticleArray();	//virtual?!
+	/** \brief apply rotation to body particles
+	 *
+	 * ...
+	 */
+	void applyRotToPart(glm::mat3 rotMatrix);
+
+	/** \brief fill particle array
+	 *
+	 * ...
+	 */
+	void populateParticleArray();	//virtual?!
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 };

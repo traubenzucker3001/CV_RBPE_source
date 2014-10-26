@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -99,7 +100,7 @@ void Demo::initGraphics(){
 		*/
 
 		//Update Camera
-		camera.update(window);
+/*		camera.update(window);
 
 		//update shader and render
 		phongShader.update();

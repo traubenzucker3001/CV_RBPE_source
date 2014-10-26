@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -13,3 +14,4 @@ CollisionShape::CollisionShape(glm::vec3 origIN){
 CollisionShape::~CollisionShape(){
 	//delete origin;
 }
+*/

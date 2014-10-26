@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -27,3 +28,4 @@ void ForceRegistry::updateForces(float duration){
 
 
 }
+*/

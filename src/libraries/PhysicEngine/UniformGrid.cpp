@@ -1,4 +1,4 @@
-
+/*
 #include <iostream>
 #include <math.h>
 
@@ -21,7 +21,7 @@ void createGrid() {
 	gridLength = (int)ceil(2.0f * Demo::getInstance()->getWorldSize() / voxelSize);
 
 	/* 2 extra grid voxels in each dimension in case particles go slightly outside the world borders */
-	gridLength += 2;
+/*	gridLength += 2;
 
 	xSteps = gridLength*gridLength;
 	ySteps = gridLength;

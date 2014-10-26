@@ -1,3 +1,6 @@
+//gestrichene Klasse
+
+/*
 #ifndef FORCE_REG_ENTRY_H
 #define FORCE_REG_ENTRY_H
 
@@ -16,24 +19,25 @@
  *
  * ...
  */
-class ForceRegEntry
+/*class ForceRegEntry
 {
 private:
 	RigidBody *body;	/**< one RigidBody */
 
-	ForceGen *forces;	/**< list of forces that appear on the RigidBody */
+/*	ForceGen *forces;	/**< list of forces that appear on the RigidBody */
 
-public:
+/*public:
 	/** \brief constructor
 	 *
 	 * ...
 	 */
-	ForceRegEntry(RigidBody *bodyIN, ForceGen *forceGen);
+/*	ForceRegEntry(RigidBody *bodyIN, ForceGen *forceGen);
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	~ForceRegEntry();
+/*	~ForceRegEntry();
 };
 #endif
+*/

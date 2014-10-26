@@ -15,6 +15,8 @@ using namespace std;
 Demo *demo;
 float dur = 0.01f;
 float termVeloc = 20.0f;
+float springCoeff = 100.0f;
+float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
 
 int main() {
 
@@ -23,7 +25,7 @@ int main() {
 
 	//cout << "Hallo Test!" << endl;
 
-	cudaDeviceReset();
+	//cudaDeviceReset();
 	return 0;
 }
 

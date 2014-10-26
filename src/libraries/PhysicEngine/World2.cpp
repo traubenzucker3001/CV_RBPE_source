@@ -4,10 +4,13 @@
 #include "UniformGrid2.h"
 #include "RigidBody2.h"
 
-World::World(float wsIN, float prIN){
+World::World(float wsIN, float prIN, float scIN, float dcIN){
 
 	worldSize = wsIN;
 	partRadius = prIN;
+	springCoeff = scIN;
+	dampCoeff = dcIN;
+	gravity = 9.81;			//fester wert
 	allbodyNum = 0;
 	allParticles = 0;
 	allPartNum = 0;
@@ -28,7 +31,7 @@ void World::stepPhysics(float duration){
 	}
 
 	//update grid
-	updateGrid();
+	UniformGrid::getInstance()->updateGrid();
 
 	//update momenta
 	for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){

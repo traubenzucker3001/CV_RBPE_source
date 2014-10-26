@@ -1,3 +1,7 @@
+//getrichene Klasse
+//zu parameter in world
+
+/*
 #ifndef GRAVITY_H
 #define GRAVITY_H
 
@@ -15,18 +19,18 @@
  *
  * ...
  */
-class Gravity : public ForceGen
+/*class Gravity : public ForceGen
 {
 private:
 	glm::vec3 gravity;	/**< gravity value */
 
 
-public:
+/*public:
 	/** \brief constructor
 	 *
 	 * ...
 	 */
-	Gravity(const glm::vec3 &gravity);
+/*	Gravity(const glm::vec3 &gravity);
 
 	~Gravity();
 
@@ -34,7 +38,7 @@ public:
 	 *
 	 * acts gravity to a RigidBody over a given duration
 	 */
-	void updateForce(RigidBody* body, float duration);
+/*	void updateForce(RigidBody* body, float duration);
 
 };
 #endif

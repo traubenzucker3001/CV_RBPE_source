@@ -1,3 +1,5 @@
+//neue klasse - Timing2.h
+
 /*
 #ifndef TIMING_H
 #define TIMING_H

@@ -1,3 +1,6 @@
+//gestrichene Klasse
+
+/*
 #ifndef FORCE_GEN_H
 #define FORCE_GEN_H
 
@@ -15,20 +18,21 @@
  *
  * ...
  */
-class ForceGen
+/*class ForceGen
 {
 public:
 	/** \brief update
 	 *
 	 * apply force to given rigidBody
 	 */
-	virtual void updateForce(RigidBody *body, float duration) = 0;
+/*	virtual void updateForce(RigidBody *body, float duration) = 0;
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	virtual ~ForceGen();
+/*	virtual ~ForceGen();
 
 };
 #endif
+*/

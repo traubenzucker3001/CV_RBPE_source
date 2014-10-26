@@ -1,3 +1,6 @@
+//gestrichene Klasse
+
+/*
 #ifndef CONTACT_GEN_H
 #define CONTACT_GEN_H
 
@@ -11,30 +14,30 @@
  *
  * ...
  */
-class ContactGen {
+/*class ContactGen {
 private:
 	//bool isGPU;			/**< ... */
 
 	//in core verschoben
 	//int deviceID = 0;		/**< ... */
 
-public:
+/*public:
 	/** \brief
 	 *
 	 * ...
 	 */
-	void addContact(bool isGPU);
+/*	void addContact(bool isGPU);
 
 	/** \brief start detection on CPU
 	*
 	* ...
 	*/
-	void startCPU();
+/*	void startCPU();
 
 	/** \brief start detection on GPU
 	*
 	* ...
 	*/
-	void startGPU();
+/*	void startGPU();
 };
 #endif

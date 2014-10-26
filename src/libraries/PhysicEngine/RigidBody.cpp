@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -42,7 +43,7 @@ RigidBody::~RigidBody(){
 	delete mass;
 	delete inertiaTensor;
 	*/
-	delete shape;
+/*	delete shape;
 	/*
 	delete linearDamp;
 	delete angularDamp;
@@ -56,7 +57,7 @@ RigidBody::~RigidBody(){
 	delete inverseInertiaTensorW;
 	delete isStatic;
 	*/
-}
+/*}
 
 void RigidBody::calcInternData(){
 
@@ -213,3 +214,4 @@ void RigidBody::updateMomenta(float duration) {
 
 // <<<<<<<<<< getter + setter >>>>>>>>>> //
 //siehe RigidBody.h
+*/

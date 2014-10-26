@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -31,7 +32,7 @@ Timing::~Timing(){
 	delete averageFrameDuration;
 	delete framesPerSec;
 	*/
-}
+/*}
 
 //wenn konstruktor habe, dann brauch eig kein init
 void Timing::initTime(){

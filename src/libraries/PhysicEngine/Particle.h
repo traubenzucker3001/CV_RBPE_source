@@ -1,3 +1,5 @@
+//neue Klasse - Particle2.h
+
 /*
 #ifndef PARTICLE_H_
 #define PARTICLE_H_

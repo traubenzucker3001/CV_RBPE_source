@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -43,7 +44,7 @@ unsigned int World::genContacts(){
     	 // contacts.
     	 if (limit <= 0) break;
     	 */
-    }
+/*    }
 
     //return the number of contacts used.
     return Core::getInstance()->getMaxContacts() - limit;
@@ -71,7 +72,7 @@ void World::runPhysics(float duration){
 		resolver->setIterations(numContacts * 4);
 	}
 	*/
-	resolver->resolveContacts(&contacts, numContacts, duration);
+/*	resolver->resolveContacts(&contacts, numContacts, duration);
 }
 
 void World::startFrame(){

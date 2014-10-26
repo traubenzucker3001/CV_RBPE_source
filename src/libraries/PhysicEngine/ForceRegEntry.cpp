@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -17,3 +18,4 @@ ForceRegEntry::~ForceRegEntry(){
 	delete body;
 	delete forces;
 }
+*/

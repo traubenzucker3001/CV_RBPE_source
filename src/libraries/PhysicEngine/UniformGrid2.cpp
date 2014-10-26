@@ -1,3 +1,4 @@
+//!noch particle array zugriffs fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include "UniformGrid2.h"
@@ -60,7 +61,6 @@ void UniformGrid::createGrid(){
 void UniformGrid::updateGrid(){
 
 	//partikel/body vektoren zu arrays ändern?!
-
 	int aPartN = World::getInstance()->getAllPartNum();
 	Particle* allPart = World::getInstance()->getAllParticles();	//schauen ob pointer so richtig
 
@@ -74,9 +74,9 @@ void UniformGrid::updateGrid(){
 	for (int i=0; i<aPartN; i++) {
 
 		allPart[i]->updateGridIndex();
-		int* gridIndex = allPart[i]->getGridIndex();
+		glm::vec3 gridIndex = allPart[i]->getGridIndex();
 
-		if (isValidIndex(gridIndex)) {
+		if (isValidIndex(gridIndex) == true) {
 			int flatCountGridIndex = gridIndex[0]*xSteps + gridIndex[1]*ySteps + gridIndex[2];
 			int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 
@@ -87,3 +87,67 @@ void UniformGrid::updateGrid(){
 	}
 }
 
+bool UniformGrid::isValidIndex(glm::vec3 gridIndex){
+
+	bool valid = true;
+
+	if (gridIndex.x >= gridLength || gridIndex.x < 0) {
+		valid= false;
+	}
+	if (gridIndex.y >= gridLength || gridIndex.y < 0) {
+		valid= false;
+	}
+	if (gridIndex.z >= gridLength || gridIndex.z < 0) {
+		valid= false;
+	}
+	return valid;
+}
+
+int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
+
+	//If you're at the border, go 1 cell inwards to prevent going out of bounds
+	if (gridIndex.x == 0) {
+		gridIndex.x++;
+	} else if (gridIndex.x == (gridLength-1)) {
+		gridIndex.x--;
+	}
+	if (gridIndex.y == 0) {
+		gridIndex.y++;
+	} else if (gridIndex.y == (gridLength-1)) {
+		gridIndex.y--;
+	}
+	if (gridIndex.z == 0) {
+		gridIndex.z++;
+	} else if (gridIndex.z == (gridLength-1)) {
+		gridIndex.z--;
+	}
+
+	int checkIndex[3] = {gridIndex[0]-1,gridIndex[1]-1,gridIndex[2]-1};
+
+	int neighborCount = 0;
+	int* indices = new int[27*partPerVoxel];
+
+	for (int x=0; x<3; x++) {
+		checkIndex[1] = gridIndex[1]-1; //reset y index before y-loop
+
+		for (int y=0; y<3; y++) {
+			checkIndex[2] = gridIndex[2]-1; //reset z index before z-loop
+
+			for (int z=0; z<3; z++) {
+				int flatCountGridIndex = checkIndex[0]*xSteps + checkIndex[1]*ySteps + checkIndex[2];
+				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
+
+				indices[neighborCount] = indexGrid[flatIndexGridIndex];
+				indices[neighborCount+1] = indexGrid[flatIndexGridIndex+1];
+				indices[neighborCount+2] = indexGrid[flatIndexGridIndex+2];
+				indices[neighborCount+3] = indexGrid[flatIndexGridIndex+3];
+
+				neighborCount += 4;
+				checkIndex[2]++;
+			}
+			checkIndex[1]++;
+		}
+		checkIndex[0]++;
+	}
+	return indices;
+}

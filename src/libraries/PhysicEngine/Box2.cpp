@@ -1,3 +1,4 @@
+//!noch partikel array zugriffs fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include "Box2.h"
@@ -28,7 +29,7 @@ void Box::calcParticles(){
 	}
 }
 
-void Box::applyRotatToPart(glm::mat3 rotMatrix){
+void Box::applyRotToPart(glm::mat3 rotMatrix){
 
 	int i=0;
 	float partR = World::getInstance()->getPartRadius();
@@ -42,7 +43,7 @@ void Box::applyRotatToPart(glm::mat3 rotMatrix){
 				//float originalRelativePos[3] = {x, y, z};
 				glm::vec3 relatPos = glm::vec3(x,y,z);
 
-				bodyParticles[i]->applyRotation(rotMatrix, relatPos, origin);
+				bodyParticles[i]->applyRot(rotMatrix, relatPos, origin);
 				i++;
 			}
 		}

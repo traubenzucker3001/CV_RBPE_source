@@ -4,35 +4,73 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 
-
+/** \brief Timing
+ *
+ * class to control simulation time and frames per second
+ */
 class Timing : public Singleton<Timing> {
 	friend class Singleton<Timing>;
 
 private:
 
-	int frameNum;//framecount
-	float fps;
+	//framecount
+	int frameNum;					/**< frame number */
+	float fps;						/**< frames per second */
 
 	float averageFrameDuration;		/**< average frame duration */
 
-	int totalTime;	//gesamtzeit
+	//gesamtzeit
+	int totalTime;					/**< total running time */
 
-	int startTime;
-	int endTime;
+	int startTime;					/**< frame start time */
+	int endTime;					/**< frame end time */
 
 	//TODO vars
+	//eig erledigt
+	//aber vllt noch weitere?!
 
 public:
 
+	/** \brief constructor
+	*
+	* ...
+	*/
 	Timing();
+
+	/** \brief destructor
+	*
+	* ...
+	*/
 	~Timing();
 
+	/** \brief start frame
+	*
+	* ...
+	*/
 	void startFrame();
+
+	/** \brief end frame
+	*
+	* ...
+	*/
 	void endFrame();
 
+	/** \brief get current time
+	*
+	* ...
+	*/
 	int getTime();
 
+	/** \brief update average frame duration
+	*
+	* ...
+	*/
 	void updateAFD();
+
+	/** \brief update frames per second
+	*
+	* ...
+	*/
 	int updateFPS();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //

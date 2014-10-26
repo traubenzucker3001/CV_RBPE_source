@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -21,3 +22,4 @@ void Gravity::updateForce(RigidBody* body, float duration){
 	return;
 
 }
+*/

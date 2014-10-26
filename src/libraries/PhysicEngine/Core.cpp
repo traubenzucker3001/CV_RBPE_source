@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -60,7 +61,7 @@ void Core::changeEngine(double viIN, double veIN , double piIN, double peIN, boo
 }
 */
 
-void Core::initCUDA(){
+/*void Core::initCUDA(){
 	cudaGetDevice(&deviceID);
 
 	if (deviceID < 0){
@@ -71,3 +72,4 @@ void Core::initCUDA(){
 
 // <<<<<<<<<< getter + setter >>>>>>>>>> //
 //siehe Core.h
+*/

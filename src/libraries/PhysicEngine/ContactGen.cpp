@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -63,3 +64,4 @@ void ContactGen::startGPU(){
 	cudaTextureObject_t tex = 0;
 	cudaCreateTextureObject();
 }
+*/

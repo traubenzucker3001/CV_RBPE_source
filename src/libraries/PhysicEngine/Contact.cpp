@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -417,3 +418,4 @@ void Contact::applyPosChange(glm::vec3 velocChange[2], glm::vec3 rotatDirection[
 		}
 	}
 }
+*/

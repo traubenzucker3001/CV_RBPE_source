@@ -1,4 +1,6 @@
 
+//!noch gl fehler!
+
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include "Demo2.h"
 #include "Scene.h"
@@ -95,7 +97,7 @@ void Demo::run(){
 
 void Demo::initScene(){
 
-	createGrid();
+	UniformGrid::getInstance()->createGrid();
 
 	//obj initialisieren
 	initObjs();

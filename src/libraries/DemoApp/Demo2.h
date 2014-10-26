@@ -1,4 +1,7 @@
 
+//!noch cvk fehler!
+//TODO callback funcs
+
 #ifndef DEMO2_H_
 #define DEMO2_H_
 
@@ -25,17 +28,17 @@ private:
 	int windowHeight;							/**< demo window height */
 
 	//nicht sicher ob als extra var nötig
-	//GLFWwindow* window;							/**< glfw window reference */
+	//GLFWwindow* window;						/**< glfw window reference */
 
 	//oder noch über core gehen?!
 	World *physicsWorld;						/**< physics world that contains all rigid bodies */
 
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
-	int virtObjNum;
+	int virtObjNum;								/**< number of virtual objects in the list */
 
 	Timing *time;								/**< time data */
-	float duration;								/**< ... */
-	float terminalVeloc;						/**< ... */
+	float duration;								/**< step duration */
+	float terminalVeloc;						/**< terminal velocity */
 
 	//bzw normale camera
 	CVK::Trackball camera;						/**< cvk camera objekt */
@@ -60,7 +63,7 @@ public:
 	*
 	* ...
 	*/
-	void initPhysics();	//eig schon im konstruktor von demo gemacht
+	//void initPhysics();	//eig schon im konstruktor von demo gemacht
 
 	/** \brief init graphics
 	*
@@ -90,7 +93,8 @@ public:
 	*
 	* ...
 	*/
-	void display();
+	//void display();	//nicht nötig
+
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
 	/** \brief mouse button callback
@@ -117,8 +121,8 @@ public:
 	*/
 	void resizeCallback(GLFWwindow *window, int w, int h);
 
-	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	float getTerminalVeloc() const {
 		return terminalVeloc;
 	}

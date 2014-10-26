@@ -1,3 +1,5 @@
+//neue klasse - Demo2.h
+
 /*
 #ifndef DEMO_H
 #define DEMO_H
@@ -125,3 +127,4 @@ public:
 	}
 };
 #endif
+*/

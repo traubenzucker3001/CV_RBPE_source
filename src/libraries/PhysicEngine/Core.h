@@ -1,6 +1,10 @@
 #ifndef CORE_H
 #define CORE_H
 
+//gestrichene Klasse
+//auf demo und world aufgeteilt
+
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -15,45 +19,45 @@
  * initial class. every "important" configs can be done/set here.
  * Core is Singleton to ensure that there is only one engine core at a time
  */
-class Core : public Singleton<Core> {
+/*class Core : public Singleton<Core> {
 	friend class Singleton<Core>;
 
 private:
 	World *physicsWorld;		/**< physics world that contains all rigid bodies */
 
-	float velocityIterations;	/**< defines number of velocity iteration steps */
+/*	float velocityIterations;	/**< defines number of velocity iteration steps */
 
-	float velocityEpsilon;		/**< ... */
+/*	float velocityEpsilon;		/**< ... */
 
-	float positionIterations;	/**< defines number of position iteration steps */
+/*	float positionIterations;	/**< defines number of position iteration steps */
 
-	float positionEpsilon;		/**< ... */
+/*	float positionEpsilon;		/**< ... */
 
-	bool calcIterations;		/**< ... */
+/*	bool calcIterations;		/**< ... */
 
-	unsigned int maxContacts;	/**< defines max number of contacts in the world */
+/*	unsigned int maxContacts;	/**< defines max number of contacts in the world */
 
-	int deviceID;				/**< ... */
+/*	int deviceID;				/**< ... */
 
 
-public:
+/*public:
 	/** \brief default constructor
 	 *
 	 * ...
 	 */
-	Core();
+/*	Core();
 
 	/** \brief constructor
 	 *
 	 * ...
 	 */
-	Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned int mcIN);
+/*	Core(float viIN, float veIN , float piIN, float peIN, bool ciIN, unsigned int mcIN);
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-	~Core();
+/*	~Core();
 
 	/** \brief change engine parameters
 	 *
@@ -67,7 +71,7 @@ public:
 	*
 	* ...
 	*/
-	void initCUDA();
+/*	void initCUDA();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	bool isCalcIterations() const {

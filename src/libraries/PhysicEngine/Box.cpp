@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -57,3 +58,4 @@ void Box::applyRotatToPart(glm::mat3 rotMatrix) {
 		}
 	}
 }
+*/

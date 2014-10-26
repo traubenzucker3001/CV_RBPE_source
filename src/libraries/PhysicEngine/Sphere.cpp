@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include <vector>
 #include <list>
@@ -15,7 +16,7 @@ Sphere::Sphere(double radiusIN){
 }
 */
 
-Sphere::~Sphere(){
+/*Sphere::~Sphere(){
 
 	//delete radius;
 }
@@ -25,3 +26,4 @@ void Sphere::calcParticles(){
 
 	cout << "sphere" << endl;
 }
+*/

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <CVK_Framework/CVK_Framework.h>
 
-#include "RigidBody.h"
+#include "RigidBody2.h"
 
 /** \brief virtual object
  *

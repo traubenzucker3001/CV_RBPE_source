@@ -1,3 +1,5 @@
+//neue Klasse - Rigidbody2.h
+
 /*
 #ifndef RIGID_BODY_H
 #define RIGID_BODY_H
@@ -214,3 +216,4 @@ public:
 	}
 };
 #endif
+*/

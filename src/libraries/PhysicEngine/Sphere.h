@@ -1,3 +1,6 @@
+//neue Klasse - Sphere2.h
+
+/*
 #ifndef SPHERE_H
 #define SPHERE_H
 
@@ -14,12 +17,12 @@
  *
  * CollisionShape in sphere form
  */
-class Sphere : public CollisionShape		//noch mal schaun ob vererbung korrekt!!
+/*class Sphere : public CollisionShape		//noch mal schaun ob vererbung korrekt!!
 {
 private:
 	float radius;	/**< defines the size of the sphere */
 
-public:
+/*public:
 	Sphere(glm::vec3 origIN,  float radiusIN) : CollisionShape(origIN){radius = radiusIN;}
 
 	virtual ~Sphere();

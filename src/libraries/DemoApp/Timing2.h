@@ -3,6 +3,7 @@
 #define TIMING2_CPP_
 
 // <<<<<<<<<< includes >>>>>>>>>> //
+#include "DesignPatterns\Singleton.h"
 
 /** \brief Timing
  *

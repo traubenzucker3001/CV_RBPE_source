@@ -4,6 +4,7 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <glm/glm.hpp>
+#include "DesignPatterns\Singleton.h"
 
 //nicht sicher ob überhaupt singleton sein muss
 /** \brief Uniform Grid

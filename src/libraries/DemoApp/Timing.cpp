@@ -110,3 +110,4 @@ unsigned long Timing::getClock(){
 
 	return 0;
 }
+*/

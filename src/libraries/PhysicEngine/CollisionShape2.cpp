@@ -10,7 +10,7 @@ CollisionShape::CollisionShape(glm::vec3 origIN, float massIN, Particle* bPartIN
 	numOfPart = numPartIN;
 }
 
-virtual CollisionShape::~CollisionShape(){
+CollisionShape::~CollisionShape(){
 
 	//...
 }

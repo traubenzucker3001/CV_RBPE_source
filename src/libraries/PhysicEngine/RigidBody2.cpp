@@ -54,15 +54,15 @@ void RigidBody::iterate(float duration){
 
 	//performAngularStep(delta);
 	{ //update angular velocity		//was das fürn konstrukt?
-		float a = inverseInertiaTensor[0];
-		float b = inverseInertiaTensor[1];
-		float c = inverseInertiaTensor[2];
-		float d = inverseInertiaTensor[3];
-		float e = inverseInertiaTensor[4];
-		float f = inverseInertiaTensor[5];
-		float g = inverseInertiaTensor[6];
-		float h = inverseInertiaTensor[7];
-		float i = inverseInertiaTensor[8];
+		float a = inverseInertiaTensor[0].x;
+		float b = inverseInertiaTensor[0].y;
+		float c = inverseInertiaTensor[0].z;
+		float d = inverseInertiaTensor[1].x;
+		float e = inverseInertiaTensor[1].y;
+		float f = inverseInertiaTensor[1].z;
+		float g = inverseInertiaTensor[2].x;
+		float h = inverseInertiaTensor[2].y;
+		float i = inverseInertiaTensor[2].z;
 
 		float u = angularMomentum[0];
 		float v = angularMomentum[1];
@@ -191,7 +191,7 @@ void RigidBody::updateMomenta(float duration){
 	glm::vec3 torque = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	int numP = shape->getNumOfPart();
-	Particle bodyP = shape->getBodyParticles();
+	Particle* bodyP = shape->getBodyParticles();
 	for (int i=0; i<numP; i++) {
 		glm::vec3 particleForce = bodyP[i]->calculateForces();
 		force.x += particleForce.x;

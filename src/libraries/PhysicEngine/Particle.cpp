@@ -51,3 +51,4 @@ void Particle::applyRotation(glm::mat3 rotationMatrix, glm::vec3 originalRelativ
 	position.y = position.y + bodyPosition.y;
 	position.z = position.z + bodyPosition.z;
 }
+*/

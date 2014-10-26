@@ -10,7 +10,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 
 	position = posIN;
 	mass = massIN;
-	velocity = 0;
+	velocity = glm::vec3(0,0,0);
 	force = 0;
 
 	//gridIndex = ;
@@ -23,7 +23,7 @@ Particle::~Particle(){
 }
 
 //TODO funcs
-glm::vec3* Particle::calculateForces(){
+glm::vec3 Particle::calculateForces(){
 
 	//mehrere schritte zusammenfassen
 	force = glm::vec3(0,0,0);
@@ -122,7 +122,7 @@ glm::vec3* Particle::calculateForces(){
 
 void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::vec3 bodyAngularVelocity){
 
-	velocity = {0.0f, 0.0f, 0.0f};
+	velocity = glm::vec3(0,0,0);
 
 	float scalar = sqrt(bodyAngularVelocity[0]*bodyAngularVelocity[0] +
 				bodyAngularVelocity[1]*bodyAngularVelocity[1] +
@@ -147,9 +147,9 @@ void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::
 		velocity[1] = (bodyAngularVelocity[2]*term[0] - bodyAngularVelocity[0]*term[2]);
 		velocity[2] = (bodyAngularVelocity[0]*term[1] - bodyAngularVelocity[1]*term[0]);
 	}
-	velocity[0] += bodyVelocity[0];
-	velocity[1] += bodyVelocity[1];
-	velocity[2] += bodyVelocity[2];
+	velocity.x = velocity.x + bodyVelocity.x;
+	velocity.y = velocity.y + bodyVelocity.y;
+	velocity.z = velocity.z + bodyVelocity.z;
 
 }
 
@@ -192,10 +192,10 @@ void Particle::updateGridIndex(){
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
 	float vS = UniformGrid::getInstance()->getVoxelSize();
 
-	//int cast benötigt?!
-	gridIndex.x = (int)((position.x - gmp)/vS);
-	gridIndex.y = (int)((position.y - vS)/vS);
-	gridIndex.z = (int)((position.z - gmp)/vS);
+	//int cast benötigt?!	//(int)
+	gridIndex.x = ((position.x - gmp)/vS);
+	gridIndex.y = ((position.y - vS)/vS);
+	gridIndex.z = ((position.z - gmp)/vS);
 }
 
 

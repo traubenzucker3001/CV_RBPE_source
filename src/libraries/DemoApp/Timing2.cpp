@@ -1,6 +1,7 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
+#include <GLFW\glfw3.h>
 
 #include "Timing2.h"
 

@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "CollisionShape2.h"
+#include "Box2.h"
+#include "Sphere2.h"
 
 /** \brief RigidBody
  *

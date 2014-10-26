@@ -4,7 +4,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#include "DemoApp\Demo.h"
+#include "DemoApp\Demo2.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
 
 int main() {
 
-	demo = new Demo(WIDTH, HEIGHT);
+	demo = new Demo(WIDTH, HEIGHT,dur,termVeloc);
 	demo->run();
 
 	//cout << "Hallo Test!" << endl;

@@ -42,7 +42,7 @@ public:
 	 *
 	 * calculate forces with colliding neighbor particles and grid boundries
 	 */
-	glm::vec3* calculateForces();	//mehrere schritte zusammenfassen
+	glm::vec3 calculateForces();	//mehrere schritte zusammenfassen
 
 	/** \brief update particle velocity
 	 *

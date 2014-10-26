@@ -3,7 +3,11 @@
 #define WORLD2_H_
 
 // <<<<<<<<<< includes >>>>>>>>>> //
+#include <vector>
+
+#include "RigidBody2.h"
 #include "UniformGrid2.h"
+#include "DesignPatterns\Singleton.h"
 
 /** \brief physics World
  *
@@ -25,7 +29,7 @@ private:
 	int allbodyNum;						/**< number of bodies in the world */
 	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser
 	//**
-	Particle* allParticles;				/**< list of all particles in the world */
+	Particle** allParticles;				/**< list of all particles in the world */
 	int allPartNum;						/**< number of particles in the world */
 
 	UniformGrid *grid;					/**< uniform grid */

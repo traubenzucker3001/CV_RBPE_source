@@ -20,7 +20,7 @@ protected:
 
 	//std::vector<Particle*> bodyParticles;	//besser ist array
 	//**
-	Particle* bodyParticles;	/**< array with body representing particles */
+	Particle** bodyParticles;	/**< array with body representing particles */
 	int numOfPart;				/**< number of body representing particles */
 
 public:
@@ -63,11 +63,11 @@ public:
 		this->numOfPart = numOfPart;
 	}
 
-	const Particle*& getBodyParticles() const {
+	const Particle**& getBodyParticles() const {
 		return bodyParticles;
 	}
 
-	void setBodyParticles(const Particle*& bodyParticles) {
+	void setBodyParticles(const Particle**& bodyParticles) {
 		this->bodyParticles = bodyParticles;
 	}
 };

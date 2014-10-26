@@ -3,6 +3,7 @@
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include "Box2.h"
 #include "Particle2.h"
+#include "World2.h"
 
 Box::~Box(){
 

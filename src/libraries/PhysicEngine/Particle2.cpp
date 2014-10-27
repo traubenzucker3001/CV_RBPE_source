@@ -11,7 +11,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	position = posIN;
 	mass = massIN;
 	velocity = glm::vec3(0,0,0);
-	force = 0;
+	force = glm::vec3(0,0,0);
 
 	//gridIndex = ;
 	partIndex = 0;
@@ -198,6 +198,10 @@ void Particle::updateGridIndex(){
 	gridIndex.z = ((position.z - gmp)/vS);
 }
 
+void Particle::updateCUDArray(int particleIndex){
+
+	//TODO
+}
 
 //-----"anhang"-----
 

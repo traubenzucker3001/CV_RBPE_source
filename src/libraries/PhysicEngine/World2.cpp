@@ -23,23 +23,33 @@ World::~World(){
 	//...
 }
 
-void World::stepPhysics(float duration){
+void World::stepPhysics(float duration, bool isGPU){
 
-	//update part. values
-	for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
-		(*it)->updatePartValues();
+	//unterteilen in cpu und gpu
+
+	//ausführung auf gpu
+	if(isGPU == true){
+		Cuda::getInstance()->stepCUDA();
 	}
+	//ausführung auf cpu
+	else{
 
-	//update grid
-	UniformGrid::getInstance()->updateGrid();
+		//update part. values
+		for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
+			(*it)->updatePartValues();
+		}
 
-	//update momenta
-	for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
-		(*it)->updateMomenta(duration);
-	}
+		//update grid
+		UniformGrid::getInstance()->updateGrid();
 
-	//iterate
-	for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
-		(*it)->iterate(duration);
+		//update momenta
+		for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
+			(*it)->updateMomenta(duration);
+		}
+
+		//iterate
+		for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
+			(*it)->iterate(duration);
+		}
 	}
 }

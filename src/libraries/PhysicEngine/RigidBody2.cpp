@@ -240,5 +240,10 @@ void RigidBody::updateMomenta(float duration){
 
 void RigidBody::reset(float newPosition){
 
+	//...
+}
 
+void RigidBody::updateCUDArray(int bodyIndex){
+
+	//TODO
 }

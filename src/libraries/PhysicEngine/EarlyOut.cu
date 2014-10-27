@@ -1,3 +1,7 @@
+//gestrichene "KLasse"
+//aufgeteilt in uniformgrid_kernesl u. ...
+
+/*
 //kernel für szenen-strukturierung durch uniform grid
 
 #include <cuda.h>
@@ -18,3 +22,4 @@ void copyToGPU(){
 void gridGen(){
 
 }
+*/

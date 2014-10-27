@@ -119,6 +119,14 @@ public:
 	 * ...
 	 */
 	void reset(float newPosition);
+
+
+	// <<<<<<<<<< gpu parts >>>>>>>>>> //
+	/** \brief update cuda array
+	 *
+	 * ...
+	 */
+	void updateCUDArray(int bodyIndex);
 };
 
 #endif /* RIGIDBODY2_H_ */

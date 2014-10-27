@@ -74,6 +74,15 @@ public:
 	 */
 	void updateGridIndex();
 
+
+	// <<<<<<<<<< gpu parts >>>>>>>>>> //
+	/** \brief update cuda array
+	 *
+	 * ...
+	 */
+	void updateCUDArray(int particleIndex);
+
+
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	const glm::vec3& getPosition() const {
 		return position;

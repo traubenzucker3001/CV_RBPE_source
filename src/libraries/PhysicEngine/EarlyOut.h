@@ -1,3 +1,6 @@
+//gestrichene "Klasse"
+
+/*
 //sehen wie damit verbleiben
 
 #ifndef EARLYOUT_H_

@@ -47,6 +47,7 @@ public:
 	 */
 	void populateParticleArray();	//virtual?!
 
+
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 };
 

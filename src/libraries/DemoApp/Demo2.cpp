@@ -5,6 +5,7 @@
 #include "Demo2.h"
 #include "Scene.h"
 #include "PhysicEngine/UniformGrid2.h"
+#include "PhysicEngine/Cuda.h"
 
 Demo::Demo(int wwIN, int whIN, float durIN, float tvIN){
 
@@ -63,6 +64,11 @@ void Demo::run(){
 
 	//...
 
+	//init cuda
+	if(isGPU == true){
+		Cuda::getInstance()->initCUDA();
+	}
+
 	//schauen wie am besten machen mit virtobjs und step simulation
 	while( !glfwWindowShouldClose(window)){
 
@@ -77,6 +83,8 @@ void Demo::run(){
 
 		//update shader and render
 		phongShader.update();
+
+		//unterschiedlich bei cpu o. gpu ausführung
 		//vorher positionen und orientierung von VOs aktualisieren
 		//obj rendern
 		//earthNode->render();
@@ -97,7 +105,10 @@ void Demo::run(){
 
 void Demo::initScene(){
 
-	UniformGrid::getInstance()->createGrid();
+	//gpu benutzt andere create grid
+	if(isGPU == false){
+		UniformGrid::getInstance()->createGrid();
+	}
 
 	//obj initialisieren
 	initObjs();
@@ -112,7 +123,7 @@ void Demo::initScene(){
 
 void Demo::stepSimulation(float duration){
 
-	World::getInstance()->stepPhysics(duration);
+	World::getInstance()->stepPhysics(duration,isGPU);
 
 	/*
 	//update part. values

@@ -43,6 +43,8 @@ private:
 	//bzw normale camera
 	CVK::Trackball camera;						/**< cvk camera objekt */
 
+	//ka ob hier oder einfach in main?!
+	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 
 public:
 
@@ -97,6 +99,7 @@ public:
 
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
+	//schauen wie das mit cvk läuft
 	/** \brief mouse button callback
 	*
 	* ...

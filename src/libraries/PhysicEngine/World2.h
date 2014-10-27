@@ -8,6 +8,7 @@
 #include "RigidBody2.h"
 #include "UniformGrid2.h"
 #include "DesignPatterns\Singleton.h"
+#include "Cuda.h"
 
 /** \brief physics World
  *
@@ -34,6 +35,8 @@ private:
 
 	UniformGrid *grid;					/**< uniform grid */
 
+	Cuda *cudaStruct;					/**< cuda data structure */
+
 public:
 
 	/** \brief constructor
@@ -52,7 +55,7 @@ public:
 	 *
 	 * ...
 	 */
-	void stepPhysics(float duration);
+	void stepPhysics(float duration, bool isGPU);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	const Particle*& getAllParticles() const {

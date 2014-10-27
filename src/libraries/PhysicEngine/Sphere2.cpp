@@ -18,7 +18,7 @@ void Sphere::applyRotToPart(glm::mat3 rotMatrix){
 	//TODO
 }
 
-void Sphere::populateParticleArray(){
+void Sphere::populatePartArray(){
 
 	//TODO
 }

@@ -51,7 +51,7 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 	}
 }
 
-void Box::populateParticleArray(){
+void Box::populatePartArray(){
 
 	for (int i=0; i<numOfPart; i++) {
 		bodyParticles[i]->populateArray();

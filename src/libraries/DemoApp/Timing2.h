@@ -18,7 +18,7 @@ private:
 	int frameNum;					/**< frame number */
 	float fps;						/**< frames per second */
 
-	float averageFrameDuration;		/**< average frame duration */
+	float afd;		/**< average frame duration */
 
 	//gesamtzeit
 	int totalTime;					/**< total running time */

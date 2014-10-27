@@ -52,7 +52,7 @@ public:
 	 *
 	 * ...
 	 */
-	virtual void populateParticleArray() = 0;	//virtual?!
+	virtual void populatePartArray() = 0;	//virtual?!
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	int getNumOfPart() const {

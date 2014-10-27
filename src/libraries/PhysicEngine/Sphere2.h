@@ -45,7 +45,7 @@ public:
 	 *
 	 * ...
 	 */
-	void populateParticleArray();	//virtual?!
+	void populatePartArray();	//virtual?!
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 };

@@ -177,6 +177,13 @@ void Cuda::initCUDAGrid(){
 	cudaMalloc((void**)&d_gIndexGrid, bodyNum*sizeof(int4));	//int4?!
 }
 
+void Cuda::stepCUDA(){
+
+	//schritte nacheinander aufrufen
+	//...
+
+}
+
 /*
 void Cuda::initHostArrays(){
 

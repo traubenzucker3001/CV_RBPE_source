@@ -17,6 +17,7 @@ float dur = 0.01f;
 float termVeloc = 20.0f;
 float springCoeff = 100.0f;
 float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
+bool isGPU = false;
 
 int main() {
 

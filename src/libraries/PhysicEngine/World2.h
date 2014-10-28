@@ -113,6 +113,22 @@ public:
 	void setGravity(float gravity) {
 		this->gravity = gravity;
 	}
+
+	const std::vector<RigidBody*>& getAllBodies() const {
+		return allBodies;
+	}
+
+	void setAllBodies(const std::vector<RigidBody*>& allBodies) {
+		this->allBodies = allBodies;
+	}
+
+	int getAllbodyNum() const {
+		return allbodyNum;
+	}
+
+	void setAllbodyNum(int allbodyNum) {
+		this->allbodyNum = allbodyNum;
+	}
 };
 
 #endif /* WORLD2_H_ */

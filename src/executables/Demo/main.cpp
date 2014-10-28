@@ -25,7 +25,7 @@ int main() {
 
 	//cout << "Hallo Test!" << endl;
 
-	//cudaDeviceReset();
+	cudaDeviceReset();
 	return 0;
 }
 

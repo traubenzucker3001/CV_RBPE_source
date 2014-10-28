@@ -92,6 +92,14 @@ public:
 	void setVoxelSize(float voxelSize) {
 		this->voxelSize = voxelSize;
 	}
+
+	int getGridSize() const {
+		return gridSize;
+	}
+
+	void setGridSize(int gridSize) {
+		this->gridSize = gridSize;
+	}
 };
 
 #endif /* UNIFORMGRID2_H_ */

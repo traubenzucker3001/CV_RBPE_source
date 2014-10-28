@@ -8,6 +8,10 @@
 #include "RigidBody2.h"
 #include "Particle2.h"
 
+#include "UniformGrid_kernels.cu"
+#include "RigidBody_kernels.cu"
+#include "Particle_kernels.cu"
+
 
 Cuda::Cuda(int bnIN, int pnIN){
 
@@ -181,6 +185,15 @@ void Cuda::stepCUDA(){
 
 	//schritte nacheinander aufrufen
 	//...
+	resetGrid();
+	updateGrid();
+	calcCollForces();
+	updateMom();
+	iterate();
+	updatePart();
+
+	//rendern!?
+	//bzw. cuda opengl austausch
 
 }
 

@@ -58,7 +58,7 @@ __global__ void updateGridC(int* contGrid, int4* indexGrid, glm::vec3* pPos, glm
 			pGridIndex[pi].y * yStride +
 			pGridIndex[pi].z;
 
-		//
+		//todo: zu cuda func
 		int particlesInCell = atomic_inc(&countGrid[flatGridIndex]);	//?
 		//
 

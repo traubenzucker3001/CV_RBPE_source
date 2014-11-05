@@ -1,29 +1,27 @@
-/*
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
 
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include "Sphere.h"
+#include "Particle.h"
 
-using namespace std;
+Sphere::~Sphere(){
 
-/*
-Sphere::Sphere(double radiusIN){
-
-	radius = radiusIN;
+	//...
 }
-*/
-
-/*Sphere::~Sphere(){
-
-	//delete radius;
-}
-
 
 void Sphere::calcParticles(){
 
-	cout << "sphere" << endl;
+	//TODO
 }
-*/
+
+void Sphere::applyRotToPart(glm::mat3 rotMatrix){
+
+	//TODO
+}
+
+void Sphere::populatePartArray(){
+
+	//TODO
+}
+
+
+

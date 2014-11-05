@@ -4,7 +4,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#include "DemoApp\Demo2.h"
+#include "DemoApp\Demo.h"
 
 using namespace std;
 
@@ -18,10 +18,12 @@ float termVeloc = 20.0f;
 float springCoeff = 100.0f;
 float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
 bool isGPU = false;
+float worldSize = 15.0f;	//Half length of world
+float partRadius = 0.20f;
 
 int main() {
 
-	demo = new Demo(WIDTH, HEIGHT,dur,termVeloc);
+	demo = new Demo(WIDTH, HEIGHT, dur, termVeloc, worldSize, partRadius, springCoeff, dampCoeff);
 	demo->run();
 
 	//cout << "Hallo Test!" << endl;

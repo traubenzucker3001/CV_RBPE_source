@@ -1,6 +1,6 @@
 
-#ifndef UNIFORMGRID2_H_
-#define UNIFORMGRID2_H_
+#ifndef UNIFORMGRID_H_
+#define UNIFORMGRID_H_
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <glm/glm.hpp>
@@ -102,4 +102,4 @@ public:
 	}
 };
 
-#endif /* UNIFORMGRID2_H_ */
+#endif /* UNIFORMGRID_H_ */

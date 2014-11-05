@@ -4,9 +4,9 @@
 #include <cuda_runtime.h>
 
 #include "Cuda.h"
-#include "World2.h"
-#include "RigidBody2.h"
-#include "Particle2.h"
+#include "World.h"
+#include "RigidBody.h"
+#include "Particle.h"
 
 #include "UniformGrid_kernels.cu"
 #include "RigidBody_kernels.cu"

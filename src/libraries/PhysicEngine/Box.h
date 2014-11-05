@@ -1,41 +1,54 @@
-/*
-#ifndef BOX_H
-#define BOX_H
 
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
+#ifndef BOX_H_
+#define BOX_H_
 
-//#include "RigidBody.h"
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include "CollisionShape.h"
 
 /** \brief Box
  *
  * CollisionShape in box form
  */
-/*class Box : public CollisionShape			//noch mal schaun ob vererbung korrekt!!
-{
+class Box : public CollisionShape {
+
 private:
+
 	float halfsize;	/**< defines the size of the box */
 
-/*public:
-	Box(glm::vec3 origIN, float halfsizeIN) : CollisionShape(origIN){halfsize = halfsizeIN;}
+public:
 
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	Box(glm::vec3 origIN, float massIN, Particle* bPartIN, float numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){halfsize = halfsizeIN;}
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
 	virtual ~Box();
 
+	/** \brief create particles
+	 *
+	 * ...
+	 */
 	void calcParticles();
-	void applyRotatToPart(glm::mat3 rotMatrix);
+
+	/** \brief apply rotation to body particles
+	 *
+	 * ...
+	 */
+	void applyRotToPart(glm::mat3 rotMatrix);
+
+	/** \brief fill particle array
+	 *
+	 * ...
+	 */
+	void populatePartArray();	//virtual?!
+
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	float getHalfsize() const {
-		return halfsize;
-	}
-
-	void setHalfsize(float halfsize) {
-		this->halfsize = halfsize;
-	}
 };
-#endif
-*/
+
+#endif /* BOX_H_ */

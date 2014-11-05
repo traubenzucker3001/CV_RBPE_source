@@ -1,92 +1,55 @@
-/*
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
 
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include "World.h"
-#include "Core.h"
-#include "ForceRegistry.h"
+#include "UniformGrid.h"
+#include "RigidBody.h"
 
-World::World(){
+World::World(float wsIN, float prIN, float scIN, float dcIN){
 
-	unsigned int temp = Core::getInstance()->getMaxContacts();
-	contacts = new Contact[temp];
-	forceReg = new ForceRegistry();
-	contactGen = new ContactGen();
-	resolver = new ContactResolver();
+	worldSize = wsIN;
+	partRadius = prIN;
+	springCoeff = scIN;
+	dampCoeff = dcIN;
+	gravity = 9.81f;			//fester wert
+	allbodyNum = 0;
+	allParticles = 0;
+	allPartNum = 0;
+	grid = new UniformGrid();
+
 }
 
 World::~World(){
 
-	delete[] contacts;
-	delete forceReg;
-	delete contactGen;
-	delete resolver;
-	//delete bodies;
+	//...
 }
 
-unsigned int World::genContacts(){
+void World::stepPhysics(float duration, bool isGPU){
 
-    unsigned limit = Core::getInstance()->getMaxContacts();
+	//unterteilen in cpu und gpu
 
-    Contact nextContact = contacts[0];
-
-    for(int i; i<sizeof(contacts); i++){
-
-    	/*
-    	 unsigned used = reg->gen->addContact(nextContact, limit);
-    	 limit -= used;
-    	 nextContact += used;
-
-    	 // We've run out of contacts to fill. This means we're missing
-    	 // contacts.
-    	 if (limit <= 0) break;
-    	 */
-/*    }
-
-    //return the number of contacts used.
-    return Core::getInstance()->getMaxContacts() - limit;
-}
-
-void World::runPhysics(float duration){
-
-	//abändern für partikel algorithmus
-
-	// First apply the force generators
-	//registry.updateForces(duration);
-
-	//integrate objects
-	for(std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); ++it){
-
-		(*it)->integrate(duration);
+	//ausführung auf gpu
+	if(isGPU == true){
+		Cuda::getInstance()->stepCUDA();
 	}
-	//generate contacts
-	unsigned int numContacts = genContacts();
+	//ausführung auf cpu
+	else{
 
-	// And process them
-	/*
-	if (Core::getInstance()->isCalcIterations() == true){
+		//update part. values
+		for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
+			(*it)->updatePartValues();
+		}
 
-		resolver->setIterations(numContacts * 4);
-	}
-	*/
-/*	resolver->resolveContacts(&contacts, numContacts, duration);
-}
+		//update grid
+		UniformGrid::getInstance()->updateGrid();
 
-void World::startFrame(){
+		//update momenta
+		for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
+			(*it)->updateMomenta(duration);
+		}
 
-	for(std::vector<RigidBody*>::iterator it = bodies.begin(); it != bodies.end(); it++){
-
-		//remove all forces from accumulator
-		(*it)->clearAccu();
-		(*it)->calcInternData();
+		//iterate
+		for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
+			(*it)->iterate(duration);
+		}
 	}
 }
-
-void World::addBody(RigidBody *body){
-
-	bodies.push_back(body);
-}
-*/

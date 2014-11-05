@@ -1,43 +1,53 @@
-//neue Klasse - Sphere2.h
 
-/*
-#ifndef SPHERE_H
-#define SPHERE_H
+#ifndef SPHERE_H_
+#define SPHERE_H_
 
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
-//#include "RigidBody.h"
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include "CollisionShape.h"
 
-/** \brief sphere
+/** \brief Sphere
  *
  * CollisionShape in sphere form
  */
-/*class Sphere : public CollisionShape		//noch mal schaun ob vererbung korrekt!!
-{
+class Sphere : public CollisionShape {
+
 private:
+
 	float radius;	/**< defines the size of the sphere */
 
-/*public:
-	Sphere(glm::vec3 origIN,  float radiusIN) : CollisionShape(origIN){radius = radiusIN;}
+public:
 
+	/** \brief constructor
+	 *
+	 * ...
+	 */
+	Sphere(glm::vec3 origIN, float massIN, Particle* bPartIN, float numPartIN, float radiusIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){radius = radiusIN;}
+
+	/** \brief destructor
+	 *
+	 * ...
+	 */
 	virtual ~Sphere();
 
+	/** \brief create particles
+	 *
+	 * ...
+	 */
 	void calcParticles();
-	void applyRotationToParticles(glm::mat3 rotMatrix);
+
+	/** \brief apply rotation to body particles
+	 *
+	 * ...
+	 */
+	void applyRotToPart(glm::mat3 rotMatrix);
+
+	/** \brief fill particle array
+	 *
+	 * ...
+	 */
+	void populatePartArray();	//virtual?!
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	float getRadius() const {
-		return radius;
-	}
-
-	void setRadius(float radius) {
-		this->radius = radius;
-	}
 };
-#endif
-*/
+
+#endif /* SPHERE_H_ */

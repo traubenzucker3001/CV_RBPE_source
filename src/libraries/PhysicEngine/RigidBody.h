@@ -1,219 +1,132 @@
-//neue Klasse - Rigidbody2.h
 
-/*
-#ifndef RIGID_BODY_H
-#define RIGID_BODY_H
+#ifndef RIGIDBODY_H_
+#define RIGIDBODY_H_
 
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
-//#include "Vector3.h"
-//#include "Quaternion.h"
-//#include "Matrix3.h"
-#include "CollisionShape.h"
-//#include "Matrix4.h"
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-/** \brief
+#include <vector>
+
+#include "CollisionShape.h"
+#include "Box.h"
+#include "Sphere.h"
+
+/** \brief RigidBody
  *
  * ...
  */
-/*class RigidBody
-{
+class RigidBody {
+
 private:
-	glm::vec3 position;					/**< position */
 
-/*	glm::quat orientation;				/**< orientation */
+	float mass;//							/**< body mass */
+	//ka ob nötig
+	float inverseMass;						/**< body inverse mass */
 
-/*	glm::vec3 velocity;					/**< velocity */
+	glm::vec3 position;//					/**< body position */
+	glm::vec3 velocity;//					/**< body velocity */
+	//ka ob nötig
+	glm::vec3 lastFrameVeloc;				/**< body last frame velocity */
 
-/*	glm::vec3 rotation;					/**< rotation */
+	glm::quat rotationQuat;//				/**< body rotation quaternion */
+	glm::mat3 rotationMat;//				/**< body rotation matrix */
 
-/*	float mass;							/**< mass */
+	//float initialInverseInertiaTensorDiagonal[3];//
+	glm::mat3 inertiaTensor;				/**< body inertia tensor */
+	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */
+	//world oder local coords?!
+	glm::mat3 inverseInertiaTensor;			/**< inverse inertia tensor */
 
-/*	glm::mat3 inertiaTensor;			/**< inertia tensor */
+	//
+	//rotation
+	glm::vec3 angularVelocity;				/**< angular velocity */
+	glm::vec3 angularMomentum;				/**< angular momentum */
 
-/*	CollisionShape *shape;				/**< shape, sphere or box */
+	//
+	glm::vec3 linearMomentum;				/**< linear momentum */
+	//?
+	float terminalMom;						/**< terminat momentum */
 
-/*	float linearDamp;					/**< linear damping */
+	//ehem. forcetobeapplied
+	glm::vec3 force;						/**< body force */
 
-/*	float angularDamp;					/**< angular damping */
+	//glm::vec3 torgueToBeApplied;	//ka ob nötig
+	//glm::vec3 lastFrameVeloc;	//ka ob nötig
 
-/*	glm::mat4 transformMatrix;			/**< ... */
+	bool isStatic;							/**< true if object is static, false if object is dynamic */
 
-/*	glm::vec3 forceToBeApplied;			/**< ... */
+	//später drum kümmern
+	//float linearDamp;		//welt oder jeder body einzeln?!
+	//float angularDamp;
 
-/*	glm::vec3 torgueToBeApplied;		/**< ... */
+	glm::mat4 transformMatrix;				/**< transformation matrix */
 
-/*	glm::vec3 acceleration;				/**< acceleration */
+	CollisionShape *shape;					/**< body shape */
+	//partikel erst in collshape
+	//std:vector<Particle*> bodyParticles;
+	//int numberOfParticles;
 
-/*	glm::vec3 lastFrameVeloc;			/**< last frame velocity */
-
-/*	float inverseMass;					/**< inverse mass */
-
-/*	glm::mat3 inverseInertiaTensorL;	/**< inverse inertia tensor in body coordinates */
-
-/*	glm::mat3 inverseInertiaTensorW;	/**< inverse inertia tensor in world coordinates. */
-
-/*	bool isStatic;						/**< true if this is a static object */
-
-	//+
-/*	glm::mat3 rotationMatrix;
-	glm::vec3 angularVelocity;
-	glm::vec3 force;
-
+	static int count;						/**< help variable for all bodies array/vector */
 
 public:
+
 	/** \brief constructor
 	 *
 	 * ...
 	 */
-/*	RigidBody(glm::vec3 posIN, float massIN, bool staticIN, float linDampIN, float angDampIN, bool shapeIN, float shapeSize);
+	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN);
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-/*	~RigidBody();
+	~RigidBody();
 
-	/** \brief
+	/** \brief iterate
 	 *
 	 * ...
 	 */
-/*	void calcInternData();
+	void iterate(float duration);		//performStep, mehrere schritte zusammenfassen
 
-	/** \brief
+	/** \brief update rotations matrix
 	 *
 	 * ...
 	 */
-/*	void integrate(float duration);
-
-	/** \brief
-	 *
-	 * ...
-	 */
-/*	void clearAccu();
-
-	/** \brief
-	 *
-	 * ...
-	 */
-/*	void addForce(glm::vec3 forceIN);
-
-	/** \brief calculate transform matrix
-	 *
-	 * creates a transform matrix from a position and orientation
-	 */
-/*	void calcTransMat(glm::mat4 tmIN, glm::vec3 pIN, glm::quat oIN);
-
-	/** \brief transform inertia tensor
-	 *
-	 * transform inertia tensor by a quaternion.
-	 */
-/*	void transInertiaTensor(glm::mat3 iitIN, glm::quat oIN, glm::mat3 itIN, glm::mat4 tmIN);
-
-	/** \brief add velocity
-	 *
-	 * ...
-	 */
-/*	void addVelocity(glm::vec3 velocIN);
-
-	/** \brief add rotation
-	 *
-	 * ...
-	 */
-/*	void addRotation(glm::vec3 rotatIN);
-
-	//+
-	void updatePartValues();
 	void updateRotMatrix();
-	void updateMomenta(float duration);
 
-	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	bool isIsStatic() const {
-		return isStatic;
-	}
+	/** \brief update inverse inertia tensor
+	 *
+	 * ...
+	 */
+	void updateInverseInertiaTensor();
 
-	void setIsStatic(bool isStatic) {
-		this->isStatic = isStatic;
-	}
+	/** \brief update particle values
+	 *
+	 * ...
+	 */
+	void updatePartValues();	//runter in collshape greifen
 
-	float getMass() const {
-		return mass;
-	}
+	/** \brief update momenta
+	 *
+	 * ...
+	 */
+	void updateMomenta(float duration); //runter in collshape greifen und schauen ob gravity klasse noch nötig
 
-	void setMass(float mass) {
-		this->mass = mass;
-	}
+	/** \brief reset body
+	 *
+	 * ...
+	 */
+	void reset(float newPosition);
 
-	const glm::quat& getOrientation() const {
-		return orientation;
-	}
 
-	void setOrientation(const glm::quat& orientation) {
-		this->orientation = orientation;
-	}
-
-	const glm::vec3& getPosition() const {
-		return position;
-	}
-
-	void setPosition(const glm::vec3& position) {
-		this->position = position;
-	}
-
-	const glm::vec3& getRotation() const {
-		return rotation;
-	}
-
-	void setRotation(const glm::vec3& rotation) {
-		this->rotation = rotation;
-	}
-
-	const glm::vec3& getVelocity() const {
-		return velocity;
-	}
-
-	void setVelocity(const glm::vec3& velocity) {
-		this->velocity = velocity;
-	}
-
-	const glm::vec3& getLastFrameVeloc() const {
-		return lastFrameVeloc;
-	}
-
-	void setLastFrameVeloc(const glm::vec3& lastFrameVeloc) {
-		this->lastFrameVeloc = lastFrameVeloc;
-	}
-
-	float getInverseMass() const {
-		return inverseMass;
-	}
-
-	void setInverseMass(float inverseMass) {
-		this->inverseMass = inverseMass;
-	}
-
-	const glm::mat3& getInverseInertiaTensorL() const {
-		return inverseInertiaTensorL;
-	}
-
-	void setInverseInertiaTensorL(const glm::mat3& inverseInertiaTensorL) {
-		this->inverseInertiaTensorL = inverseInertiaTensorL;
-	}
-
-	const glm::mat3& getInverseInertiaTensorW() const {
-		return inverseInertiaTensorW;
-	}
-
-	void setInverseInertiaTensorW(const glm::mat3& inverseInertiaTensorW) {
-		this->inverseInertiaTensorW = inverseInertiaTensorW;
-	}
+	// <<<<<<<<<< gpu parts >>>>>>>>>> //
+	/** \brief update cuda array
+	 *
+	 * ...
+	 */
+	void updateCUDArray(int bodyIndex);
 };
-#endif
-*/
+
+#endif /* RIGIDBODY_H_ */

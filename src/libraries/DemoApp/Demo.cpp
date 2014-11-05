@@ -1,66 +1,50 @@
-/*
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
 
+//!noch gl fehler!
+
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include "Demo.h"
 #include "Scene.h"
+#include "PhysicEngine/UniformGrid.h"
+#include "PhysicEngine/Cuda.h"
 
-#include <glm\glm.hpp>
-#include <GL/glew.h>
+Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN){
 
-
-Demo::Demo(){
-
-	//camera
-	//von camera zu trackball muckt noch rum, aber nur trackball auch
-	camera = CVK::Trackball(windowWidth, windowHeight);
+	physicsWorld = new World(wsIN,prIN,scIN,dcIN);
+	virtObjNum = 0;
+	time = new Timing();
+	windowWidth = wwIN;
+	windowHeight = whIN;
+	duration = durIN;
+	terminalVeloc = tvIN;
 }
 
-void Demo::initPhysics(){
+Demo::~Demo(){
 
-	//neue engine erstellt
+	//...
 }
 
-void Demo::initGraphics(){
+void Demo::run(){
 
-	//init cvk
-
-	//CVK::Trackball cam = camera;
-
-	//gitter erstellen
-	createGrid();
-
-	//init GLFW, GLEW
+	// Init GLFW and GLEW
 	glfwInit();
 	CVK::useOpenGL33CoreProfile();
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
-	glfwSetWindowPos(window, 100, 50);
+	glfwSetWindowPos( window, 100, 50);
 	glfwMakeContextCurrent(window);
 
 	glewInit();
 
-	camera.setCenter(glm::vec3(0.0f, 0.0f, 0.0f));
-	camera.setRadius(5);
-	camera.setNearFar(1.0f, 10.0f);
+	camera.setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
+	camera.setRadius( 5);
+	camera.setNearFar( 1.0f, 10.0f);
 
-	//callback muss noch irgwie übergangen werden Demo::... nimmt er nicht
-	glfwSetWindowSizeCallback(window, resizeCallback);
+	glfwSetWindowSizeCallback( window, resizeCallback);
 
 	initScene();
-	//war erst mit bei main, da konnta aber nicht drauf zugegriffen werden
 
 	//load, compile and link Shader
-	//noch durchsehen was für shader ich überhaupt brauche
-	const char *shadernames[2] = { SHADERS_PATH "/Examples/Phong.vert", SHADERS_PATH "/Examples/Phong.frag" };
-	CVK::ShaderPhong phongShader(VERTEX_SHADER_BIT | FRAGMENT_SHADER_BIT, shadernames);
-
-	//materialien definieren
-	//mal sehen ob nötig
-	CVK::Material mat_brick((char*)RESOURCES_PATH "/brick.bmp", black, darkgrey, 100.0f);
-	CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+	const char *shadernames[2] = {SHADERS_PATH "/Examples/Phong.vert", SHADERS_PATH "/Examples/Phong.frag"};
+	CVK::ShaderPhong phongShader( VERTEX_SHADER_BIT|FRAGMENT_SHADER_BIT, shadernames);
 
 	//OpenGL parameters
 	glClearColor(1.0, 1.0, 1.0, 0.0);
@@ -68,95 +52,101 @@ void Demo::initGraphics(){
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//möglicherweise hierarchie aufbau
-	//...
-
-	//set kamera
-	CVK::State::getInstance()->setCamera(&camera);
+	CVK::State::getInstance()->setCamera( &camera);
 
 	//define light
-	CVK::Light plight(glm::vec4(-1, 1, 1, 1), grey, glm::vec3(0, 0, 0), 1.0f, 0.0f);
-	CVK::State::getInstance()->addLight(&plight);
+	CVK::Light plight( glm::vec4( -1, 1, 1, 1), grey, glm::vec3( 0, 0, 0), 1.0f, 0.0f);
+	CVK::State::getInstance()->addLight( &plight);
 
 	//define Scene uniforms (ambient and fog)
-	CVK::State::getInstance()->updateSceneSettings(darkgrey, 0, white, 1, 10, 1);
+	CVK::State::getInstance()->updateSceneSettings( darkgrey, 0, white, 1, 10, 1);
 	CVK::State::getInstance()->setShader(&phongShader);
 
-	double startTime = glfwGetTime();
+	//...
 
-	while (!glfwWindowShouldClose(window)){
-		
+	//init cuda
+	if(isGPU == true){
+		Cuda::getInstance()->initCUDA();
+	}
+
+	//schauen wie am besten machen mit virtobjs und step simulation
+	while( !glfwWindowShouldClose(window)){
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//delta time
-		float deltaT = glfwGetTime() - startTime;
-		startTime = glfwGetTime();
-
-		//rotate in relation to time
-		//hier kommt dann der physik ablauf rein
-		/*
-		earthNode->setModelMatrix(glm::rotate(*earthNode->getModelMatrix(), 10.0f * deltaT, glm::vec3(0.0, 1.0, 0.0)));
-		moonNode->setModelMatrix(glm::rotate(*moonNode->getModelMatrix(), 40.0f * deltaT, glm::vec3(1.0, 1.0, 1.0)));
-		*/
+		time->startFrame();
+		//display();	//überflüssig
+		stepSimulation(duration);
 
 		//Update Camera
-/*		camera.update(window);
+		camera.update(window);
 
 		//update shader and render
 		phongShader.update();
-		//hierarchie bzw. alle obj. rendern
+
+		//unterschiedlich bei cpu o. gpu ausführung
+		//vorher positionen und orientierung von VOs aktualisieren
+		//obj rendern
 		//earthNode->render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		time->endFrame();
+
+		float fps = (float)time->updateFPS();
+		char title[64];
+		sprintf(title, "Rigid Body | %d fps", (int)fps);
+		glfwSetWindowTitle(window, title);
 	}
-	glfwDestroyWindow(window);
+	glfwDestroyWindow( window);
 	glfwTerminate();
 }
 
-void Demo::display(){
+void Demo::initScene(){
 
-}
-
-void Demo::update(float duration){
-
-	//for (int i=0; i<totalNumberOfBodies; i++) {
-	std::vector<RigidBody*> temp = World::getInstance()->getBodies()();
-	for(std::vector<RigidBody*>::iterator it = temp.begin(); it != temp.end(); ++it){
-
-		(*it)->updatePartValues();
+	//gpu benutzt andere create grid
+	if(isGPU == false){
+		UniformGrid::getInstance()->createGrid();
 	}
 
+	//obj initialisieren
+	initObjs();
+}
+
+//wenn nur step simulation drin bleibt, dann ja eig überflüssig
+/*void Demo::display(){
+
+	stepSimulation(timeDelta);
+
+}*/
+
+void Demo::stepSimulation(float duration){
+
+	World::getInstance()->stepPhysics(duration,isGPU);
+
+	/*
+	//update part. values
+	for(std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
+		(*it)->updatePartValuesVO();
+	}
+
+	//update grid
 	updateGrid();
 
-	//for (int i=0; i<totalNumberOfBodies; i++) {
-	std::vector<RigidBody*> temp2 = World::getInstance()->getBodies()();
-	for(std::vector<RigidBody*>::iterator it = temp2.begin(); it != temp2.end(); ++it){
-
-				(*it)->updateMomenta(duration);
+	//update momenta
+	for(std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
+		(*it)->updateMomentaVO(duration);
 	}
 
-	//for (int i=0; i<totalNumberOfBodies; i++) {
-	std::vector<RigidBody*> temp3 = World::getInstance()->getBodies()();
-	for(std::vector<RigidBody*>::iterator it = temp3.begin(); it != temp3.end(); ++it){
-
-				(*it)->performStep(duration);
+	//iterate
+	for(std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
+		(*it)->iterateVO(duration);
 	}
+	*/
 }
 
-// <<<<<<<<<< callback funcs >>>>>>>>>> //
-void Demo::keyCallback(){
-}
+void Demo::resetScene(){
 
-void Demo::resizeCallback(GLFWwindow *window, int w, int h){
-
-	camera.setWidthHeight(w, h);
-	glViewport(0, 0, w, h);
+	//...
 }
-
-void Demo::mouseButtonCallback(){
-}
-
-void Demo::mouseMotionCallback(){
-}
-*/

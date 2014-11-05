@@ -1,119 +1,134 @@
-//neue Klasse - World2.h
 
-/*
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef WORLD_H_
+#define WORLD_H_
 
-#include <string>
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
 
-#include "Contact.h"
-#include "ForceRegistry.h"
-#include "ContactGen.h"
-#include "ContactResolver.h"
 #include "RigidBody.h"
-#include "Particle.h"
+#include "UniformGrid.h"
+#include "DesignPatterns\Singleton.h"
+#include "Cuda.h"
 
-#include "designPatterns/Singleton.h"
-
-/** \brief Physics World
+/** \brief physics World
  *
- * contains all rigid bodies.
- * World is Singleton to ensure that there is only one physic world at a time
+ * ...
  */
-/*class World : public Singleton<World> {
+class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
-	Contact *contacts;				/**< list of all contacts inside the world */
+	float worldSize;					/**< world size */
+	float partRadius;					/**< particle radius */
 
-/*	ForceRegistry *forceReg;			/**< registry that contains information about  which forces appear to which rigid bodies */
+	float springCoeff;					/**< spring coefficient */
+	//welt oder jeder body einzeln?!
+	float dampCoeff;					/**< damping coefficient */
+	float gravity;						/**< gravity force value */
 
-/*	ContactGen *contactGen;				/**< class which updates the contact list in each iteration */
+	std::vector<RigidBody*> allBodies;	/**< list of all bodies in the world */
+	int allbodyNum;						/**< number of bodies in the world */
+	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser
+	//**
+	Particle** allParticles;				/**< list of all particles in the world */
+	int allPartNum;						/**< number of particles in the world */
 
-/*	ContactResolver *resolver;			/**< contact resolution */
+	UniformGrid *grid;					/**< uniform grid */
 
-/*	std::vector<RigidBody*> bodies;		/**< list of all rigid bodies in the world */
-
-
-/*	int bodyNum;
-
-	std::vector<Particle*> allParticles;
-
-	int aPartNum;
-
+	Cuda *cudaStruct;					/**< cuda data structure */
 
 public:
+
 	/** \brief constructor
 	 *
 	 * ...
 	 */
-/*	World();
+	World(float wsIN, float prIN, float scIN, float dcIN);
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-/*	~World();
+	~World();
 
-	/** \brief
+	/** \brief step physics simulation
 	 *
 	 * ...
 	 */
-/*	unsigned int genContacts();
-
-	/** \brief
-	 *
-	 * ...
-	 */
-/*	void runPhysics(float duration);
-
-	/** \brief
-	 *
-	 * Initials world for a simulation frame. clears the force and torque accumulators for bodies.
-	 */
-/*	void startFrame();
-
-	/** \brief
-	 *
-	 * adds new rigid body to the world
-	 */
-/*	void addBody(RigidBody *body);
+	void stepPhysics(float duration, bool isGPU);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	const std::vector<Particle*>& getAllParticles() const {
+	 Particle** getAllParticles() const {
 		return allParticles;
 	}
 
-	void setAllParticles(const std::vector<Particle*>& allParticles) {
+	void setAllParticles( Particle**& allParticles) {
 		this->allParticles = allParticles;
 	}
 
-	const std::vector<RigidBody*>& getBodies() const {
-		return bodies;
+	int getAllPartNum() const {
+		return allPartNum;
 	}
 
-	void setBodies(const std::vector<RigidBody*>& bodies) {
-		this->bodies = bodies;
+	void setAllPartNum(int allPartNum) {
+		this->allPartNum = allPartNum;
 	}
 
-	int getBodyNum() const {
-		return bodyNum;
+	float getPartRadius() const {
+		return partRadius;
 	}
 
-	void setBodyNum(int bodyNum) {
-		this->bodyNum = bodyNum;
+	void setPartRadius(float partRadius) {
+		this->partRadius = partRadius;
 	}
 
-	int getAPartNum() const {
-		return aPartNum;
+	float getWorldSize() const {
+		return worldSize;
 	}
 
-	void setAPartNum(int partNum) {
-		this->aPartNum = partNum;
+	void setWorldSize(float worldSize) {
+		this->worldSize = worldSize;
+	}
+
+	float getSpringCoeff() const {
+		return springCoeff;
+	}
+
+	void setSpringCoeff(float springCoeff) {
+		this->springCoeff = springCoeff;
+	}
+
+	float getDampCoeff() const {
+		return dampCoeff;
+	}
+
+	void setDampCoeff(float dampCoeff) {
+		this->dampCoeff = dampCoeff;
+	}
+
+	float getGravity() const {
+		return gravity;
+	}
+
+	void setGravity(float gravity) {
+		this->gravity = gravity;
+	}
+
+	const std::vector<RigidBody*>& getAllBodies() const {
+		return allBodies;
+	}
+
+	void setAllBodies(const std::vector<RigidBody*>& allBodies) {
+		this->allBodies = allBodies;
+	}
+
+	int getAllbodyNum() const {
+		return allbodyNum;
+	}
+
+	void setAllbodyNum(int allbodyNum) {
+		this->allbodyNum = allbodyNum;
 	}
 };
-#endif
+
+#endif /* WORLD_H_ */

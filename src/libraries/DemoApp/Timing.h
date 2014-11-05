@@ -1,88 +1,80 @@
-//neue klasse - Timing2.h
 
-/*
-#ifndef TIMING_H
-#define TIMING_H
+#ifndef TIMING_H_
+#define TIMING_H_
 
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
+// <<<<<<<<<< includes >>>>>>>>>> //
+#include "DesignPatterns\Singleton.h"
 
-#include "DesignPatterns/Singleton.h"
-
-/** \brief timing
+/** \brief Timing
  *
- * Timing is Singleton to ensure that there is only one instance at a time
+ * class to control simulation time and frames per second
  */
-/*class Timing : public Singleton<Timing> {
+class Timing : public Singleton<Timing> {
 	friend class Singleton<Timing>;
 
 private:
-	unsigned int frameNum;				/**< counts frame numbers */
 
-/*	unsigned int lastFrameTimeStamp;	/**< time stamp of last frame */
+	//framecount
+	int frameNum;					/**< frame number */
+	float fps;						/**< frames per second */
 
-/*	unsigned int lastFrameDuration;		/**< duration of last frame */
+	float afd;		/**< average frame duration */
 
-/*	unsigned long lastFrameClockStamp;	/**< clock stamp of last frame */
+	//gesamtzeit
+	int totalTime;					/**< total running time */
 
-/*	unsigned long lastFrameClockTicks;	/**< clock ticks of last frame */
+	int startTime;					/**< frame start time */
+	int endTime;					/**< frame end time */
 
-/*	double averageFrameDuration;		/**< average frame duration */
+	//TODO vars
+	//eig erledigt
+	//aber vllt noch weitere?!
 
-/*	float framesPerSec;					/**< frames per second */
-	
-	/*
-	int frameRefCount;
-	int t1;
-	int t2;
-	int totalElapsedTime;
-	*/
-
-/*public:
-
-	void beginFrame();
-	void endFrame();
-	float getFPS();
-	bool isTimeToUpdate();
+public:
 
 	/** \brief constructor
-	 *
-	 * ...
-	 */
-/*	Timing();
+	*
+	* ...
+	*/
+	Timing();
 
 	/** \brief destructor
-	 *
-	 * ...
-	 */
-/*	~Timing();
+	*
+	* ...
+	*/
+	~Timing();
 
-	/** \brief initial time
-	 *
-	 * ...
-	 */
-/*	void initTime();
+	/** \brief start frame
+	*
+	* ...
+	*/
+	void startFrame();
 
-	/** \brief update time
-	 *
-	 * ...
-	 */
-/*	void updateTime();
+	/** \brief end frame
+	*
+	* ...
+	*/
+	void endFrame();
 
-	/** \brief get time
-	 *
-	 * ...
-	 */
-/*	unsigned int getTime();
+	/** \brief get current time
+	*
+	* ...
+	*/
+	int getTime();
 
-	/** \brief get clock
-	 *
-	 * ...
-	 */
-/*	unsigned long getClock();
+	/** \brief update average frame duration
+	*
+	* ...
+	*/
+	void updateAFD();
 
+	/** \brief update frames per second
+	*
+	* ...
+	*/
+	float updateFPS();
+
+	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 };
-#endif
+
+#endif /* TIMING_H_ */

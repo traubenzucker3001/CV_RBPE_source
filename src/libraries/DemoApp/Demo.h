@@ -1,54 +1,50 @@
-//neue klasse - Demo2.h
 
-/*
-#ifndef DEMO_H
-#define DEMO_H
+//!noch cvk fehler!
+//TODO callback funcs
 
-#include <string>
-#include <vector>
-#include <list>
+#ifndef DEMO_H_
+#define DEMO_H_
+
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
-#include <assert.h>
+#include <vector>
 
-#include <glm\glm.hpp>
-
+#include "Timing.h"
+#include "PhysicEngine/World.h"
 #include "PhysicEngine/VirtualObject.h"
-#include "PhysicEngine/Core.h"
-#include "DemoApp/Timing.h"
+#include "DesignPatterns/Singleton.h"
+
 #include "CVK_Framework/CVK_Framework.h"
 
 /** \brief Demo
  *
- * ...
+ * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
  */
-/*class Demo : public Singleton<Demo> {
+class Demo : public Singleton<Demo> {
 	friend class Singleton<Demo>;
 
 private:
+	int windowWidth;							/**< demo window width */
+	int windowHeight;							/**< demo window height */
+
+	//nicht sicher ob als extra var nötig
+	//GLFWwindow* window;						/**< glfw window reference */
+
+	//oder noch über core gehen?!
+	World *physicsWorld;						/**< physics world that contains all rigid bodies */
+
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
+	int virtObjNum;								/**< number of virtual objects in the list */
 
-/*	int virtObjNum;
+	Timing *time;								/**< time data */
+	float duration;								/**< step duration */
+	float terminalVeloc;						/**< terminal velocity */
 
-	Core *physicsCore;							/**< physics engine core */
+	//bzw normale camera
+	CVK::Trackball camera;						/**< cvk camera objekt */
 
-/*	int windowWidth;							/**< window width */
-
-/*	int windowHeight;							/**< window height */
-
-/*	Timing *time;								/**< time data */
-
-/*	GLFWwindow* window;
-
-	CVK::Trackball camera;
-
-	//partikel radius, weld größe, ...
-	float partRadius;
-	float worldSize;
-
-	//nicht nur VO positionen, sondern auch größe der scene/simulationsdomain, um gitter richtig drüber legen zu können
-	glm::vec3 sceneMIN;
-	glm::vec3 sceneMAX;
-
+	//ka ob hier oder einfach in main?!
+	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 
 public:
 
@@ -56,75 +52,87 @@ public:
 	*
 	* ...
 	*/
-/*	Demo();
+	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN);
 
-	/** \brief initial physics
-	 *
-	 * ...
-	 */
-/*	void initPhysics();
+	/** \brief destructor
+	*
+	* ...
+	*/
+	~Demo();
 
-	/** \brief initial graphics
-	 *
-	 * ...
-	 */
-/*	void initGraphics();
 
-	//setView ?!
+	/** \brief init physics
+	*
+	* ...
+	*/
+	//void initPhysics();	//eig schon im konstruktor von demo gemacht
+
+	/** \brief init graphics
+	*
+	* ...
+	*/
+	void run();	//für cvk stuff		//vorher initGraphics()
+
+	/** \brief init scene
+	*
+	* ...
+	*/
+	void initScene();
+
+	/** \brief update simulation
+	*
+	* ...
+	*/
+	void stepSimulation(float duration);
+
+	/** \brief reset scene
+	*
+	* ...
+	*/
+	void resetScene();
 
 	/** \brief display function
-	 *
-	 * called each frame, ...
-	 */
-/*	void display();
+	*
+	* ...
+	*/
+	//void display();	//nicht nötig
 
-	/** \brief update
-	 *
-	 * called each frame, ...
-	 */
-/*	void update(float duration);
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
-	/** \brief key callback function
-	 *
-	 * ...
-	 */
-/*	void keyCallback();
+	//schauen wie das mit cvk läuft
+	/** \brief mouse button callback
+	*
+	* ...
+	*/
+	void mouseButtonCallback(int button, int state, int x, int y);
 
-	/** \brief window resize callback function
-	 *
-	 * ...
-	 */
-/*	void resizeCallback(GLFWwindow *window, int w, int h);
+	/** \brief mouse motion callback
+	*
+	* ...
+	*/
+	void mouseMotionCallback(int x, int y);
 
-	/** \brief mouse button callback function
-	 *
-	 * ...
-	 */
-/*	void mouseButtonCallback();
+	/** \brief key callback
+	*
+	* ...
+	*/
+	void keyCallback(unsigned char key, int x, int y);
 
-	/** \brief mouse motion callback function
-	 *
-	 * ...
-	 */
-/*	void mouseMotionCallback();
+	/** \brief window resize callback
+	*
+	* ...
+	*/
+	void resizeCallback(GLFWwindow *window, int w, int h);
+
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	float getPartRadius() const {
-		return partRadius;
+	float getTerminalVeloc() const {
+		return terminalVeloc;
 	}
 
-	void setPartRadius(float partRadius) {
-		this->partRadius = partRadius;
-	}
-
-	float getWorldSize() const {
-		return worldSize;
-	}
-
-	void setWorldSize(float worldSize) {
-		this->worldSize = worldSize;
+	void setTerminalVeloc(float terminalVeloc) {
+		this->terminalVeloc = terminalVeloc;
 	}
 };
-#endif
-*/
+
+#endif /* DEMO_H_ */

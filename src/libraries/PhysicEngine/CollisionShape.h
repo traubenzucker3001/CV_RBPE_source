@@ -1,72 +1,75 @@
-//neue klasse - CollisionShape2.h
 
-/*
-#ifndef COLLISION_SHAPE_H
-#define COLLISION_SHAPE_H
+#ifndef COLLISIONSHAPE_H_
+#define COLLISIONSHAPE_H_
 
-#include <string>
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
 
-//#include "Vector3.h"
-#include <glm/glm.hpp>
-//#include "Sphere.h"
-//#include "Box.h"
-
-//!überlegen ob nicht raus lassen und sphere/box direkt von body erben!
+#include "Particle.h"
 
 /** \brief Collision Shape
  *
  * represents the shape of the RigidBody
  */
-/*class CollisionShape
-{
+class CollisionShape {
+
 protected:
-//private:
-	glm::vec3 origin;	/**< origin of the shape = position of RigidBody */
 
-	//+
-/*	std::vector<Particle*> bodyParticle;
+	glm::vec3 origin;			/**< origin of the shape = position of RigidBody */
+	float mass;					/**< mass of the shape = mass of RigidBody */
 
-	int bPartNum;
-
-	float mass;
+	//std::vector<Particle*> bodyParticles;	//besser ist array
+	//**
+	Particle** bodyParticles;	/**< array with body representing particles */
+	int numOfPart;				/**< number of body representing particles */
 
 public:
 	/** \brief constructor
 	 *
 	 * ...
 	 */
-/*	CollisionShape(glm::vec3 origIN);
+	CollisionShape(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN);	//bodyPart noch dazu?!
 
 	/** \brief destructor
 	 *
 	 * ...
 	 */
-/*	virtual ~CollisionShape();
+	virtual ~CollisionShape();
 
-	virtual void calcParticles() = 0;
+	/** \brief create particles
+	 *
+	 * ...
+	 */
+	virtual void calcParticles() = 0;		//createParticles
 
-	virtual void applyRotationToParticles() = 0;
+	/** \brief apply rotation to body particles
+	 *
+	 * ...
+	 */
+	virtual void applyRotToPart(glm::mat3 rotMatrix) = 0;	//von wo aufgerufen vorher updateRotationMatrix();
+
+	/** \brief fill particle array
+	 *
+	 * ...
+	 */
+	virtual void populatePartArray() = 0;	//virtual?!
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	const glm::vec3& getOrigin() const {
-		return origin;
+	int getNumOfPart() const {
+		return numOfPart;
 	}
 
-	void setOrigin(const glm::vec3& origin) {
-		this->origin = origin;
+	void setNumOfPart(int numOfPart) {
+		this->numOfPart = numOfPart;
 	}
 
-	const std::vector<Particle*>& getBodyParticle() const {
-		return bodyParticle;
+	 Particle** getBodyParticles() const {					//falsch generiert?!
+		return bodyParticles;
 	}
 
-	void setBodyParticle(const std::vector<Particle*>& bodyParticle) {
-		this->bodyParticle = bodyParticle;
+	void setBodyParticles( Particle**& bodyParticles) {		//falsch generiert?!
+		this->bodyParticles = bodyParticles;
 	}
 };
-#endif
-*/
+
+#endif /* COLLISIONSHAPE_H_ */

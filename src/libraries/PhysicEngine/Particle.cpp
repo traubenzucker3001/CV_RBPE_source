@@ -178,7 +178,7 @@ void Particle::populateArray(){
 
 	//body oder all part. array ?!	//müsste eig all sein
 	Particle** allP = World::getInstance()->getAllParticles();
-	allP[indexCount] = this;
+	allP[indexCount] = this;	//müsste doch eig durch setter befüllt werden?!, hier wird ja nur referenz und nicht das wirkliche array beschrieben. könnte noch an mehreren stellen falsch sein, vllt array public machen
 	indexCount++;
 }
 

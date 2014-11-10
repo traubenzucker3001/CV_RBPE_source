@@ -34,6 +34,13 @@ void Demo::run(){
 
 	glewInit();
 
+	//vbos generieren und binden
+	glGenBuffers(1, &rbVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, rbVBO);
+	int bufferSize = vertexCount * 3 * sizeof(float);
+	glBufferData(GL_ARRAY_BUFFER, 3 * bufferSize, vertexData, GL_DYNAMIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, numParticles * 3 * sizeof(float), 0, GL_DYNAMIC_DRAW); // locate the memory, but without initialize the values  
+
 	camera.setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
 	camera.setRadius( 5);
 	camera.setNearFar( 1.0f, 10.0f);

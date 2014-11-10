@@ -9,6 +9,7 @@
 #include "UniformGrid.h"
 #include "DesignPatterns\Singleton.h"
 #include "Cuda.h"
+#include <GL\glew.h>
 
 /** \brief physics World
  *
@@ -26,17 +27,24 @@ private:
 	float dampCoeff;					/**< damping coefficient */
 	float gravity;						/**< gravity force value */
 
-	std::vector<RigidBody*> allBodies;	/**< list of all bodies in the world */
-	int allbodyNum;						/**< number of bodies in the world */
+	//std::vector<RigidBody*> allBodies;	//array wahrscheinl. besser
+	RigidBody** allBodies;				/**< list of all bodies in the world */
+	int allBodyNum;						/**< number of bodies in the world */
 	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser
 	//**
-	Particle** allParticles;				/**< list of all particles in the world */
+	Particle** allParticles;			/**< list of all particles in the world */
 	int allPartNum;						/**< number of particles in the world */
 
 	UniformGrid *grid;					/**< uniform grid */
 
 	Cuda *cudaStruct;					/**< cuda data structure */
 
+	//in demo gepackt
+	//GLuint rbVBO;						/**< vertex buffer object for rigid body positions */
+	//GLuint pVBO;						/**< vertex buffer object for particle positions */
+	//?
+	//int vertexCount;					/**< ... */
+	
 public:
 
 	/** \brief constructor
@@ -114,20 +122,20 @@ public:
 		this->gravity = gravity;
 	}
 
-	const std::vector<RigidBody*>& getAllBodies() const {
+	int getAllBodyNum() const {
+		return allBodyNum;
+	}
+
+	void setAllBodyNum(int allbodyNum) {
+		this->allBodyNum = allbodyNum;
+	}
+
+	RigidBody**& getAllBodies() {
 		return allBodies;
 	}
 
-	void setAllBodies(const std::vector<RigidBody*>& allBodies) {
+	void setAllBodies(RigidBody**& allBodies) {
 		this->allBodies = allBodies;
-	}
-
-	int getAllbodyNum() const {
-		return allbodyNum;
-	}
-
-	void setAllbodyNum(int allbodyNum) {
-		this->allbodyNum = allbodyNum;
 	}
 };
 

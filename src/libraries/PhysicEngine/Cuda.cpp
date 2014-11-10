@@ -2,6 +2,7 @@
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <cuda.h>
 #include <cuda_runtime.h>
+#include <cuda_gl_interop.h>
 
 #include "Cuda.h"
 #include "World.h"
@@ -82,11 +83,11 @@ void Cuda::initCUDA(){
 	h_rbVeloc = new glm::vec3[bodyNum];
 	h_rbLinMom = new glm::vec3[bodyNum];
 	h_rgRotQuat = new glm::quat[bodyNum];
-	h_rbRotMat = new glm::mat4[bodyNum];
+	h_rbRotMat = new glm::mat3[bodyNum];
 	h_rbAngVeloc = new glm::vec3[bodyNum];
 	h_rbAngMom = new glm::vec3[bodyNum];
 	h_rbInitInversInertTensDiago = new glm::vec3[bodyNum];
-	h_rbInverseInertTens = new glm::mat4[bodyNum];
+	h_rbInverseInertTens = new glm::mat3[bodyNum];
 
 	//paticle arrays
 	h_pMass = new float[partNum];
@@ -132,7 +133,7 @@ void Cuda::initCUDA(){
 void Cuda::updateHostArrays(){
 
 	//entscheiden ob vector o. arrays, dann entspr. anpassungen vornehmen
-	std::vector<RigidBody*> allB = World::getInstance()->getAllBodies();
+	RigidBody** allB = World::getInstance()->getAllBodies();
 	Particle** allP = World::getInstance()->getAllParticles();
 	for (int i=0; i<bodyNum; i++) {
 		allB[i]->updateCUDArray(i);
@@ -172,16 +173,18 @@ void Cuda::initCUDAGrid(){
 
 	int gS = UniformGrid::getInstance()->getGridSize();
 	h_gCountGrid = new int[gS];
-	h_gIndexGrid = new int4[gS];	//int4?!
+	h_gIndexGrid = new glm::vec4[gS];	//int4?!
 
 	//device arrays
 	cudaMalloc((void**)&d_pGridIndex, bodyNum*sizeof(glm::vec3));
 
 	cudaMalloc((void**)&d_gCountGrid, bodyNum*sizeof(int));
-	cudaMalloc((void**)&d_gIndexGrid, bodyNum*sizeof(int4));	//int4?!
+	cudaMalloc((void**)&d_gIndexGrid, bodyNum*sizeof(glm::vec4));	//int4?!
 }
 
 void Cuda::stepCUDA(){
+
+	//TODO
 
 	//schritte nacheinander aufrufen
 	//...
@@ -194,6 +197,17 @@ void Cuda::stepCUDA(){
 
 	//rendern!?
 	//bzw. cuda opengl austausch
+	
+	//irgwo vorher noch vbo mit cuda daten initial füllen, hier dann immer updaten!!
+	cudaGLRegisterBufferObject(bufferObj);
+	cudaGLMapBufferObject((void**)&devPtr,bufferObj);
+
+	//kernel aufrufen
+
+	cudaGraphicsUnmapResources(1, &cuda_vbo_resource1, 0);	// give access authority of vbo1 back to openGL  
+	cudaGraphicsUnregisterResource(cuda_vbo_resource1);		// unregiste the resource   
+
+	//mit opengl rendern
 
 }
 

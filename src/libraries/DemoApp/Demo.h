@@ -33,6 +33,7 @@ private:
 	//oder noch über core gehen?!
 	World *physicsWorld;						/**< physics world that contains all rigid bodies */
 
+	//oder auch array?!
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
 	int virtObjNum;								/**< number of virtual objects in the list */
 
@@ -45,6 +46,11 @@ private:
 
 	//ka ob hier oder einfach in main?!
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
+
+	GLuint rbVBO;						/**< vertex buffer object for rigid body positions */
+	GLuint pVBO;						/**< vertex buffer object for particle positions */
+	//?
+	int vertexCount;					/**< ... */
 
 public:
 

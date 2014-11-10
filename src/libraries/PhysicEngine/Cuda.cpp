@@ -133,7 +133,7 @@ void Cuda::updateHostArrays(){
 
 	//entscheiden ob vector o. arrays, dann entspr. anpassungen vornehmen
 	std::vector<RigidBody*> allB = World::getInstance()->getAllBodies();
-	Particle* allP = World::getInstance()->getAllParticles();
+	Particle** allP = World::getInstance()->getAllParticles();
 	for (int i=0; i<bodyNum; i++) {
 		allB[i]->updateCUDArray(i);
 	}

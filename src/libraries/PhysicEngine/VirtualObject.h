@@ -18,7 +18,7 @@ class VirtualObject
 private:
 	RigidBody* physicBody;		/**< RigidBody as physics component of this object */
 
-	CVK::Geometry graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
+	CVK::Geometry* graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
 	//eig  überflüssig wenn model matrix habe
 	glm::vec3 position;			/**< position */
@@ -31,7 +31,7 @@ public:
 	 *
 	 * ...
 	 */
-	VirtualObject(RigidBody* physBody);
+	VirtualObject(float sizeIN, glm::vec3 posIN);
 
 	/** \brief constructor
 	 *

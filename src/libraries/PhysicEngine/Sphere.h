@@ -21,7 +21,7 @@ public:
 	 *
 	 * ...
 	 */
-	Sphere(glm::vec3 origIN, float massIN, Particle* bPartIN, float numPartIN, float radiusIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){radius = radiusIN;}
+	Sphere(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN, float radiusIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){radius = radiusIN;}
 
 	/** \brief destructor
 	 *

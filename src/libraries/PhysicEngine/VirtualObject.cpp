@@ -7,31 +7,35 @@
 #include "VirtualObject.h"
 
 
-	VirtualObject::VirtualObject(RigidBody* physBody){
+VirtualObject::VirtualObject(float sizeIN, glm::vec3 posIN){
 
-		physicBody = physBody;
-	}
+	physicBody = new RigidBody(sizeIN);
+	graphicBody = new CVK::Cube(sizeIN);
+}
 
-	/*
-	VirtualObject::VirtualObject(bool shape, float shapeSize){
+/*
+VirtualObject::VirtualObject(bool shape, float shapeSize){
 
-		physicBody = ;
-	}
-	*/
+	physicBody = ;
+}
+*/
 
-	VirtualObject::~VirtualObject(){
+VirtualObject::~VirtualObject(){
 
-	}
+}
 
-	void VirtualObject::update(){
+//über cuda - opengl austausch
+void VirtualObject::update(){
 
-	}
+}
 
-	void VirtualObject::translate(){
+//nicht benötigt
+void VirtualObject::translate(){
 
-	}
+}
 
-	void VirtualObject::scale(){
+//nicht benötigt
+void VirtualObject::scale(){
 
-	}
+}
 

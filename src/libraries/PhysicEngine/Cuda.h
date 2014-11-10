@@ -42,7 +42,7 @@ private:
 	glm::vec3 *h_pGridIndex;
 
 	int* h_gCountGrid;
-	int4* h_gIndexGrid; //int4?!
+	glm::vec4 *h_gIndexGrid; //int4?!
 
 
 	//benötigte arrays gpu (device)
@@ -68,7 +68,7 @@ private:
 	glm::vec3 *d_pGridIndex;
 
 	int* d_gCountGrid;
-	int4* d_gIndexGrid;	//int4?!
+	glm::vec4 *d_gIndexGrid;	//int4?!
 
 	glm::vec3 gridMinPosVector;		//?!
 

@@ -5,7 +5,9 @@
 #include "DemoApp/Demo.h"
 #include "CollisionShape.h"
 #include "Box.h"
-#include "Sphere2.h"
+#include "Sphere.h"
+
+using namespace std;
 
 int RigidBody::count = 0;
 
@@ -19,13 +21,14 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN)
 	isStatic = staticIN;
 	if(shapeIN == true){
 
-		shape = new Sphere();
+		//shape = new Sphere();
+		cout << "sphere shape not possible!!" << endl;
 	}
 	else{
 
 		glm::vec3 pOrigIN = posIN;
 		float pMassIN = massIN; 
-		Particle* bPartIN;
+		Particle** bPartIN;
 		float numPartIN;
 		float halfsizeIN;
 

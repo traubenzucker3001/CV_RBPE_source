@@ -21,7 +21,7 @@ public:
 	 *
 	 * ...
 	 */
-	Box(glm::vec3 origIN, float massIN, Particle* bPartIN, float numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){halfsize = halfsizeIN;}
+	Box(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){halfsize = halfsizeIN;}
 
 	/** \brief destructor
 	 *

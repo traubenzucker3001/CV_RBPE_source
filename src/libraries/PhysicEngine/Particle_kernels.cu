@@ -4,14 +4,26 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#include "World.h"
+
+#define GLM_FORCE_CUDA
 #include <glm\glm.hpp>
+
+//Round a / b to nearest higher integer value
+int nearHighVal(int a, int b){
+	return (a % b != 0) ? (a / b + 1) : (a / b);
+}
 
 //collision detection
 void calcCollForces(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, int4* indexGrid, int gridSL){
 
 	//blocks und threads berechn.
+	int n = World::getInstance()->getAllPartNum();
+	int blockSize = 64;
+	int numThreads = fmin(blockSize, n);
+	int numBlocks = nearHighVal(n, numThreads);
 
-	calcCollForcesC <<< numBlocks, numThreads >>>(pMass,pPos,pVeloc,pForce,pRadius,worldS,springC,dampC,pGridIndex,countGrid,indexGrid,gridSL);
+	calcCollForcesC<<< numBlocks, numThreads >>>(pMass,pPos,pVeloc,pForce,pRadius,worldS,springC,dampC,pGridIndex,countGrid,indexGrid,gridSL);
 }
 
 __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, int4* indexGrid, int gridSL){
@@ -149,8 +161,12 @@ __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pV
 void updatePart(){
 
 	//blocks und threads berechn.
+	int n = World::getInstance()->getAllPartNum();
+	int blockSize = 64;
+	int numThreads = fmin(blockSize, n);
+	int numBlocks = nearHighVal(n, numThreads);
 
-	updatePartC <<< numBlocks, numThreads >>>();
+	updatePartC<<< numBlocks, numThreads >>>();
 }
 
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
@@ -163,7 +179,7 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 	int bi = pi / 27;
-	int mi = bi * 9;
+	int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
 	glm::vec3 originalRelativePos;
 	//Calculate original relative position
@@ -184,28 +200,28 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 		yIndex--;
 		zIndex--;
 
-		originalRelativePos.x = xIndex*space;
+		originalRelativePos.x = (float)xIndex * space;
 		originalRelativePos.y = yIndex*space;
 		originalRelativePos.z = zIndex*space;
 	}
 
 	//Update particle position
 	{
-
+		glm::mat3 tempRotMat = rbRotMat[bi];
 		pPos[pi].x =
-			originalRelativePos.x*rbRotMat[mi].x +				//oder doch mi+1 +2 +3 +4 +5 +... ?!
-			originalRelativePos.y*rbRotMat[mi].y +
-			originalRelativePos.z*rbRotMat[mi].z;
+			originalRelativePos.x * tempRotMat[0].x +				//oder doch mi+1 +2 +3 +4 +5 +... ?!	//.xyz wollt er nit
+			originalRelativePos.y * tempRotMat[0].y +
+			originalRelativePos.z * tempRotMat[0].z;
 
 		pPos[pi].y =
-			originalRelativePos.x*rbRotMat[mi + 1].x +
-			originalRelativePos.y*rbRotMat[mi + 1].y +
-			originalRelativePos.z*rbRotMat[mi + 1].z;
+			originalRelativePos.x * tempRotMat[1].x +
+			originalRelativePos.y * tempRotMat[1].y +
+			originalRelativePos.z * tempRotMat[1].z;
 
 		pPos[pi].z =
-			originalRelativePos.x*rbRotMat[mi + 2].x +
-			originalRelativePos.y*rbRotMat[mi + 2].y +
-			originalRelativePos.z*rbRotMat[mi + 2].z;
+			originalRelativePos.x * tempRotMat[2].x +
+			originalRelativePos.y * tempRotMat[2].y +
+			originalRelativePos.z * tempRotMat[2].z;
 
 		pPos[pi].x += rbPos[bi].x;
 		pPos[pi].y += rbPos[bi].y;

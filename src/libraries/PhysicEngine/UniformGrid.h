@@ -9,20 +9,21 @@
 //nicht sicher ob überhaupt singleton sein muss
 /** \brief Uniform Grid
  *
- * ...
+ * class for uniform grid representation
+ * singleton because there can be only one grid over the one physics simulation world
  */
 class UniformGrid : public Singleton<UniformGrid> {
 	friend class Singleton<UniformGrid>;
 
 private:
-	int* indexGrid;			/**< ... */
-	//?
+	int* indexGrid;			/**< ... */		//?
+
 	int* countGrid; 		/**< ... */
 	float voxelSize;		/**< voxel size */
-	//4 nach gpu gems
-	int partPerVoxel = 4;	/**< particles per voxel */
-	//?
-	float gridMinPos;		/**< grid minimum position */
+
+	int partPerVoxel = 4;	/**< particles per voxel */		//4 nach gpu gems
+
+	float gridMinPos;		/**< grid minimum position */	//?
 	int gridLength;			/**< grid lenght */
 
 	int gridSize;			/**< grid size */
@@ -33,38 +34,44 @@ public:
 
 	/** \brief constructor
 	 *
-	 * ...
+	 * creates the uniform grid instance
 	 */
 	UniformGrid();
 
 	/** \brief destructor
 	 *
-	 * ...
+	 * destroys the uniform grid instance
 	 */
 	~UniformGrid();
 
 	/** \brief create uniform grid
 	 *
-	 * ...
+	 * initial the uniform grid
+	 * @return void
 	 */
 	void createGrid();
 
 	/** \brief update uniform grid
 	 *
-	 * ...
+	 * update the uniform grid
+	 * @return void
 	 */
 	void updateGrid();
 
 	//
 	/** \brief is valid grid index
 	 *
-	 * ...
+	 * proof of given index is a valid one
+	 * @param gridIndex ...
+	 * @return true if it is a valid index, false if not
 	 */
 	bool isValidIndex(glm::vec3 gridIndex);
 
 	/** \brief get neighbor particle indices
 	 *
-	 * ...
+	 * get the neighbors of the particle with given grid index
+	 * @param gridIndex ...
+	 * @return array of neighbor particles
 	 */
 	int* getNeighborPartIndices(glm::vec3 gridIndex);
 

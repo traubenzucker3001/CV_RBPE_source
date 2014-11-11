@@ -49,19 +49,26 @@ public:
 
 	/** \brief constructor
 	 *
-	 * ...
+	 * creates the world instance
+	 * @param wsIN world size
+	 * @param prIN particle radius
+	 * @param scIN spring coefficient
+	 * @param dcIN damping coefficient
 	 */
 	World(float wsIN, float prIN, float scIN, float dcIN);
 
 	/** \brief destructor
 	 *
-	 * ...
+	 * destroys the world instance
 	 */
 	~World();
 
 	/** \brief step physics simulation
 	 *
 	 * ...
+	 * @param duration time length of a simulation step
+	 * @param isGPU true if simulation should run on gpu, false for simulation on cpu
+	 * @return void
 	 */
 	void stepPhysics(float duration, bool isGPU);
 

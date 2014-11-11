@@ -20,6 +20,7 @@ float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
 bool isGPU = false;
 float worldSize = 15.0f;	//Half length of world
 float partRadius = 0.20f;
+float boxHSize = partRadius * 3;
 
 int main() {
 

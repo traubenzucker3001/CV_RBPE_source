@@ -12,6 +12,8 @@ using namespace std;
 //methode zur erstellung (zum füllen) der szene
 static void initObjs(){
 
+	cout << "scene: initObjs called!" << endl; //zum test
+
 	//...
 	World::getInstance()->setAllPartNum(0);
 	vertexCount = 0;
@@ -33,7 +35,7 @@ static void initObjs(){
 	particles = new Particle*[numberP];
 
 	for (int i = 0; i<numberRB; i++) {
-		bodies[i]->populateParticleArray();
+		bodies[i]->shape->populatePartArray();
 	}
 	std::cout << "Number of Particles: " << numberP << std::endl;
 	std::cout << "VBO vertex count: " << vertexCount << std::endl;

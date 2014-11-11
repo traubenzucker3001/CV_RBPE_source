@@ -10,11 +10,17 @@
 void resetGrid(int* countGrid, int4* indexGrid){
 
 	//blocks und threads berechn.
+	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
+	int blockSize = 64;
+	int numThreads = ;
+	int numBlocks = ;
 
 	resetGridC<<< numBlocks, numThreads >>>(countGrid, IndexGrid);
 }
 
 __global__ void resetGridC(int* countGrid, int4* indexGrid){
+
+	//cout bzw. printf() in kernel möglich?!
 
 	//...
 	//unsigned int flatGridIndex = get_global_id(0);
@@ -31,6 +37,10 @@ __global__ void resetGridC(int* countGrid, int4* indexGrid){
 void updateGrid(int* contGrid, int4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
 
 	//blocks und threads berechn.
+	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
+	int blockSize = 64;
+	int numThreads = ;
+	int numBlocks = ;
 
 	updateGridC <<< numBlocks, numThreads >>>(contGrid,indexGrid,pPos,gridMinPosVec,voxelSL,gridSL,pGridIndex);
 }

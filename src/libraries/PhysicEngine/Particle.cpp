@@ -8,6 +8,8 @@ int Particle::indexCount = 0;
 
 Particle::Particle(glm::vec3 posIN, float massIN){
 
+	cout << "part: part constr called!" << endl; //zum test
+
 	position = posIN;
 	mass = massIN;
 	velocity = glm::vec3(0,0,0);
@@ -24,6 +26,8 @@ Particle::~Particle(){
 
 //TODO funcs
 glm::vec3 Particle::calculateForces(){
+
+	cout << "part: calcForces called!" << endl; //zum test
 
 	//mehrere schritte zusammenfassen
 	force = glm::vec3(0,0,0);
@@ -67,14 +71,14 @@ glm::vec3 Particle::calculateForces(){
 					force.z = force.z - springC*(2.0f*partR - absDistance)*(distance.z/absDistance);
 
 					glm::vec3 jVel = neighbors->getVelocity();
-					float relativeVelocity[3];
-					relativeVelocity[0] = jVel[0] - velocity[0];
-					relativeVelocity[1] = jVel[1] - velocity[1];
-					relativeVelocity[2] = jVel[2] - velocity[2];
+					glm::vec3 relativeVelocity;
+					relativeVelocity.x = jVel.x - velocity.x;
+					relativeVelocity.y = jVel.y - velocity.y;
+					relativeVelocity.z = jVel.z - velocity.z;
 
-					force[0] += dampC*relativeVelocity[0];
-					force[1] += dampC*relativeVelocity[1];
-					force[2] += dampC*relativeVelocity[2];
+					force.x = force.x + dampC*relativeVelocity.x;
+					force.y = force.y + dampC*relativeVelocity.y;
+					force.z = force.z + dampC*relativeVelocity.z;
 				}
 			}
 		}
@@ -86,66 +90,67 @@ glm::vec3 Particle::calculateForces(){
 	bool collisionOccured = false;
 
 	// Ground collision
-	if (position[1]-partR < 0.0f) {
+	if (position.y-partR < 0.0f) {
 		collisionOccured = true;
-		force[1] += springC*(partR-position[1]);
+		force.y = force.y + springC*(partR - position.y);
 	}
 
 	// X-axis Wall Collision
-	if (position[0]-partR < -worldS) {
+	if (position.x-partR < -worldS) {
 		collisionOccured = true;
-		force[0] += springC*(-worldS - position[0] + partR);
-	} else if (position[0]+partR > worldS) {
+		force.x = force.x + springC*(-worldS - position.x + partR);
+	} else if (position.x+partR > worldS) {
 		collisionOccured = true;
-		force[0] += springC*(worldS - position[0] - partR);
+		force.x = force.x + springC*(worldS - position.x - partR);
 	}
 
 	// Z-axis Wall Collision
-	if (position[2]-partR < -worldS) {
+	if (position.z-partR < -worldS) {
 		collisionOccured = true;
-		force[2] += springC*(-worldS - position[2] + partR);
-	} else if (position[2]+partR > worldS) {
+		force.z = force.z + springC*(-worldS - position.z + partR);
+	} else if (position.z+partR > worldS) {
 		collisionOccured = true;
-		force[2] += springC*(worldS - position[2] - partR);
+		force.z = force.z + springC*(worldS - position.z - partR);
 	}
 
 	// Damping
 	if (collisionOccured) {
-		force[0] -= dampC*velocity[0];
-		force[1] -= dampC*velocity[1];
-		force[2] -= dampC*velocity[2];
+		force.x = force.x - dampC*velocity.x;
+		force.y = force.y - dampC*velocity.y;
+		force.z = force.z - dampC*velocity.z;
 	}
-
 
 	return force;
 }
 
 void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::vec3 bodyAngularVelocity){
 
+	cout << "part: updateVeloc called!" << endl; //zum test
+
 	velocity = glm::vec3(0,0,0);
 
-	float scalar = sqrt(bodyAngularVelocity[0]*bodyAngularVelocity[0] +
-				bodyAngularVelocity[1]*bodyAngularVelocity[1] +
-				bodyAngularVelocity[2]*bodyAngularVelocity[2]);
+	float scalar = sqrt(bodyAngularVelocity.x*bodyAngularVelocity.x +
+						bodyAngularVelocity.y*bodyAngularVelocity.y +
+						bodyAngularVelocity.z*bodyAngularVelocity.z);
 
 	if (scalar > 0.0f) {
 		scalar *= scalar;
-		float relativePosition[3] = {position[0]-bodyPosition[0],
-			position[1]-bodyPosition[1],
-			position[2]-bodyPosition[2]};
+		glm::vec3 relativePosition = glm::vec3( position.x - bodyPosition.x,
+												position.y - bodyPosition.y,
+												position.z - bodyPosition.z );
 
-		scalar = (bodyAngularVelocity[0]*relativePosition[0] +
-				bodyAngularVelocity[1]*relativePosition[1] +
-				bodyAngularVelocity[2]*relativePosition[2]) / scalar;
+		scalar = (bodyAngularVelocity.x*relativePosition.x +
+				  bodyAngularVelocity.y*relativePosition.y +
+				  bodyAngularVelocity.z*relativePosition.z) / scalar;
 
-		float term[3];
-		term[0] = relativePosition[0] - bodyAngularVelocity[0]*scalar;
-		term[1] = relativePosition[1] - bodyAngularVelocity[1]*scalar;
-		term[2] = relativePosition[2] - bodyAngularVelocity[2]*scalar;
+		glm::vec3 term;
+		term.x = relativePosition.x - bodyAngularVelocity.x * scalar;
+		term.y = relativePosition.y - bodyAngularVelocity.y * scalar;
+		term.z = relativePosition.z - bodyAngularVelocity.z*scalar;
 
-		velocity[0] = (bodyAngularVelocity[1]*term[2] - bodyAngularVelocity[2]*term[1]);
-		velocity[1] = (bodyAngularVelocity[2]*term[0] - bodyAngularVelocity[0]*term[2]);
-		velocity[2] = (bodyAngularVelocity[0]*term[1] - bodyAngularVelocity[1]*term[0]);
+		velocity.x = (bodyAngularVelocity.y * term.z - bodyAngularVelocity.z * term.y);
+		velocity.y = (bodyAngularVelocity.z * term.x - bodyAngularVelocity.x * term.z);
+		velocity.z = (bodyAngularVelocity.x * term.y - bodyAngularVelocity.y * term.x);
 	}
 	velocity.x = velocity.x + bodyVelocity.x;
 	velocity.y = velocity.y + bodyVelocity.y;
@@ -154,6 +159,8 @@ void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::
 }
 
 void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bodyPos){
+
+	cout << "part: appRot called!" << endl; //zum test
 
 	position.x = relatPos.x*rotatMatrix[0].x +
 			relatPos.y*rotatMatrix[0].y +
@@ -174,6 +181,8 @@ void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bod
 
 void Particle::populateArray(){
 
+	cout << "part: popuArr called!" << endl; //zum test
+
 	partIndex = indexCount;
 
 	//body oder all part. array ?!	//müsste eig all sein
@@ -189,6 +198,8 @@ void Particle::reset(float* oldBodyPos, float* newBodyPos){
 
 void Particle::updateGridIndex(){
 
+	cout << "part: update GridIndex called!" << endl; //zum test
+
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
 	float vS = UniformGrid::getInstance()->getVoxelSize();
 
@@ -199,6 +210,8 @@ void Particle::updateGridIndex(){
 }
 
 void Particle::updateCUDArray(int particleIndex){
+
+	cout << "part: updateCudArr called!" << endl; //zum test
 
 	//TODO
 }

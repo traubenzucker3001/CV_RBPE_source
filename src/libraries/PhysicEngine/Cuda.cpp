@@ -3,6 +3,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
+#include <iostream>
 
 #include "Cuda.h"
 #include "World.h"
@@ -13,8 +14,11 @@
 #include "RigidBody_kernels.cu"
 #include "Particle_kernels.cu"
 
+using namespace std;
 
 Cuda::Cuda(int bnIN, int pnIN){
+
+	cout << "cuda: cuda constr called!" << endl; //zum test
 
 	bodyNum = bnIN;
 	partNum = pnIN;
@@ -70,6 +74,8 @@ Cuda::~Cuda(){
 }
 
 void Cuda::initCUDA(){
+
+	cout << "cuda: initCuda called!" << endl; //zum test
 
 	//...
 
@@ -132,7 +138,9 @@ void Cuda::initCUDA(){
 
 void Cuda::updateHostArrays(){
 
-	//entscheiden ob vector o. arrays, dann entspr. anpassungen vornehmen
+	cout << "cuda: updateHostArr called!" << endl; //zum test
+
+	//entscheiden ob vector o. arrays, dann entspr. anpassungen vornehmen. ?!auch nicht sicher ob direkter zugriff über public nicht besser, sollte hier aber eig so passen
 	RigidBody** allB = World::getInstance()->getAllBodies();
 	Particle** allP = World::getInstance()->getAllParticles();
 	for (int i=0; i<bodyNum; i++) {
@@ -144,6 +152,8 @@ void Cuda::updateHostArrays(){
 }
 
 void Cuda::hostToDevice(){
+
+	cout << "cuda: hostTOdevice called!" << endl; //zum test
 
 	//cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbMass, h_rbMass, bodyNum*sizeof(float), cudaMemcpyHostToDevice);
@@ -162,9 +172,14 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_pPos, h_pPos, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_pVeloc, h_pVeloc, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_pForce, h_pForce, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
+
+	//vbo data
+
 }
 
 void Cuda::initCUDAGrid(){
+
+	cout << "cuda: initGrid called!" << endl; //zum test
 
 	//TODO
 
@@ -184,7 +199,9 @@ void Cuda::initCUDAGrid(){
 
 void Cuda::stepCUDA(){
 
-	//TODO
+	cout << "cuda: stepCUDA!" << endl; //zum test
+
+	//TODO!
 
 	//schritte nacheinander aufrufen
 	//...

@@ -8,10 +8,16 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include "PhysicEngine\World.h"
+
 //update momenta
 void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
 
-	//blocks und threads berechn.
+	//todo: blocks und threads berechn.
+	int b = World::getInstance()->getAllBodyNum();
+	int blockSize = 64;
+	int numThreads = ;
+	int numBlocks = ;
 
 	updateMomC <<< numBlocks, numThreads >>>(rbMass,rbForce,rbPos,rbLinMom,rbAngMom,pPos,pForce,duration,termVeloc);
 }
@@ -59,14 +65,18 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 
 
 //perform step
-void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3 inverInertTens, float duration, float pRadius){
+void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
 
-	//blocks und threads berechn.
+	//todo: blocks und threads berechn.
+	int b = World::getInstance()->getAllBodyNum();
+	int blockSize = 64;
+	int numThreads = ;
+	int numBlocks = ;
 
 	iterateC <<< numBlocks, numThreads >>>(rbMass,rbPos,rbVeloc,rbLinMom,rbRotQuat,rbRotMat,rbAngVeloc,rbAngMom,initIITDiago,inverInertTens,duration,pRadius);
 }
 
-__global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3 inverInertTens, float duration, float pRadius){
+__global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
 
 	//weitere input param
 	/*__global float* bodyVBO,
@@ -80,33 +90,36 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 	
 	//unsigned int bodyVBOIndex = bodyIndex * 24 * 3;
 
-	int mi = bi * 9;
+	int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
 	//Update inverse inertia tensor
 	{
-		float a = rbRotMat[mi].x;
-		float b = rbRotMat[mi].y;
-		float c = rbRotMat[mi].z;
-		float d = rbRotMat[mi + 1].x;
-		float e = rbRotMat[mi + 1].y;
-		float f = rbRotMat[mi + 1].z;
-		float g = rbRotMat[mi + 2].x;
-		float h = rbRotMat[mi + 2].y;
-		float i = rbRotMat[mi + 2].z;
+		glm::mat3 tempRotMat1 = rbRotMat[bi];
+		glm::mat3 tempIIT1 = inverInertTens[bi];
+
+		float a = tempRotMat1[0].x;
+		float b = tempRotMat1[0].y;
+		float c = tempRotMat1[0].z;
+		float d = tempRotMat1[1].x;
+		float e = tempRotMat1[1].y;
+		float f = tempRotMat1[1].z;
+		float g = tempRotMat1[2].x;
+		float h = tempRotMat1[2].y;
+		float i = tempRotMat1[2].z;
 
 		float u = initIITDiago[bi].x;
 		float v = initIITDiago[bi].y;
 		float w = initIITDiago[bi].z;
 
-		inverInertTens[mi].x = u*a*a + b*b*v + c*c*w;
-		inverInertTens[mi].y = a*d*u + b*e*v + c*f*w;
-		inverInertTens[mi].z = a*g*u + b*h*v + c*i*w;
-		inverInertTens[mi + 1].x = a*d*u + b*e*v + c*f*w;
-		inverInertTens[mi + 1].y = u*d*d + e*e*v + f*f*w;
-		inverInertTens[mi + 1].z = d*g*u + e*h*v + f*i*w;
-		inverInertTens[mi + 2].x = a*g*u + b*h*v + c*i*w;
-		inverInertTens[mi + 2].y = d*g*u + e*h*v + f*i*w;
-		inverInertTens[mi + 2].z = u*g*g + h*h*v + i*i*w;
+		tempIIT1[0].x = u*a*a + b*b*v + c*c*w;
+		tempIIT1[0].y = a*d*u + b*e*v + c*f*w;
+		tempIIT1[0].z = a*g*u + b*h*v + c*i*w;
+		tempIIT1[1].x = a*d*u + b*e*v + c*f*w;
+		tempIIT1[1].y = u*d*d + e*e*v + f*f*w;
+		tempIIT1[1].z = d*g*u + e*h*v + f*i*w;
+		tempIIT1[2].x = a*g*u + b*h*v + c*i*w;
+		tempIIT1[2].y = d*g*u + e*h*v + f*i*w;
+		tempIIT1[2].z = u*g*g + h*h*v + i*i*w;
 	}
 
 	//Perform linear step
@@ -124,15 +137,17 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 	{
 		//Update angular velocity
 		{
-			float a = inverInertTens[mi].x;
-			float b = inverInertTens[mi].y;
-			float c = inverInertTens[mi].z;
-			float d = inverInertTens[mi + 1].x;
-			float e = inverInertTens[mi + 1].y;
-			float f = inverInertTens[mi + 1].z;
-			float g = inverInertTens[mi + 2].x;
-			float h = inverInertTens[mi + 2].y;
-			float i = inverInertTens[mi + 2].z;
+			glm::mat3 tempIIT2 = inverInertTens[bi];
+
+			float a = tempIIT2[0].x;
+			float b = tempIIT2[0].y;
+			float c = tempIIT2[0].z;
+			float d = tempIIT2[1].x;
+			float e = tempIIT2[1].y;
+			float f = tempIIT2[1].z;
+			float g = tempIIT2[2].x;
+			float h = tempIIT2[2].y;
+			float i = tempIIT2[2].z;
 
 			float u = rbAngMom[bi].x;
 			float v = rbAngMom[bi].y;
@@ -204,15 +219,17 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 		float wy = w * y;
 		float wz = w * z;
 
-		rbRotMat[mi].x = 1.0f - 2.0f*(yy + zz);
-		rbRotMat[mi].y = 2.0f*(xy - wz);
-		rbRotMat[mi].z = 2.0f*(xz + wy);
-		rbRotMat[mi + 1].x = 2.0f*(xy + wz);
-		rbRotMat[mi + 1].y = 1.0f - 2.0f*(xx + zz);
-		rbRotMat[mi + 1].z = 2.0f*(yz - wx);
-		rbRotMat[mi + 2].x = 2.0f*(xz - wy);
-		rbRotMat[mi + 2].y = 2.0f*(yz + wx);
-		rbRotMat[mi + 2].z = 1.0f - 2.0f*(xx + yy);
+		glm::mat3 tempRotMat2 = rbRotMat[bi];
+		//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
+		tempRotMat2[0].x = 1.0f - 2.0f*(yy + zz);
+		tempRotMat2[0].y = 2.0f*(xy - wz);
+		tempRotMat2[0].z = 2.0f*(xz + wy);
+		tempRotMat2[1].x = 2.0f*(xy + wz);
+		tempRotMat2[1].y = 1.0f - 2.0f*(xx + zz);
+		tempRotMat2[1].z = 2.0f*(yz - wx);
+		tempRotMat2[2].x = 2.0f*(xz - wy);
+		tempRotMat2[2].y = 2.0f*(yz + wx);
+		tempRotMat2[2].z = 1.0f - 2.0f*(xx + yy);
 
 	}
 

@@ -14,63 +14,63 @@ class Timing : public Singleton<Timing> {
 
 private:
 
-	//framecount
-	int frameNum;					/**< frame number */
-	float fps;						/**< frames per second */
+	int frameNum;		/**< frame number */			//framecount
+	float fps;			/**< frames per second */
 
-	float afd;		/**< average frame duration */
+	float afd;			/**< average frame duration */
 
-	//gesamtzeit
-	int totalTime;					/**< total running time */
+	int totalTime;		/**< total running time */		//gesamtzeit
 
-	int startTime;					/**< frame start time */
-	int endTime;					/**< frame end time */
-
-	//TODO vars
-	//eig erledigt
-	//aber vllt noch weitere?!
+	int startTime;		/**< frame start time */
+	int endTime;		/**< frame end time */
 
 public:
 
 	/** \brief constructor
 	*
-	* ...
+	* creates a timing instance
 	*/
 	Timing();
 
 	/** \brief destructor
 	*
-	* ...
+	* deletes a timing instance
 	*/
 	~Timing();
 
 	/** \brief start frame
 	*
-	* ...
+	* mark the begin of a frames
+	* @return void
 	*/
 	void startFrame();
 
 	/** \brief end frame
 	*
-	* ...
+	* mark the end of a frame
+	* @return void
 	*/
 	void endFrame();
 
 	/** \brief get current time
 	*
-	* ...
+	* get the current time from glfw
+	* @return current time
 	*/
 	int getTime();
 
 	/** \brief update average frame duration
 	*
-	* ...
+	* recalculate the average frame duration
+	* -not yet implemented-
+	* @return void
 	*/
 	void updateAFD();
 
 	/** \brief update frames per second
 	*
-	* ...
+	* recalculates the number of frames per second
+	* @return current frames per second
 	*/
 	float updateFPS();
 

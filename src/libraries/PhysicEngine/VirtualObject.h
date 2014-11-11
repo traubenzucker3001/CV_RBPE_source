@@ -20,8 +20,7 @@ private:
 
 	CVK::Geometry* graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
-	//eig  überflüssig wenn model matrix habe
-	glm::vec3 position;			/**< position */
+	glm::vec3 position;			/**< position */	//eig  überflüssig wenn model matrix habe
 
 	glm::mat4 modelMatrix;		/**< model matrix */
 
@@ -29,7 +28,9 @@ private:
 public:
 	/** \brief default constructor
 	 *
-	 * ...
+	 * creates a virtual object instance
+	 * @param sizeIN object size (box)
+	 * @param posIN initial position
 	 */
 	VirtualObject(float sizeIN, glm::vec3 posIN);
 
@@ -42,29 +43,53 @@ public:
 
 	/** \brief destructor
 	 *
-	 * ...
+	 * destroys a virtual object instance
 	 */
 	~VirtualObject();
 
-	/** \brief
+	/** \brief update
 	 *
 	 * ...
+	 * @return void
 	 */
 	void update();
 
+	/** \brief update particle values
+	*
+	* ...
+	* @return void
+	*/
 	void updatePartValuesVO();	//bodies[i]->updateParticleValues();
+	
+	/** \brief update momenta
+	*
+	* ...
+	* @param duration time length of a simulation step
+	* @return void
+	*/
 	void updateMomentaVO(float duration);	//bodies[i]->updateMomenta(delta);
+	
+	/** \brief iterate
+	*
+	* ...
+	* @param duration time length of a simulation step
+	* @return void
+	*/
 	void iterateVO(float duration);	//bodies[i]->iterateVO(duration);
 
-	/** \brief
+	/** \brief translate
 	 *
 	 * ...
+	 * -not yet implemented-
+	 * @return void
 	 */
 	void translate();
 
-	/** \brief
+	/** \brief scale
 	 *
 	 * ...
+	 * -not yet implemented-
+	 * @return void
 	 */
 	void scale();
 

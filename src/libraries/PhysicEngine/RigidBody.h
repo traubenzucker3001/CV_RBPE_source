@@ -15,58 +15,47 @@
 
 /** \brief RigidBody
  *
- * ...
+ * class for rigid body representation
  */
 class RigidBody {
 
 private:
 
-	float mass;//							/**< body mass */
-	//ka ob nötig
-	float inverseMass;						/**< body inverse mass */
+	float mass;								/**< body mass */
+	float inverseMass;						/**< body inverse mass */	//ka ob nötig
 
-	glm::vec3 position;//					/**< body position */
-	glm::vec3 velocity;//					/**< body velocity */
-	//ka ob nötig
-	glm::vec3 lastFrameVeloc;				/**< body last frame velocity */
+	glm::vec3 position;						/**< body position */
+	glm::vec3 velocity;						/**< body velocity */
 
-	glm::quat rotationQuat;//				/**< body rotation quaternion */
-	glm::mat3 rotationMat;//				/**< body rotation matrix */
+	glm::vec3 lastFrameVeloc;				/**< body last frame velocity */	//ka ob nötig
 
-	//float initialInverseInertiaTensorDiagonal[3];//
+	glm::quat rotationQuat;					/**< body rotation quaternion */
+	glm::mat3 rotationMat;					/**< body rotation matrix */
+
 	glm::mat3 inertiaTensor;				/**< body inertia tensor */
-	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */
-	//world oder local coords?!
-	glm::mat3 inverseInertiaTensor;			/**< inverse inertia tensor */
+	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */	//float initialInverseInertiaTensorDiagonal[3];//
+	glm::mat3 inverseInertiaTensor;			/**< inverse inertia tensor */	//world oder local coords?!
 
-	//
 	//rotation
 	glm::vec3 angularVelocity;				/**< angular velocity */
 	glm::vec3 angularMomentum;				/**< angular momentum */
 
-	//
 	glm::vec3 linearMomentum;				/**< linear momentum */
-	//?
-	float terminalMom;						/**< terminat momentum */
+	float terminalMom;						/**< terminat momentum */	//?
 
-	//ehem. forcetobeapplied
-	glm::vec3 force;						/**< body force */
+	glm::vec3 force;						/**< body force */	//ehem. forcetobeapplied
 
 	//glm::vec3 torgueToBeApplied;	//ka ob nötig
 	//glm::vec3 lastFrameVeloc;	//ka ob nötig
 
 	bool isStatic;							/**< true if object is static, false if object is dynamic */
 
-	//später drum kümmern
-	//float linearDamp;		//welt oder jeder body einzeln?!
+	//float linearDamp;		//welt oder jeder body einzeln?!. im mom allgemeiner welt param
 	//float angularDamp;
 
 	glm::mat4 transformMatrix;				/**< transformation matrix */
 
-	CollisionShape *shape;					/**< body shape */
-	//partikel erst in collshape
-	//std:vector<Particle*> bodyParticles;
-	//int numberOfParticles;
+	CollisionShape *shape;					/**< body shape */	//partikel erst in collshape
 
 	static int count;						/**< help variable for all bodies array/vector */
 
@@ -74,49 +63,63 @@ public:
 
 	/** \brief constructor
 	 *
-	 * ...
+	 * creates a rigid body instance
+	 * @param massIN mass
+	 * @param staticIN static object (true) or not (false) (not observed at the moment)
+	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
+	 * @param posIN position
 	 */
 	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN);
 
 	/** \brief destructor
 	 *
-	 * ...
+	 * destroys a rigid body instance
 	 */
 	~RigidBody();
 
 	/** \brief iterate
 	 *
-	 * ...
+	 * perform linear and angular step to update velocity, position and rotation
+	 * @param duration time length of a simulation step
+	 * @return void
 	 */
 	void iterate(float duration);		//performStep, mehrere schritte zusammenfassen
 
 	/** \brief update rotations matrix
 	 *
-	 * ...
+	 * update rotation matrix with new rotation quaternion
+	 * @return void
 	 */
 	void updateRotMatrix();
 
 	/** \brief update inverse inertia tensor
 	 *
-	 * ...
+	 * update inertia tensor with new rotation matrix
+	 * @return void
 	 */
 	void updateInverseInertiaTensor();
 
 	/** \brief update particle values
 	 *
-	 * ...
+	 * update particle positions
+	 * @return void
 	 */
 	void updatePartValues();	//runter in collshape greifen
 
 	/** \brief update momenta
 	 *
-	 * ...
+	 * apply gravity and update linear and angular momenta
+	 * @param duration time length of a simulation step
+	 * @return void
 	 */
 	void updateMomenta(float duration); //runter in collshape greifen und schauen ob gravity klasse noch nötig
 
 	/** \brief reset body
 	 *
-	 * ...
+	 * reset a rigid body to a given position
+	 * -not yet implemented-
+	 * @param newPosition new origin of the rigid body
+	 * @return void
 	 */
 	void reset(float newPosition);
 
@@ -125,6 +128,8 @@ public:
 	/** \brief update cuda array
 	 *
 	 * ...
+	 * @param bodyIndex rigid body uniform grid index
+	 * @return void
 	 */
 	void updateCUDArray(int bodyIndex);
 };

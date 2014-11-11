@@ -2,6 +2,7 @@
 #ifndef SINGLETON_H_
 #define SINGLETON_H_
 
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
 
 using namespace std;

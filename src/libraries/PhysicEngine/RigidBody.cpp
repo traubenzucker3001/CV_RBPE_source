@@ -13,6 +13,8 @@ int RigidBody::count = 0;
 
 RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN){
 
+	cout << "body: rb constr called!" << endl; //zum test
+
 	mass = massIN;
 	inverseMass = ((float)1.0)/mass;
 
@@ -48,6 +50,8 @@ RigidBody::~RigidBody(){
 
 void RigidBody::iterate(float duration){
 
+	cout << "body: iterate!" << endl; //zum test
+
 	updateInverseInertiaTensor();
 
 	//performLinearStep(delta);
@@ -73,30 +77,30 @@ void RigidBody::iterate(float duration){
 		float h = inverseInertiaTensor[2].y;
 		float i = inverseInertiaTensor[2].z;
 
-		float u = angularMomentum[0];
-		float v = angularMomentum[1];
-		float w = angularMomentum[2];
+		float u = angularMomentum.x;
+		float v = angularMomentum.y;
+		float w = angularMomentum.z;
 
-		angularVelocity[0] = a*u + b*v + c*w;
-		angularVelocity[1] = d*u + e*v + f*w;
-		angularVelocity[2] = g*u + h*v + i*w;
+		angularVelocity.x = a*u + b*v + c*w;
+		angularVelocity.y = d*u + e*v + f*w;
+		angularVelocity.z = g*u + h*v + i*w;
 	}
-	float angularVelocitySize = sqrt(angularVelocity[0]*angularVelocity[0] +
-		angularVelocity[1]*angularVelocity[1] +
-		angularVelocity[2]*angularVelocity[2]);
+	float angularVelocitySize = sqrt(angularVelocity.x*angularVelocity.x +
+									 angularVelocity.y*angularVelocity.y +
+									 angularVelocity.z*angularVelocity.z);
 
 	if (angularVelocitySize > 0) {
 
-		float rotationAxis[3] = {angularVelocity[0]/angularVelocitySize,
-			angularVelocity[1]/angularVelocitySize,
-			angularVelocity[2]/angularVelocitySize};
+		glm::vec3 rotationAxis = {angularVelocity.x/angularVelocitySize,
+			angularVelocity.y/angularVelocitySize,
+			angularVelocity.z/angularVelocitySize};
 
-		float rotationAngle = angularVelocitySize*duration;
+		float rotationAngle = angularVelocitySize * duration;
 
 		float ds = cos(rotationAngle/2.0f);
-		float dvx = rotationAxis[0]*sin(rotationAngle/2.0f);
-		float dvy = rotationAxis[1]*sin(rotationAngle/2.0f);
-		float dvz = rotationAxis[2]*sin(rotationAngle/2.0f);
+		float dvx = rotationAxis.x*sin(rotationAngle/2.0f);
+		float dvy = rotationAxis.y*sin(rotationAngle/2.0f);
+		float dvz = rotationAxis.z*sin(rotationAngle/2.0f);
 
 		float s = rotationQuat.w;
 		float vx = rotationQuat.x;
@@ -111,6 +115,8 @@ void RigidBody::iterate(float duration){
 }
 
 void RigidBody::updateRotMatrix(){
+
+	cout << "body: updateRotMat called!" << endl; //zum test
 
 	//normalizeQuaternion();
 	glm::normalize(rotationQuat);
@@ -149,6 +155,8 @@ void RigidBody::updateRotMatrix(){
 
 void RigidBody::updateInverseInertiaTensor(){
 
+	cout << "body: update inverse inertia tensor!!" << endl; //zum test
+
 	float a = rotationMat[0].x;
 	float b = rotationMat[0].y;
 	float c = rotationMat[0].z;
@@ -159,9 +167,9 @@ void RigidBody::updateInverseInertiaTensor(){
 	float h = rotationMat[2].y;
 	float i = rotationMat[2].z;
 
-	float u = initInverseInertTensDiagon[0];
-	float v = initInverseInertTensDiagon[1];
-	float w = initInverseInertTensDiagon[2];
+	float u = initInverseInertTensDiagon.x;
+	float v = initInverseInertTensDiagon.y;
+	float w = initInverseInertTensDiagon.z;
 
 	inverseInertiaTensor[0].x = u*a*a + b*b*v + c*c*w;
 	inverseInertiaTensor[0].y = a*d*u + b*e*v + c*f*w;
@@ -176,6 +184,8 @@ void RigidBody::updateInverseInertiaTensor(){
 
 void RigidBody::updatePartValues(){
 
+	cout << "body: update part values!" << endl; //zum test
+
 	updateRotMatrix();
 	//runter in collshape greifen
 	shape->applyRotToPart(rotationMat);
@@ -189,6 +199,8 @@ void RigidBody::updatePartValues(){
 }
 
 void RigidBody::updateMomenta(float duration){
+
+	cout << "body: updateMom called!" << endl; //zum test
 
 	//runter in collshape greifen#
 	force = glm::vec3 (0.0f, 0.0f, 0.0f); //reset forces
@@ -213,9 +225,9 @@ void RigidBody::updateMomenta(float duration){
 		relativePos.y = particlePos.y - position.y;
 		relativePos.z = particlePos.z - position.z;
 
-		torque.x += relativePos[1]*particleForce[2] - relativePos[2]*particleForce[1];
-		torque.y += relativePos[2]*particleForce[0] - relativePos[0]*particleForce[2];
-		torque.z += relativePos[0]*particleForce[1] - relativePos[1]*particleForce[0];
+		torque.x = torque.x + relativePos.y * particleForce.z - relativePos.z * particleForce.y;
+		torque.y = torque.y + relativePos.z * particleForce.x - relativePos.x * particleForce.z;
+		torque.z = torque.z + relativePos.x * particleForce.y - relativePos.y * particleForce.x;
 	}
 
 	//for (int i=0; i<3; i++) {
@@ -253,6 +265,8 @@ void RigidBody::reset(float newPosition){
 }
 
 void RigidBody::updateCUDArray(int bodyIndex){
+
+	cout << "body: updateCudArr called!" << endl; //zum test
 
 	//TODO
 }

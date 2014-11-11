@@ -4,7 +4,8 @@
 
 /** \brief init objects
  *
- * help method to create scene
+ * help method to create scene with objects
+ * @return void
  */
 static void initObjs();
 

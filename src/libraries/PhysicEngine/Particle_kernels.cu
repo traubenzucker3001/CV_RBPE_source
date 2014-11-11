@@ -48,18 +48,19 @@ __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pV
 
 	int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
 
+	//oder glm::vec4 besser??, dann auf umstellung bei zählweise achten!!
 	int4 neighborCells[27];	//int4??
 	int cellIndexJ = 0;
 
-	flatGridIndex -= xSteps;
-	flatGridIndex += 2 * ySteps;
-	flatGridIndex += 2; //zStride
+	flatGridIndex = flatGridIndex - xSteps;
+	flatGridIndex = flatGridIndex + 2 * ySteps;
+	flatGridIndex = flatGridIndex + 2; //zStride
 
 	for (int x = 0; x<3; x++) {
-		flatGridIndex -= 3 * ySteps;
+		flatGridIndex = flatGridIndex - 3 * ySteps;
 
 		for (int y = 0; y<3; y++) {
-			flatGridIndex -= 3;
+			flatGridIndex = flatGridIndex - 3;
 
 			for (int z = 0; z<3; z++) {
 
@@ -67,9 +68,9 @@ __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pV
 				cellIndexJ++;
 				flatGridIndex++;
 			}
-			flatGridIndex += ySteps;
+			flatGridIndex = flatGridIndex + ySteps;
 		}
-		flatGridIndex += xSteps;
+		flatGridIndex = flatGridIndex + xSteps;
 	}
 
 	for (int j = 0; j<27; j++) {

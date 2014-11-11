@@ -1,9 +1,12 @@
 //!noch partikel array zugriffs fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
+#include <iostream>
 #include "Box.h"
 #include "Particle.h"
 #include "World.h"
+
+using namespace std;
 
 Box::~Box(){
 
@@ -11,6 +14,8 @@ Box::~Box(){
 }
 
 void Box::calcParticles(){
+
+	cout << "box: calcParticles called!" << endl; //zum test
 
 	bodyParticles = new Particle*[numOfPart];
 	int i=0;
@@ -32,6 +37,8 @@ void Box::calcParticles(){
 
 void Box::applyRotToPart(glm::mat3 rotMatrix){
 
+	cout << "box: applyRoToPart called!" << endl; //zum test
+
 	int i=0;
 	float partR = World::getInstance()->getPartRadius();
 	float space = partR * 2.0f;
@@ -52,6 +59,8 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 }
 
 void Box::populatePartArray(){
+
+	cout << "box: populPartAr called!" << endl; //zum test
 
 	for (int i=0; i<numOfPart; i++) {
 		bodyParticles[i]->populateArray();

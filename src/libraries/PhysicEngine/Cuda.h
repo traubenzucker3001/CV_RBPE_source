@@ -9,80 +9,123 @@
 
 #include "DesignPatterns/Singleton.h"
 
-//cuda data structure
-
+/** \brief cuda data structure
+*
+* class with all necessary host and device arrays
+* singleton because it must be sure that every array should only exist once
+*/
 class Cuda : public Singleton<Cuda> {
 	friend class Singleton<Cuda>;
 
 private:
 
-	int bodyNum;
-	int partNum;
+	int bodyNum;	/**< total number of rigid bodies */
+	int partNum;	/**< total number of particles */
 
 	//benötigten arrays cpu (host)
 	//rigidbody parameter
-	float *h_rbMass;
-	glm::vec3 *h_rbForce;
-	glm::vec3 *h_rbPos;
-	glm::vec3 *h_rbVeloc;
-	glm::vec3 *h_rbLinMom;
-	glm::quat *h_rgRotQuat;
-	glm::mat3 *h_rbRotMat;
-	glm::vec3 *h_rbAngVeloc;
-	glm::vec3 *h_rbAngMom;
-	glm::vec3 *h_rbInitInversInertTensDiago;	//Initial Inverse Inertia Tensor Diagonal
-	glm::mat3 *h_rbInverseInertTens;
+	float *h_rbMass;							/**< host array for rigid body masses */
+	glm::vec3 *h_rbForce;						/**< host array for rigid body forces */
+	glm::vec3 *h_rbPos;							/**< host array for rigid body positions */
+	glm::vec3 *h_rbVeloc;						/**< host array for rigid body velocities */
+	glm::vec3 *h_rbLinMom;						/**< host array for rigid body linear momentums */
+	glm::quat *h_rgRotQuat;						/**< host array for rigid body rotation quaternions */
+	glm::mat3 *h_rbRotMat;						/**< host array for rigid body rotation matrixes */
+	glm::vec3 *h_rbAngVeloc;					/**< host array for rigid body angular velocities */
+	glm::vec3 *h_rbAngMom;						/**< host array for rigid body angular momentums */
+	glm::vec3 *h_rbInitInversInertTensDiago;	/**< host array for rigid body initial inverse inertia tensor diagonals */	//Initial Inverse Inertia Tensor Diagonal
+	glm::mat3 *h_rbInverseInertTens;			/**< host array for rigid body inverse inertia tensors */
 
 	//particle parameter
-	float *h_pMass;
-	glm::vec3 *h_pPos;
-	glm::vec3 *h_pVeloc;
-	glm::vec3 *h_pForce;
+	float *h_pMass;				/**< host array for particle masses */
+	glm::vec3 *h_pPos;			/**< host array for particle positions */
+	glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
+	glm::vec3 *h_pForce;		/**< host array for particle forces */
 
-	glm::vec3 *h_pGridIndex;
+	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
-	int* h_gCountGrid;
-	glm::vec4 *h_gIndexGrid; //int4?!
+	int* h_gCountGrid;			/**< host array for grid ... */
+	glm::vec4 *h_gIndexGrid;	/**< host array for grid ... */		//int4?!
 
 
 	//benötigte arrays gpu (device)
 	//rigidbody parameter
-	float *d_rbMass;
-	glm::vec3 *d_rbForce;
-	glm::vec3 *d_rbPos;
-	glm::vec3 *d_rbVeloc;
-	glm::vec3 *d_rbLinMom;
-	glm::quat *d_rgRotQuat;
-	glm::mat3 *d_rbRotMat;
-	glm::vec3 *d_rbAngVeloc;
-	glm::vec3 *d_rbAngMom;
-	glm::vec3 *d_rbInitInversInertTensDiago;
-	glm::mat3 *d_rbInverseInertTens;
+	float *d_rbMass;							/**< device array for rigid body masses */
+	glm::vec3 *d_rbForce;						/**< device array for rigid body forces */
+	glm::vec3 *d_rbPos;							/**< device array for rigid body positions */
+	glm::vec3 *d_rbVeloc;						/**< device array for rigid body velocities */
+	glm::vec3 *d_rbLinMom;						/**< device array for rigid body linear momentums */
+	glm::quat *d_rgRotQuat;						/**< device array for rigid body rotation quaternions */
+	glm::mat3 *d_rbRotMat;						/**< device array for rigid body rotation matrixes */
+	glm::vec3 *d_rbAngVeloc;					/**< device array for rigid body angular velocities */
+	glm::vec3 *d_rbAngMom;						/**< device array for rigid body angular momentums */
+	glm::vec3 *d_rbInitInversInertTensDiago;	/**< device array for rigid body initial inverse inertia tensor diagonals */
+	glm::mat3 *d_rbInverseInertTens;			/**< device array for rigid body inverse inertia tensors */
 
 	//particle parameter
-	float *d_pMass;
-	glm::vec3 *d_pPos;
-	glm::vec3 *d_pVeloc;
-	glm::vec3 *d_pForce;
+	float *d_pMass;				/**< device array for particle masses */
+	glm::vec3 *d_pPos;			/**< device array for particle positions */
+	glm::vec3 *d_pVeloc;		/**< device array for particle velocities */
+	glm::vec3 *d_pForce;		/**< device array for particle forces */
 
-	glm::vec3 *d_pGridIndex;
+	glm::vec3 *d_pGridIndex;	/**< device array for particle grin indices */
 
-	int* d_gCountGrid;
-	glm::vec4 *d_gIndexGrid;	//int4?!
+	int* d_gCountGrid;			/**< device array for grid ... */
+	glm::vec4 *d_gIndexGrid;	/**< device array for grid ... */		//int4?!
 
 	glm::vec3 gridMinPosVector;		//?!
 
 public:
-
+	/** \brief constructor
+	*
+	* creates the cuda structure instance
+	* @param bnIN total number of rigid bodies
+	* @param pnIN total number of particles
+	*/
 	Cuda(int bnIN, int pnIN);
+
+	/** \brief constructor
+	*
+	* destroys the cuda structure instance
+	*/
 	~Cuda();
 
+	/** \brief initial cuda
+	*
+	* initials the host arrays, the uniform grid and allocates memory for device arrays
+	* @return void
+	*/
 	void initCUDA();
+	
+	/** \brief init uniform grid
+	*
+	* initials uniform grid host and device arrays
+	* @return void
+	*/
 	void initCUDAGrid();
+
 	//void initHostArrays();		//zu initcuda gepackt
 	//void initDeviceArrays();		//zu initcuda gepackt
+	
+	/** \brief update host arrays
+	*
+	* update/fill the host arrays
+	* @return void
+	*/
 	void updateHostArrays();
+	
+	/** \brief copy from host to device
+	*
+	* copy host array data to device arrays
+	* @return void
+	*/
 	void hostToDevice();
+	
+	/** \brief step simulation
+	*
+	* step the physics simulation with cuda
+	* @return void
+	*/
 	void stepCUDA();
 
 };

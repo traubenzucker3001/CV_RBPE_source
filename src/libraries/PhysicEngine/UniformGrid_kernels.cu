@@ -21,6 +21,7 @@ void resetGrid(int* countGrid, int4* indexGrid){
 __global__ void resetGridC(int* countGrid, int4* indexGrid){
 
 	//cout bzw. printf() in kernel möglich?!
+	//ja, siehe --> cuda samples - 0_simple - simpleprintf
 
 	//...
 	//unsigned int flatGridIndex = get_global_id(0);

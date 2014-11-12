@@ -22,7 +22,10 @@ World::World(float wsIN, float prIN, float scIN, float dcIN){
 
 World::~World(){
 
-	//...
+	delete grid;
+	delete cudaStruct;
+	delete allParticles;
+	delete allBodies;
 }
 
 void World::stepPhysics(float duration, bool isGPU){

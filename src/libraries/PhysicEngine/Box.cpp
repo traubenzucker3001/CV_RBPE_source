@@ -10,7 +10,8 @@ using namespace std;
 
 Box::~Box(){
 
-	//...
+	//no pointers to clear!
+
 }
 
 void Box::calcParticles(){

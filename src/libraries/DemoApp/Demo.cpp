@@ -113,6 +113,8 @@ void Demo::run(){
 		sprintf(title, "Rigid Body | %d fps", (int)fps);
 		glfwSetWindowTitle(window, title);
 	}
+	Cuda::getInstance()->~Cuda();	//free cuda stuff
+
 	glfwDestroyWindow( window);
 	glfwTerminate();
 }

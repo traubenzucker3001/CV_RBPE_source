@@ -25,7 +25,8 @@ VirtualObject::VirtualObject(bool shape, float shapeSize){
 
 VirtualObject::~VirtualObject(){
 
-	//...
+	delete physicBody;
+	delete graphicBody;
 }
 
 //über cuda - opengl austausch

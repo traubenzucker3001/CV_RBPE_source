@@ -9,7 +9,7 @@ using namespace std;
 
 Sphere::~Sphere(){
 
-	//...
+	//no pointers to clear!
 }
 
 void Sphere::calcParticles(){

@@ -21,7 +21,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 
 Particle::~Particle(){
 
-	//...
+	//no pointers to clear!
 }
 
 //TODO funcs

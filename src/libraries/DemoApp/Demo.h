@@ -84,7 +84,6 @@ public:
 	/** \brief init graphics
 	*
 	* run the demo initialization and main loop
-	* @param
 	* @return void
 	*/
 	void run();	//für cvk stuff		//vorher initGraphics()

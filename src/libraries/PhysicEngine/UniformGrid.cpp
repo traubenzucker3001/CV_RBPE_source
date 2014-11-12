@@ -23,7 +23,8 @@ UniformGrid::UniformGrid(){
 
 UniformGrid::~UniformGrid(){
 
-	//...
+	delete indexGrid;
+	delete countGrid;
 }
 
 void UniformGrid::createGrid(){

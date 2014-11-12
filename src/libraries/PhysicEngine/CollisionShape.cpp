@@ -17,5 +17,5 @@ CollisionShape::CollisionShape(glm::vec3 origIN, float massIN, Particle** bPartI
 
 CollisionShape::~CollisionShape(){
 
-	//...
+	delete bodyParticles;
 }

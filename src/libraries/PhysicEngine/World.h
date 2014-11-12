@@ -13,7 +13,7 @@
 
 /** \brief physics World
  *
- * ...
+ * class for the physics simulation world representation
  */
 class World : public Singleton<World> {
 	friend class Singleton<World>;
@@ -23,16 +23,14 @@ private:
 	float partRadius;					/**< particle radius */
 
 	float springCoeff;					/**< spring coefficient */
-	//welt oder jeder body einzeln?!
-	float dampCoeff;					/**< damping coefficient */
+
+	float dampCoeff;					/**< damping coefficient */		//welt oder jeder body einzeln?!
 	float gravity;						/**< gravity force value */
 
-	//std::vector<RigidBody*> allBodies;	//array wahrscheinl. besser
-	RigidBody** allBodies;				/**< list of all bodies in the world */
+	//RigidBody** allBodies;				/**< list of all bodies in the world */		//std::vector<RigidBody*> allBodies;	//array wahrscheinl. besser
 	int allBodyNum;						/**< number of bodies in the world */
-	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser
-	//**
-	Particle** allParticles;			/**< list of all particles in the world */
+	
+	//Particle** allParticles;			/**< list of all particles in the world */	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser	//**
 	int allPartNum;						/**< number of particles in the world */
 
 	UniformGrid *grid;					/**< uniform grid */
@@ -46,6 +44,10 @@ private:
 	//int vertexCount;					/**< ... */
 	
 public:
+
+	//private or public?!
+	RigidBody** allBodies;				/**< list of all bodies in the world */
+	Particle** allParticles;			/**< list of all particles in the world */
 
 	/** \brief constructor
 	 *

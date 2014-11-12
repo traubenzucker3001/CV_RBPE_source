@@ -70,7 +70,44 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 Cuda::~Cuda(){
 
-	//...
+	delete h_rgRotQuat;
+	delete h_rbVeloc;
+	delete h_rbRotMat;
+	delete h_rbPos;
+	delete h_rbMass;
+	delete h_rbLinMom;
+	delete h_rbInverseInertTens;
+	delete h_rbInitInversInertTensDiago;
+	delete h_rbForce;
+	delete h_rbAngVeloc;
+	delete h_rbAngMom;
+	delete h_pVeloc;
+	delete h_pPos;
+	delete h_pMass;
+	delete h_pGridIndex;
+	delete h_pForce;
+	delete h_gIndexGrid;
+	delete h_gCountGrid;
+
+	cudaFree(d_rbMass);
+	cudaFree(d_rbForce);
+	cudaFree(d_rbPos);
+	cudaFree(d_rbVeloc);
+	cudaFree(d_rbLinMom);
+	cudaFree(d_rgRotQuat);
+	cudaFree(d_rbRotMat);
+	cudaFree(d_rbAngVeloc);
+	cudaFree(d_rbAngMom);
+	cudaFree(d_rbInitInversInertTensDiago);
+	cudaFree(d_rbInverseInertTens);
+	cudaFree(d_pMass);
+	cudaFree(d_pPos);
+	cudaFree(d_pVeloc);
+	cudaFree(d_pForce);
+	cudaFree(d_pGridIndex);
+	cudaFree(d_gCountGrid);
+	cudaFree(d_gIndexGrid);
+
 }
 
 void Cuda::initCUDA(){
@@ -214,6 +251,7 @@ void Cuda::stepCUDA(){
 
 	//rendern!?
 	//bzw. cuda opengl austausch
+	// siehe --> cuda samples - 2_graphics - simpleGL
 	
 	//irgwo vorher noch vbo mit cuda daten initial füllen, hier dann immer updaten!!
 	cudaGLRegisterBufferObject(bufferObj);

@@ -45,7 +45,7 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN)
 
 RigidBody::~RigidBody(){
 
-	//...
+	delete shape;
 }
 
 void RigidBody::iterate(float duration){

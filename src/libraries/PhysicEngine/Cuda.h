@@ -22,6 +22,7 @@ private:
 	int bodyNum;	/**< total number of rigid bodies */
 	int partNum;	/**< total number of particles */
 
+public:
 	//benötigten arrays cpu (host)
 	//rigidbody parameter
 	float *h_rbMass;							/**< host array for rigid body masses */
@@ -29,7 +30,7 @@ private:
 	glm::vec3 *h_rbPos;							/**< host array for rigid body positions */
 	glm::vec3 *h_rbVeloc;						/**< host array for rigid body velocities */
 	glm::vec3 *h_rbLinMom;						/**< host array for rigid body linear momentums */
-	glm::quat *h_rgRotQuat;						/**< host array for rigid body rotation quaternions */
+	glm::quat *h_rbRotQuat;						/**< host array for rigid body rotation quaternions */
 	glm::mat3 *h_rbRotMat;						/**< host array for rigid body rotation matrixes */
 	glm::vec3 *h_rbAngVeloc;					/**< host array for rigid body angular velocities */
 	glm::vec3 *h_rbAngMom;						/**< host array for rigid body angular momentums */
@@ -42,6 +43,7 @@ private:
 	glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
 	glm::vec3 *h_pForce;		/**< host array for particle forces */
 
+private:
 	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
 	int* h_gCountGrid;			/**< host array for grid ... */
@@ -55,7 +57,7 @@ private:
 	glm::vec3 *d_rbPos;							/**< device array for rigid body positions */
 	glm::vec3 *d_rbVeloc;						/**< device array for rigid body velocities */
 	glm::vec3 *d_rbLinMom;						/**< device array for rigid body linear momentums */
-	glm::quat *d_rgRotQuat;						/**< device array for rigid body rotation quaternions */
+	glm::quat *d_rbRotQuat;						/**< device array for rigid body rotation quaternions */
 	glm::mat3 *d_rbRotMat;						/**< device array for rigid body rotation matrixes */
 	glm::vec3 *d_rbAngVeloc;					/**< device array for rigid body angular velocities */
 	glm::vec3 *d_rbAngMom;						/**< device array for rigid body angular momentums */
@@ -73,7 +75,28 @@ private:
 	int* d_gCountGrid;			/**< device array for grid ... */
 	glm::vec4 *d_gIndexGrid;	/**< device array for grid ... */		//int4?!
 
-	glm::vec3 gridMinPosVector;		//?!
+	glm::vec3 d_gridMinPosVector;		//?!	//todo: auch auf gpu packen!!
+	glm::vec3 h_gridMinPosVector;
+
+	//weitere auf gpu benötigte werte //todo: auf gpu allokieren und von cpu auf gpu übertagen
+	float d_voxelS;
+	int d_gridS;
+	float d_worldS;
+	float d_springC;
+	float d_dampC;
+	float d_pRadius;
+	float d_duration;
+	float d_termVeloc;
+
+	float h_voxelS;
+	int h_gridS;
+	float h_worldS;
+	float h_springC;
+	float h_dampC;
+	float h_pRadius;
+	float h_duration;
+	float h_termVeloc;
+
 
 public:
 	/** \brief constructor

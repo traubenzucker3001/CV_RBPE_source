@@ -15,9 +15,9 @@ World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 	dampCoeff = dcIN;
 	gravity = 9.81f;			//fester wert
 	allBodyNum = bNum;
-	allBodies = new RigidBody[allBodyNum];
+	allBodies = new RigidBody*[allBodyNum];
 	allPartNum = bNum * 27;
-	allParticles = new Particle[allPartNum];
+	allParticles = new Particle*[allPartNum];
 	grid = new UniformGrid();
 	cudaStruct = new Cuda(allBodyNum, allPartNum);
 }

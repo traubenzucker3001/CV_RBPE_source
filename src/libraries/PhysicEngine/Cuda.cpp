@@ -28,7 +28,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_rbPos = 0;
 	h_rbVeloc = 0;
 	h_rbLinMom = 0;
-	h_rgRotQuat = 0;
+	h_rbRotQuat = 0;
 	h_rbRotMat = 0;
 	h_rbAngVeloc = 0;
 	h_rbAngMom = 0;
@@ -50,7 +50,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 	d_rbPos = 0;
 	d_rbVeloc = 0;
 	d_rbLinMom = 0;
-	d_rgRotQuat = 0;
+	d_rbRotQuat = 0;
 	d_rbRotMat = 0;
 	d_rbAngVeloc = 0;
 	d_rbAngMom = 0;
@@ -66,11 +66,29 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	d_gCountGrid = 0;
 	d_gIndexGrid = 0; //int4?!
+
+	h_voxelS = 0;
+	h_gridS = 0;
+	h_worldS = 0;
+	h_springC = 0;
+	h_dampC = 0;
+	h_pRadius = 0;
+	h_duration = 0;
+	h_termVeloc = 0;
+
+	d_voxelS = 0;
+	d_gridS = 0;
+	d_worldS = 0;
+	d_springC = 0;
+	d_dampC = 0;
+	d_pRadius = 0;
+	d_duration = 0;
+	d_termVeloc = 0;
 }
 
 Cuda::~Cuda(){
 
-	delete h_rgRotQuat;
+	delete h_rbRotQuat;
 	delete h_rbVeloc;
 	delete h_rbRotMat;
 	delete h_rbPos;
@@ -94,7 +112,7 @@ Cuda::~Cuda(){
 	cudaFree(d_rbPos);
 	cudaFree(d_rbVeloc);
 	cudaFree(d_rbLinMom);
-	cudaFree(d_rgRotQuat);
+	cudaFree(d_rbRotQuat);
 	cudaFree(d_rbRotMat);
 	cudaFree(d_rbAngVeloc);
 	cudaFree(d_rbAngMom);
@@ -125,7 +143,7 @@ void Cuda::initCUDA(){
 	h_rbPos = new glm::vec3[bodyNum];
 	h_rbVeloc = new glm::vec3[bodyNum];
 	h_rbLinMom = new glm::vec3[bodyNum];
-	h_rgRotQuat = new glm::quat[bodyNum];
+	h_rbRotQuat = new glm::quat[bodyNum];
 	h_rbRotMat = new glm::mat3[bodyNum];
 	h_rbAngVeloc = new glm::vec3[bodyNum];
 	h_rbAngMom = new glm::vec3[bodyNum];
@@ -137,6 +155,15 @@ void Cuda::initCUDA(){
 	h_pPos = new glm::vec3[partNum];
 	h_pVeloc = new glm::vec3[partNum];
 	h_pForce = new glm::vec3[partNum];
+
+	h_voxelS = 0;	//todo: entspr. abändern, an was man von hier ran kommt,was anders init werden muss
+	h_gridS = 0;
+	h_worldS = 0;
+	h_springC = 0;
+	h_dampC = 0;
+	h_pRadius = 0;
+	h_duration = 0;
+	h_termVeloc = 0;
 
 	//initOpenCLGrid();
 	//init gitter
@@ -151,7 +178,7 @@ void Cuda::initCUDA(){
 	cudaMalloc((void**)&d_rbPos, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_rbVeloc, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_rbLinMom, bodyNum*sizeof(glm::vec3));
-	cudaMalloc((void**)&d_rgRotQuat, bodyNum*sizeof(glm::quat));
+	cudaMalloc((void**)&d_rbRotQuat, bodyNum*sizeof(glm::quat));
 	cudaMalloc((void**)&d_rbRotMat, bodyNum*sizeof(glm::mat3));
 	cudaMalloc((void**)&d_rbAngVeloc, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_rbAngMom, bodyNum*sizeof(glm::vec3));
@@ -163,6 +190,15 @@ void Cuda::initCUDA(){
 	cudaMalloc((void**)&d_pPos, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_pVeloc, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_pForce, bodyNum*sizeof(glm::vec3));
+
+	d_voxelS;	//todo: für diese vars speicher alloc
+	d_gridS;
+	d_worldS;
+	d_springC;
+	d_dampC;
+	d_pRadius;
+	d_duration;
+	d_termVeloc;
 
 	//updateHostDataArrays();
 	//fülle host arrays
@@ -178,13 +214,15 @@ void Cuda::updateHostArrays(){
 	cout << "cuda: updateHostArr called!" << endl; //zum test
 
 	//entscheiden ob vector o. arrays, dann entspr. anpassungen vornehmen. ?!auch nicht sicher ob direkter zugriff über public nicht besser, sollte hier aber eig so passen
-	RigidBody** allB = World::getInstance()->getAllBodies();
-	Particle** allP = World::getInstance()->getAllParticles();
-	for (int i=0; i<bodyNum; i++) {
-		allB[i]->updateCUDArray(i);
+	//RigidBody** allB = World::getInstance()->getAllBodies();
+	//Particle** allP = World::getInstance()->getAllParticles();
+	for (int i = 0; i < bodyNum; i++) {
+		//allB[i]->updateCUDArray(i);
+		World::getInstance()->allBodies[i]->updateCUDArray(i);
 	}
 	for (int i=0; i<partNum; i++) {
-		allP[i]->updateCUDArray(i);
+		//allP[i]->updateCUDArray(i);
+		World::getInstance()->allParticles[i]->updateCUDArray(i);
 	}
 }
 
@@ -198,7 +236,7 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_rbPos, h_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbVeloc, h_rbVeloc, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbLinMom, h_rbLinMom, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_rgRotQuat, h_rgRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_rbRotQuat, h_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbRotMat, h_rbRotMat, bodyNum*sizeof(glm::mat3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbAngVeloc, h_rbAngVeloc, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbAngMom, h_rbAngMom, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
@@ -242,12 +280,12 @@ void Cuda::stepCUDA(){
 
 	//schritte nacheinander aufrufen
 	//...
-	resetGrid();
-	updateGrid();
-	calcCollForces();
-	updateMom();
-	iterate();
-	updatePart();
+	resetGrid(d_gCountGrid, d_gIndexGrid);
+	updateGrid(d_gCountGrid, d_gIndexGrid, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
+	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gCountGrid, d_gIndexGrid, d_gridS);
+	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
+	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens, d_duration, d_pRadius);
+	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc, d_pRadius);
 
 	//VOs updaten
 	//TODO
@@ -256,7 +294,12 @@ void Cuda::stepCUDA(){
 	//bzw. cuda opengl austausch
 	// siehe --> cuda samples - 2_graphics - simpleGL
 	
+	//v1 über cvk cpu
+	//TODO
+
+	//v2 über cuda opengl (instancing)
 	//irgwo vorher noch vbo mit cuda daten initial füllen, hier dann immer updaten!!
+	/*
 	cudaGLRegisterBufferObject(bufferObj);
 	cudaGLMapBufferObject((void**)&devPtr,bufferObj);
 
@@ -264,6 +307,7 @@ void Cuda::stepCUDA(){
 
 	cudaGraphicsUnmapResources(1, &cuda_vbo_resource1, 0);	// give access authority of vbo1 back to openGL  
 	cudaGraphicsUnregisterResource(cuda_vbo_resource1);		// unregiste the resource   
+	*/
 
 	//mit opengl rendern
 

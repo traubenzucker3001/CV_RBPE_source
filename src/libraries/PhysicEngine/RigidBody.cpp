@@ -6,6 +6,7 @@
 #include "CollisionShape.h"
 #include "Box.h"
 #include "Sphere.h"
+#include "Cuda.h"
 
 using namespace std;
 
@@ -91,9 +92,9 @@ void RigidBody::iterate(float duration){
 
 	if (angularVelocitySize > 0) {
 
-		glm::vec3 rotationAxis = {angularVelocity.x/angularVelocitySize,
-			angularVelocity.y/angularVelocitySize,
-			angularVelocity.z/angularVelocitySize};
+		glm::vec3 rotationAxis = glm::vec3(	angularVelocity.x/angularVelocitySize,
+											angularVelocity.y/angularVelocitySize,
+											angularVelocity.z/angularVelocitySize);
 
 		float rotationAngle = angularVelocitySize * duration;
 
@@ -268,5 +269,20 @@ void RigidBody::updateCUDArray(int bodyIndex){
 
 	cout << "body: updateCudArr called!" << endl; //zum test
 
-	//TODO
+	int i = bodyIndex;
+	//TODO//done!!
+	Cuda::getInstance()->h_rbMass[i] = mass;
+
+	Cuda::getInstance()->h_rbForce[i] = force;
+	Cuda::getInstance()->h_rbPos[i] = position;
+	Cuda::getInstance()->h_rbVeloc[i] = velocity;
+	Cuda::getInstance()->h_rbLinMom[i] = linearMomentum;
+	Cuda::getInstance()->h_rbAngVeloc[i] = angularVelocity;
+	Cuda::getInstance()->h_rbAngMom[i] = angularMomentum;
+	Cuda::getInstance()->h_rbInitInversInertTensDiago[i] = initInverseInertTensDiagon;
+
+	Cuda::getInstance()->h_rbRotQuat[i] = rotationQuat;
+
+	Cuda::getInstance()->h_rbRotMat[i] = rotationMat;
+	Cuda::getInstance()->h_rbInverseInertTens[i] = inverseInertiaTensor;
 }

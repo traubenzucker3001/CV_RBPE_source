@@ -7,7 +7,7 @@
 #include <glm\glm.hpp>
 
 //resetGrid
-void resetGrid(int* countGrid, int4* indexGrid){
+void resetGrid(int* countGrid, glm::vec4* indexGrid){
 
 	//blocks und threads berechn.
 	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
@@ -18,7 +18,7 @@ void resetGrid(int* countGrid, int4* indexGrid){
 	resetGridC<<< numBlocks, numThreads >>>(countGrid, IndexGrid);
 }
 
-__global__ void resetGridC(int* countGrid, int4* indexGrid){
+__global__ void resetGridC(int* countGrid, glm::vec4* indexGrid){
 
 	//cout bzw. printf() in kernel möglich?!
 	//ja, siehe --> cuda samples - 0_simple - simpleprintf
@@ -35,7 +35,7 @@ __global__ void resetGridC(int* countGrid, int4* indexGrid){
 }
 
 //updateGRid
-void updateGrid(int* contGrid, int4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
+void updateGrid(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
 
 	//blocks und threads berechn.
 	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
@@ -43,10 +43,10 @@ void updateGrid(int* contGrid, int4* indexGrid, glm::vec3* pPos, glm::vec3 gridM
 	int numThreads = ;
 	int numBlocks = ;
 
-	updateGridC <<< numBlocks, numThreads >>>(contGrid,indexGrid,pPos,gridMinPosVec,voxelSL,gridSL,pGridIndex);
+	updateGridC <<< numBlocks, numThreads >>>(countGrid,indexGrid,pPos,gridMinPosVec,voxelSL,gridSL,pGridIndex);
 }
 
-__global__ void updateGridC(int* contGrid, int4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
+__global__ void updateGridC(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
 
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;

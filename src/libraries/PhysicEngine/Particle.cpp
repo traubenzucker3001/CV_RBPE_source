@@ -3,6 +3,7 @@
 #include "Particle.h"
 #include "UniformGrid.h"
 #include "World.h"
+#include "Cuda.h"
 
 int Particle::indexCount = 0;
 
@@ -213,7 +214,13 @@ void Particle::updateCUDArray(int particleIndex){
 
 	cout << "part: updateCudArr called!" << endl; //zum test
 
+	int i = particleIndex;
 	//TODO
+	Cuda::getInstance()->h_pMass[i] = mass;
+
+	Cuda::getInstance()->h_pPos[i] = position;
+	Cuda::getInstance()->h_pVeloc[i] = velocity;
+	Cuda::getInstance()->h_pForce[i] = force;
 }
 
 //-----"anhang"-----

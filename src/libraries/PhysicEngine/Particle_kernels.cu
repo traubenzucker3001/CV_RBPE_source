@@ -15,7 +15,7 @@ int nearHighVal(int a, int b){
 }
 
 //collision detection
-void calcCollForces(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, int4* indexGrid, int gridSL){
+void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
 	//blocks und threads berechn.
 	int n = World::getInstance()->getAllPartNum();
@@ -26,7 +26,7 @@ void calcCollForces(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::v
 	calcCollForcesC<<< numBlocks, numThreads >>>(pMass,pPos,pVeloc,pForce,pRadius,worldS,springC,dampC,pGridIndex,countGrid,indexGrid,gridSL);
 }
 
-__global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, int4* indexGrid, int gridSL){
+__global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
 	//TODO
 	//unsigned int particleIndex = get_global_id(0);
@@ -49,7 +49,7 @@ __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pV
 	int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
 
 	//oder glm::vec4 besser??, dann auf umstellung bei zählweise achten!!
-	int4 neighborCells[27];	//int4??
+	glm::vec4 neighborCells[27];	//int4??
 	int cellIndexJ = 0;
 
 	flatGridIndex = flatGridIndex - xSteps;
@@ -75,11 +75,10 @@ __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pV
 
 	for (int j = 0; j<27; j++) {
 		//oder glm::...
-		int neighborParticles[4] = {
-			neighborCells[j].x,
-			neighborCells[j].y,
-			neighborCells[j].z,
-			neighborCells[j].w };
+		glm::vec4 neighborParticles = glm::vec4(neighborCells[j].x,
+												neighborCells[j].y,
+												neighborCells[j].z,
+												neighborCells[j].w );
 
 		for (int k = 0; k<4; k++) {
 			int otherParticle = neighborParticles[k];
@@ -159,7 +158,7 @@ __global__ void calcCollForcesC(glm::vec3* pMass, glm::vec3* pPos, glm::vec3* pV
 
 //update particles
 //wie heißt es in cpu version??
-void updatePart(){
+void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
 
 	//blocks und threads berechn.
 	int n = World::getInstance()->getAllPartNum();
@@ -167,7 +166,7 @@ void updatePart(){
 	int numThreads = fmin(blockSize, n);
 	int numBlocks = nearHighVal(n, numThreads);
 
-	updatePartC<<< numBlocks, numThreads >>>();
+	updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc,rbRotMat, rbAngVeloc, pPos, pVeloc,pRadius);
 }
 
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){

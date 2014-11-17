@@ -22,7 +22,7 @@ Timing::Timing(){
 
 Timing::~Timing(){
 
-	//...
+	//no pointers to clear!
 }
 
 void Timing::startFrame(){

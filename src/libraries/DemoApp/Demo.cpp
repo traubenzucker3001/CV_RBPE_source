@@ -2,18 +2,22 @@
 //!noch gl fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
+#include <iostream>
+
 #include "Demo.h"
 #include "Scene.h"
 #include "PhysicEngine/UniformGrid.h"
 #include "PhysicEngine/Cuda.h"
+#include "PhysicEngine\World.h"
+#include "PhysicEngine\RigidBody.h"
 
 using namespace std;
 
-Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN){
+Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN){
 
 	cout << "demo: demo constr called!" << endl; //zum test
 
-	physicsWorld = new World(wsIN,prIN,scIN,dcIN);
+	physicsWorld = new World(wsIN,prIN,scIN,dcIN,bnIN);
 	virtObjNum = 0;
 	time = new Timing();
 	windowWidth = wwIN;
@@ -21,11 +25,17 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	duration = durIN;
 	terminalVeloc = tvIN;
 	camera = new CVK::Trackball(wwIN,whIN);
+	sceneRoot = new CVK::Node("Root");
+
+	float temp = prIN * 6;
+	geometry = new CVK::Cube(temp);
 }
 
 Demo::~Demo(){
 
-	//...
+	delete time;
+	delete physicsWorld;
+	delete camera;
 }
 
 void Demo::run(){
@@ -42,10 +52,10 @@ void Demo::run(){
 	glewInit();
 
 	//vbos generieren und binden. eins für gesamtes szene oder pro box eins??
-	glGenBuffers(1, &rbVBO);
+	/*glGenBuffers(1, &rbVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, rbVBO);
 	int bufferSize = vertexCount * 3 * sizeof(float);
-	glBufferData(GL_ARRAY_BUFFER, 3 * bufferSize, vertexData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * bufferSize, vertexData, GL_DYNAMIC_DRAW);*/
 	//glBufferData(GL_ARRAY_BUFFER, numParticles * 3 * sizeof(float), 0, GL_DYNAMIC_DRAW); // locate the memory, but without initialize the values  
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
@@ -54,6 +64,7 @@ void Demo::run(){
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
 
+	//in demo mit reinpacken, keine extra scene klasse!?
 	initScene();
 
 	//load, compile and link Shader
@@ -65,6 +76,9 @@ void Demo::run(){
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	//hierarchie aufbau
+
 
 	CVK::State::getInstance()->setCamera( camera);
 
@@ -102,6 +116,7 @@ void Demo::run(){
 		//vorher positionen und orientierung von VOs aktualisieren
 		//obj rendern
 		//earthNode->render();
+		sceneRoot->render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -129,7 +144,53 @@ void Demo::initScene(){
 	}
 
 	//obj initialisieren
-	initObjs();
+	//initObjs();
+
+
+	/*	VOs erstellen
+		- RB erstellen
+		-- parts erstellen
+		- CVK::Node erstellen
+	*/
+	cout << "scene: initObjs called!" << endl; //zum test
+
+	//...
+	//World::getInstance()->setAllPartNum(0);
+	//vertexCount = 0;
+
+	int numberRB = World::getInstance()->getAllBodyNum();
+	int numberP = World::getInstance()->getAllPartNum();
+	//VOs anlegen u. in vector listen
+	float pR = World::getInstance()->getPartRadius();
+
+	glm::vec3 randPose = glm::vec3();
+	for (int i; i < numberRB; i++){
+		VirtualObject *temp = new VirtualObject(randPose,i);
+		virtualObjs.push_back(temp);
+	}
+
+	//----------anhang
+	//boxen erstellen
+	/*
+	for (int i = 0; i<numberRB; i++) {
+		World::getInstance()->allBodies[i] = new Box();
+		numberP += 27;
+		vertexCount += 24;
+	}
+	//todo: array in entsprechender größe erstellen, mit in world konstr. packen!!! zugriff auf array ändern?! public?!
+	particles = new Particle*[numberP];
+
+	for (int i = 0; i<numberRB; i++) {
+		bodies[i]->shape->populatePartArray();
+	}
+	std::cout << "Number of Particles: " << numberP << std::endl;
+	std::cout << "VBO vertex count: " << vertexCount << std::endl;
+	*/
+
+	//objekte initialisieren
+	//teapot jetzt nur zum test, später virtual objekts
+	//CVK::Teapot *teapot = new CVK::Teapot;
+	//CVK::Sphere *sphere = new CVK::Sphere(0.3f);
 }
 
 //wenn nur step simulation drin bleibt, dann ja eig überflüssig

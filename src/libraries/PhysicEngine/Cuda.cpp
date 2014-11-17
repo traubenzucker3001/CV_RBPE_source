@@ -249,6 +249,9 @@ void Cuda::stepCUDA(){
 	iterate();
 	updatePart();
 
+	//VOs updaten
+	//TODO
+
 	//rendern!?
 	//bzw. cuda opengl austausch
 	// siehe --> cuda samples - 2_graphics - simpleGL

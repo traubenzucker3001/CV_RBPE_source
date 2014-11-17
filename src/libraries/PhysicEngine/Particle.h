@@ -27,11 +27,17 @@ public:
 
 	/** \brief constructor
 	 *
-	 * creates a particle instance
+	 * creates a particle instance with given parameters
 	 * @param posIN particle position
 	 * @param massIN particle mass
 	 */
 	Particle(glm::vec3 posIN, float massIN);
+
+	/** \brief standard constructor
+	*
+	* creates a particle instance
+	*/
+	Particle();
 
 	/** \brief destructor
 	 *

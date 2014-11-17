@@ -180,7 +180,7 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 	int bi = pi / 27;
-	int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
+	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
 	glm::vec3 originalRelativePos;
 	//Calculate original relative position

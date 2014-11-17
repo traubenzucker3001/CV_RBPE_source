@@ -12,9 +12,13 @@ using namespace std;
 //methode zur erstellung (zum füllen) der szene
 static void initObjs(){
 
+
+	//mit in demo.cpp gepackt
+
 	cout << "scene: initObjs called!" << endl; //zum test
 
 	//...
+	/*
 	World::getInstance()->setAllPartNum(0);
 	vertexCount = 0;
 
@@ -39,7 +43,7 @@ static void initObjs(){
 	}
 	std::cout << "Number of Particles: " << numberP << std::endl;
 	std::cout << "VBO vertex count: " << vertexCount << std::endl;
-
+	*/
 	//objekte initialisieren
 	//teapot jetzt nur zum test, später virtual objekts
 	CVK::Teapot *teapot = new CVK::Teapot;

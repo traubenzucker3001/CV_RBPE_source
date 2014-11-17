@@ -3,8 +3,9 @@
 #include "World.h"
 #include "UniformGrid.h"
 #include "RigidBody.h"
+#include "Particle.h"
 
-World::World(float wsIN, float prIN, float scIN, float dcIN){
+World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 
 	cout << "world: world constr called!" << endl; //zum test
 
@@ -13,11 +14,12 @@ World::World(float wsIN, float prIN, float scIN, float dcIN){
 	springCoeff = scIN;
 	dampCoeff = dcIN;
 	gravity = 9.81f;			//fester wert
-	allBodyNum = 0;
-	allParticles = 0;
-	allPartNum = 0;
+	allBodyNum = bNum;
+	allBodies = new RigidBody[allBodyNum];
+	allPartNum = bNum * 27;
+	allParticles = new Particle[allPartNum];
 	grid = new UniformGrid();
-
+	cudaStruct = new Cuda(allBodyNum, allPartNum);
 }
 
 World::~World(){
@@ -64,5 +66,8 @@ void World::stepPhysics(float duration, bool isGPU){
 			//(*it)->iterate(duration);				//in array geändert
 			allBodies[i]->iterate(duration);
 		}
+
+		//VOs updaten
+		//TODO
 	}
 }

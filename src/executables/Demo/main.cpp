@@ -21,10 +21,11 @@ bool isGPU = false;
 float worldSize = 15.0f;	//Half length of world
 float partRadius = 0.20f;
 float boxHSize = partRadius * 3;
+int bodyNumber = 3;
 
 int main() {
 
-	demo = new Demo(WIDTH, HEIGHT, dur, termVeloc, worldSize, partRadius, springCoeff, dampCoeff);
+	demo = new Demo(WIDTH, HEIGHT, dur, termVeloc, worldSize, partRadius, springCoeff, dampCoeff,bodyNumber);
 	demo->run();
 
 	//cout << "Hallo Test!" << endl;

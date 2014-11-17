@@ -46,8 +46,8 @@ private:
 public:
 
 	//private or public?!
-	RigidBody** allBodies;				/**< list of all bodies in the world */
-	Particle** allParticles;			/**< list of all particles in the world */
+	RigidBody **allBodies;				/**< list of all bodies in the world */
+	Particle **allParticles;			/**< list of all particles in the world */
 
 	/** \brief constructor
 	 *
@@ -56,8 +56,9 @@ public:
 	 * @param prIN particle radius
 	 * @param scIN spring coefficient
 	 * @param dcIN damping coefficient
+	 * @param bNum number of bodies
 	 */
-	World(float wsIN, float prIN, float scIN, float dcIN);
+	World(float wsIN, float prIN, float scIN, float dcIN, int bNum);
 
 	/** \brief destructor
 	 *
@@ -75,14 +76,6 @@ public:
 	void stepPhysics(float duration, bool isGPU);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	 Particle** getAllParticles() const {
-		return allParticles;
-	}
-
-	void setAllParticles( Particle**& allParticles) {
-		this->allParticles = allParticles;
-	}
-
 	int getAllPartNum() const {
 		return allPartNum;
 	}
@@ -139,12 +132,20 @@ public:
 		this->allBodyNum = allbodyNum;
 	}
 
-	RigidBody**& getAllBodies() {
+	 RigidBody**& getAllBodies() {
 		return allBodies;
 	}
 
-	void setAllBodies(RigidBody**& allBodies) {
+	void setAllBodies( RigidBody**& allBodies) {
 		this->allBodies = allBodies;
+	}
+
+	 Particle**& getAllParticles() {
+		return allParticles;
+	}
+
+	void setAllParticles( Particle**& allParticles) {
+		this->allParticles = allParticles;
 	}
 };
 

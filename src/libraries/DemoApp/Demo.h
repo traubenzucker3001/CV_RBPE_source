@@ -47,12 +47,15 @@ private:
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 
 	//eins für gesamte szene oder eins pro box??
-	GLuint rbVBO;						/**< vertex buffer object for rigid body positions */
-	GLuint pVBO;						/**< vertex buffer object for particle positions */
+	/*GLuint rbVBO;						/**< vertex buffer object for rigid body positions */
+	/*GLuint pVBO;						/**< vertex buffer object for particle positions */
 	//?
-	int vertexCount;					/**< ... */
+	/*int vertexCount;					/**< ... */
 
 public:
+
+	CVK::Node *sceneRoot;				/**< ... */
+	CVK::Geometry *geometry;			/**< ... */
 
 	/** \brief constructor
 	*
@@ -65,8 +68,9 @@ public:
 	* @param prIN particle radius
 	* @param scIN spring coefficient
 	* @param dcIN damping coefficient
+	* @param bnIN total number of bodies in the scene
 	*/
-	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN);
+	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN);
 
 	/** \brief destructor
 	*

@@ -63,13 +63,19 @@ public:
 
 	/** \brief constructor
 	 *
-	 * creates a rigid body instance
+	 * creates a rigid body instance with given parameters
 	 * @param massIN mass
 	 * @param staticIN static object (true) or not (false) (not observed at the moment)
 	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
 	 * @param posIN position
 	 */
 	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN);
+
+	/** \brief standard constructor
+	*
+	* creates a particle instance
+	*/
+	RigidBody();
 
 	/** \brief destructor
 	 *
@@ -132,6 +138,32 @@ public:
 	 * @return void
 	 */
 	void updateCUDArray(int bodyIndex);
+
+
+	// <<<<<<<<<< getter + settter >>>>>>>>>> //
+	const glm::vec3& getPosition() const {
+		return position;
+	}
+
+	void setPosition(const glm::vec3& position) {
+		this->position = position;
+	}
+
+	const glm::mat3& getRotationMat() const {
+		return rotationMat;
+	}
+
+	void setRotationMat(const glm::mat3& rotationMat) {
+		this->rotationMat = rotationMat;
+	}
+
+	const glm::quat& getRotationQuat() const {
+		return rotationQuat;
+	}
+
+	void setRotationQuat(const glm::quat& rotationQuat) {
+		this->rotationQuat = rotationQuat;
+	}
 };
 
 #endif /* RIGIDBODY_H_ */

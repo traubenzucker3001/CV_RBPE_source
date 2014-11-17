@@ -18,21 +18,23 @@ class VirtualObject
 private:
 	RigidBody* physicBody;		/**< RigidBody as physics component of this object */
 
-	CVK::Geometry* graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
+	CVK::Node* graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
 	glm::vec3 position;			/**< position */	//eig  überflüssig wenn model matrix habe
 
 	glm::mat4 modelMatrix;		/**< model matrix */
+
+	int id;						/**< identification number */
 
 
 public:
 	/** \brief default constructor
 	 *
 	 * creates a virtual object instance
-	 * @param sizeIN object size (box)
 	 * @param posIN initial position
+	 * @param bodyCount counts number of initialized bodies
 	 */
-	VirtualObject(float sizeIN, glm::vec3 posIN);
+	VirtualObject(glm::vec3 posIN, int bodyCount);
 
 	/** \brief constructor
 	 *

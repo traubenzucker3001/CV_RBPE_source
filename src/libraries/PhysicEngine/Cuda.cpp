@@ -9,12 +9,24 @@
 #include "World.h"
 #include "RigidBody.h"
 #include "Particle.h"
+#include "UniformGrid.h"
+#include "DemoApp\Demo.h"
 
 #include "UniformGrid_kernels.cu"
 #include "RigidBody_kernels.cu"
 #include "Particle_kernels.cu"
 
 using namespace std;
+
+//wollten innerhalb der klasse nicht
+__device__ __constant__ float d_voxelS;
+__constant__ int d_gridS;
+__device__ float d_worldS;
+__device__ float d_springC;
+__device__ float d_dampC;
+__device__ float d_pRadius;
+__device__ float d_duration;
+__device__ float d_termVeloc;
 
 Cuda::Cuda(int bnIN, int pnIN){
 
@@ -156,14 +168,15 @@ void Cuda::initCUDA(){
 	h_pVeloc = new glm::vec3[partNum];
 	h_pForce = new glm::vec3[partNum];
 
-	h_voxelS = 0;	//todo: entspr. abändern, an was man von hier ran kommt,was anders init werden muss
-	h_gridS = 0;
-	h_worldS = 0;
-	h_springC = 0;
-	h_dampC = 0;
-	h_pRadius = 0;
-	h_duration = 0;
-	h_termVeloc = 0;
+	//konstante vars direkt füllen
+	h_voxelS = UniformGrid::getInstance()->getVoxelSize();
+	h_gridS = UniformGrid::getInstance()->getGridSize();
+	h_worldS = World::getInstance()->getWorldSize();
+	h_springC = World::getInstance()->getSpringCoeff();
+	h_dampC = World::getInstance()->getDampCoeff();
+	h_pRadius = World::getInstance()->getPartRadius();
+	h_duration = Demo::getInstance()->getDuration();
+	h_termVeloc = Demo::getInstance()->getTerminalVeloc();
 
 	//initOpenCLGrid();
 	//init gitter
@@ -191,14 +204,18 @@ void Cuda::initCUDA(){
 	cudaMalloc((void**)&d_pVeloc, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_pForce, bodyNum*sizeof(glm::vec3));
 
-	d_voxelS;	//todo: für diese vars speicher alloc
-	d_gridS;
-	d_worldS;
-	d_springC;
-	d_dampC;
-	d_pRadius;
-	d_duration;
-	d_termVeloc;
+	/*
+	cudaMalloc((void**)d_voxelS, sizeof(float));	//todo: für diese vars speicher alloc
+	cudaMalloc((void**)&d_gridS, sizeof(int));
+	cudaMalloc((void**)&d_worldS, sizeof(float));
+	cudaMalloc((void**)&d_springC, sizeof(float));
+	cudaMalloc((void**)&d_dampC, sizeof(float));
+	cudaMalloc((void**)&d_pRadius, sizeof(float));
+	cudaMalloc((void**)&d_duration, sizeof(float));
+	cudaMalloc((void**)&d_termVeloc, sizeof(float));
+	*/
+
+	//cudaMemcpyToSymbol(d_voxelS,&h_voxelS,1 * sizeof(int));
 
 	//updateHostDataArrays();
 	//fülle host arrays
@@ -247,6 +264,26 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_pPos, h_pPos, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_pVeloc, h_pVeloc, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_pForce, h_pForce, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
+
+	/*
+	cudaMemcpy(d_voxelS, h_voxelS, sizeof(float), cudaMemcpyHostToDevice);
+	d_gridS = 0;
+	d_worldS = 0;
+	d_springC = 0;
+	d_dampC = 0;
+	d_pRadius = 0;
+	d_duration = 0;
+	d_termVeloc = 0;
+	*/
+	 //siehe cuda programming guide. sollte eig ohne "" gehen
+	cudaMemcpyToSymbol("d_voxelS", &h_voxelS, sizeof(float));
+	cudaMemcpyToSymbol("d_gridS", &h_gridS, sizeof(int));
+	cudaMemcpyToSymbol("d_worldS", &h_worldS, sizeof(float));
+	cudaMemcpyToSymbol("d_springC", &h_springC, sizeof(float));
+	cudaMemcpyToSymbol("d_dampC", &h_dampC, sizeof(float));
+	cudaMemcpyToSymbol("d_pRadius", &h_pRadius, sizeof(float));
+	cudaMemcpyToSymbol("d_duration", &h_duration, sizeof(float));
+	cudaMemcpyToSymbol("d_termVeloc", &h_termVeloc, sizeof(float));
 
 	//vbo data
 

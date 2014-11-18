@@ -173,6 +173,14 @@ public:
 	void setTerminalVeloc(float terminalVeloc) {
 		this->terminalVeloc = terminalVeloc;
 	}
+
+	float getDuration() const {
+		return duration;
+	}
+
+	void setDuration(float duration) {
+		this->duration = duration;
+	}
 };
 
 #endif /* DEMO_H_ */

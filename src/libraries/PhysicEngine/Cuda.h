@@ -107,6 +107,13 @@ public:
 	*/
 	Cuda(int bnIN, int pnIN);
 
+	/** \brief default constructor
+	*
+	* creates the cuda structure instance
+	* -not implemented-
+	*/
+	Cuda();
+
 	/** \brief constructor
 	*
 	* destroys the cuda structure instance

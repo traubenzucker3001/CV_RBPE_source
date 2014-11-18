@@ -10,11 +10,11 @@
 
 using namespace std;
 
-VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount){
+VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN){
 
 	cout << "vo: vo constr called!" << endl; //zum test
 
-	physicBody = new RigidBody(sizeIN,posIN);
+	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN);
 
 	//schauen ob body/part world arrays richtig bzw. überhaupt befüllt werden!!!
 	World::getInstance()->allBodies[bodyCount] = physicBody;

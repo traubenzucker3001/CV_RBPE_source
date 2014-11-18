@@ -60,6 +60,13 @@ public:
 	 */
 	World(float wsIN, float prIN, float scIN, float dcIN, int bNum);
 
+	/** \brief default constructor
+	*
+	* creates the world instance
+	* -not implemented-
+	*/
+	World();
+
 	/** \brief destructor
 	 *
 	 * destroys the world instance

@@ -72,6 +72,13 @@ public:
 	*/
 	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN);
 
+	/** \brief default constructor
+	*
+	* creates the demo instance
+	* -not implemented-
+	*/
+	Demo();
+
 	/** \brief destructor
 	*
 	* destroys the demo instance

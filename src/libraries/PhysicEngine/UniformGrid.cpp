@@ -146,7 +146,7 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 			checkIndex.z = gridIndex.z-1; //reset z index before z-loop
 
 			for (int z=0; z<3; z++) {
-				int flatCountGridIndex = checkIndex.x*xSteps + checkIndex.y*ySteps + checkIndex.z;
+				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
 				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 
 				indices[neighborCount] = indexGrid[flatIndexGridIndex];

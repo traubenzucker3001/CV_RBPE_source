@@ -164,8 +164,9 @@ void Demo::initScene(){
 	float pR = World::getInstance()->getPartRadius();
 
 	glm::vec3 randPose = glm::vec3();
+	float mass = 0;		//todo: geeignete masse definieren!!!
 	for (int i; i < numberRB; i++){
-		VirtualObject *temp = new VirtualObject(randPose,i);
+		VirtualObject *temp = new VirtualObject(randPose,i,mass,false,false);
 		virtualObjs.push_back(temp);
 	}
 

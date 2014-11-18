@@ -33,8 +33,11 @@ public:
 	 * creates a virtual object instance
 	 * @param posIN initial position
 	 * @param bodyCount counts number of initialized bodies
+	 * @param massIN body mass
+	 * @param staticIN static object (true) or not (false) (not observed at the moment)
+	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
 	 */
-	VirtualObject(glm::vec3 posIN, int bodyCount);
+	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN);
 
 	/** \brief constructor
 	 *

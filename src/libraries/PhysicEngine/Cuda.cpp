@@ -20,13 +20,13 @@ using namespace std;
 
 //wollten innerhalb der klasse nicht
 __device__ __constant__ float d_voxelS;
-__constant__ int d_gridS;
-__device__ float d_worldS;
-__device__ float d_springC;
-__device__ float d_dampC;
-__device__ float d_pRadius;
-__device__ float d_duration;
-__device__ float d_termVeloc;
+__device__ __constant__ int d_gridS;
+__device__ __constant__ float d_worldS;
+__device__ __constant__ float d_springC;
+__device__ __constant__ float d_dampC;
+__device__ __constant__ float d_pRadius;
+__device__ __constant__ float d_duration;
+__device__ __constant__ float d_termVeloc;
 
 Cuda::Cuda(int bnIN, int pnIN){
 

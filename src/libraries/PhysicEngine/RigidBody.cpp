@@ -31,8 +31,8 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN)
 
 		glm::vec3 pOrigIN = posIN;
 		float pMassIN = massIN; 
-		Particle** bPartIN;
-		float numPartIN;
+		Particle** bPartIN;		//TODO: werte initialisieren!!
+		int numPartIN;
 		float halfsizeIN;
 
 		shape = new Box(pOrigIN,pMassIN,bPartIN,numPartIN,halfsizeIN);

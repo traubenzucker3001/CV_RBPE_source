@@ -1,20 +1,25 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
+#ifdef WIN32			//für behebung der gl.h errors
+#include <windows.h>
+#endif
+
 #include <cuda.h>
 #include <cuda_runtime.h>
-#include <cuda_gl_interop.h>
 #include <iostream>
 
+#include "DemoApp\Demo.h"
 #include "Cuda.h"
 #include "World.h"
 #include "RigidBody.h"
 #include "Particle.h"
 #include "UniformGrid.h"
-#include "DemoApp\Demo.h"
 
 #include "UniformGrid_kernels.cu"
 #include "RigidBody_kernels.cu"
 #include "Particle_kernels.cu"
+
+#include <cuda_gl_interop.h>
 
 using namespace std;
 

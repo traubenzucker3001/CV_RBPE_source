@@ -13,6 +13,14 @@
 
 using namespace std;
 
+
+void resizeCallback(GLFWwindow *window, int w, int h){
+
+	Demo::getInstance()->camera->setWidthHeight(w, h);
+	glViewport(0, 0, w, h);
+}
+
+
 Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN){
 
 	cout << "demo: demo constr called!" << endl; //zum test
@@ -125,7 +133,7 @@ void Demo::run(){
 
 		float fps = (float)time->updateFPS();
 		char title[64];
-		sprintf(title, "Rigid Body | %d fps", (int)fps);
+		sprintf_s(title, "Rigid Body | %d fps", (int)fps);
 		glfwSetWindowTitle(window, title);
 	}
 	Cuda::getInstance()->~Cuda();	//free cuda stuff
@@ -165,7 +173,7 @@ void Demo::initScene(){
 
 	glm::vec3 randPose = glm::vec3();
 	float mass = 0;		//todo: geeignete masse definieren!!!
-	for (int i; i < numberRB; i++){
+	for (int i = 0; i < numberRB; i++){
 		VirtualObject *temp = new VirtualObject(randPose,i,mass,false,false);
 		virtualObjs.push_back(temp);
 	}
@@ -207,25 +215,6 @@ void Demo::stepSimulation(float duration){
 
 	World::getInstance()->stepPhysics(duration,isGPU);
 
-	/*
-	//update part. values
-	for(std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
-		(*it)->updatePartValuesVO();
-	}
-
-	//update grid
-	updateGrid();
-
-	//update momenta
-	for(std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
-		(*it)->updateMomentaVO(duration);
-	}
-
-	//iterate
-	for(std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
-		(*it)->iterateVO(duration);
-	}
-	*/
 }
 
 void Demo::resetScene(){

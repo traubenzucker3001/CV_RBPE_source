@@ -16,6 +16,17 @@
 
 #include "CVK_Framework/CVK_Framework.h"
 
+//doku hier nicht nötig/möglich
+/** \brief window resize callback
+*
+* called whenever the window size is changed
+* @param window the glfw window reference
+* @param w new windoe width
+* @param h new window height
+* @return void
+*/
+void resizeCallback(GLFWwindow *window, int w, int h);
+
 /** \brief Demo
  *
  * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
@@ -40,9 +51,6 @@ private:
 	float duration;								/**< step duration */
 	float terminalVeloc;						/**< terminal velocity */
 
-	//bzw normale camera
-	CVK::Trackball *camera;						/**< cvk camera objekt */
-
 	//ka ob hier oder einfach in main?!
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 
@@ -53,6 +61,8 @@ private:
 	/*int vertexCount;					/**< ... */
 
 public:
+
+	CVK::Trackball *camera;				/**< cvk camera objekt */	//bzw normale camera
 
 	CVK::Node *sceneRoot;				/**< ... */
 	CVK::Geometry *geometry;			/**< ... */
@@ -169,7 +179,7 @@ public:
 	* @param h new window height
 	* @return void
 	*/
-	void resizeCallback(GLFWwindow *window, int w, int h);
+	//void resizeCallback(GLFWwindow *window, int w, int h);		//außerhalb klasse gelegt!
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //

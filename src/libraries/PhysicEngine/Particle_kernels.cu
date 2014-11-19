@@ -14,17 +14,17 @@ int nearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
 }
 
-//collision detection
-void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
+//collision detection	//unter kernel geschoben, funktion muss vor aufruf bekannt sein
+/*void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
 	//blocks und threads berechn.
 	int n = World::getInstance()->getAllPartNum();
 	int blockSize = 64;
-	int numThreads = fmin(blockSize, n);
+	int numThreads = (int)fmin(blockSize, n);
 	int numBlocks = nearHighVal(n, numThreads);
 
 	calcCollForcesC<<< numBlocks, numThreads >>>(pMass,pPos,pVeloc,pForce,pRadius,worldS,springC,dampC,pGridIndex,countGrid,indexGrid,gridSL);
-}
+}*/
 
 __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
@@ -41,12 +41,11 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 	//Pretend border cell is 1 position inwards to avoid checking outside bounds for neighbors
 	//todo: zu cuda func
 	//gridIndex = clamp(gridIndex, 1, gridSL - 2);
-	gridIndex = glm::clamp(gridIndex, 1, gridSL - 2);
-
+	gridIndex = glm::clamp(gridIndex, 1.0f, (float)gridSL - 2.0f);
 	int xSteps = gridSL*gridSL;
 	int ySteps = gridSL;
 
-	int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
+	int flatGridIndex = (int)gridIndex.x * xSteps + (int)gridIndex.y * ySteps + (int)gridIndex.z;
 
 	//oder glm::vec4 besser??, dann auf umstellung bei zählweise achten!!
 	glm::vec4 neighborCells[27];	//int4??
@@ -81,7 +80,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 												neighborCells[j].w );
 
 		for (int k = 0; k<4; k++) {
-			int otherParticle = neighborParticles[k];
+			int otherParticle = (int)neighborParticles[k];
 			if ((otherParticle != pi) && (otherParticle != (-1))) {
 				glm::vec3 distance = pPos[otherParticle] - pPos[pi];
 
@@ -155,10 +154,21 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 	}
 }
 
+//collision detection
+void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
-//update particles
+	//blocks und threads berechn.
+	int n = World::getInstance()->getAllPartNum();
+	int blockSize = 64;
+	int numThreads = (int)fmin(blockSize, n);
+	int numBlocks = nearHighVal(n, numThreads);
+
+	calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, countGrid, indexGrid, gridSL);
+}
+
+//update particles		//unter kernel geschoben, funktion muss vor aufruf bekannt sein
 //wie heißt es in cpu version??
-void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
+/*void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
 
 	//blocks und threads berechn.
 	int n = World::getInstance()->getAllPartNum();
@@ -167,7 +177,7 @@ void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::
 	int numBlocks = nearHighVal(n, numThreads);
 
 	updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc,rbRotMat, rbAngVeloc, pPos, pVeloc,pRadius);
-}
+}*/
 
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
 
@@ -266,6 +276,18 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 	//siehe anhang
 }
 
+//update particles
+//wie heißt es in cpu version??
+void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
+
+	//blocks und threads berechn.
+	int n = World::getInstance()->getAllPartNum();
+	int blockSize = 64;
+	int numThreads = (int)fmin(blockSize, n);
+	int numBlocks = nearHighVal(n, numThreads);
+
+	updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc, rbRotMat, rbAngVeloc, pPos, pVeloc, pRadius);
+}
 
 //----- anhang -----
 //opencl

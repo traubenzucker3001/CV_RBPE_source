@@ -10,8 +10,8 @@
 
 #include "PhysicEngine\World.h"
 
-//update momenta
-void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
+//update momenta	//unter kernel geschoben, funktion muss vor aufruf bekannt sein
+/*void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
 
 	//todo: blocks und threads berechn.
 	int b = World::getInstance()->getAllBodyNum();
@@ -20,7 +20,7 @@ void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* r
 	int numBlocks = ;
 
 	updateMomC <<< numBlocks, numThreads >>>(rbMass,rbForce,rbPos,rbLinMom,rbAngMom,pPos,pForce,duration,termVeloc);
-}
+}*/
 
 __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
 
@@ -63,9 +63,20 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 	rbAngMom[bi].z += torque.z * duration;
 }
 
+//update momenta
+void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
 
-//perform step
-void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
+	//todo: blocks und threads berechn.
+	int b = World::getInstance()->getAllBodyNum();
+	int blockSize = 64;
+	int numThreads = ;
+	int numBlocks = ;
+
+	updateMomC <<< numBlocks, numThreads >>>(rbMass, rbForce, rbPos, rbLinMom, rbAngMom, pPos, pForce, duration, termVeloc);
+}
+
+//perform step		//unter kernel geschoben, funktion muss vor aufruf bekannt sein
+/*void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
 
 	//todo: blocks und threads berechn.
 	int b = World::getInstance()->getAllBodyNum();
@@ -74,7 +85,7 @@ void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbL
 	int numBlocks = ;
 
 	iterateC <<< numBlocks, numThreads >>>(rbMass,rbPos,rbVeloc,rbLinMom,rbRotQuat,rbRotMat,rbAngVeloc,rbAngMom,initIITDiago,inverInertTens,duration,pRadius);
-}
+}*/
 
 __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
 
@@ -237,6 +248,17 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 	//siehe anhang
 }
 
+//perform step
+void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
+
+	//todo: blocks und threads berechn.
+	int b = World::getInstance()->getAllBodyNum();
+	int blockSize = 64;
+	int numThreads = ;
+	int numBlocks = ;
+
+	iterateC <<< numBlocks, numThreads >>>(rbMass, rbPos, rbVeloc, rbLinMom, rbRotQuat, rbRotMat, rbAngVeloc, rbAngMom, initIITDiago, inverInertTens, duration, pRadius);
+}
 
 //----- anhang -----
 //opencl

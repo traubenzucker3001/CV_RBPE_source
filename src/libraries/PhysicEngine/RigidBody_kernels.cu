@@ -1,4 +1,4 @@
-
+/*
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -10,17 +10,11 @@
 
 #include "PhysicEngine\World.h"
 
-//update momenta	//unter kernel geschoben, funktion muss vor aufruf bekannt sein
-/*void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
+//Round a / b to nearest higher integer value
+int rbNearHighVal(int a, int b){
+	return (a % b != 0) ? (a / b + 1) : (a / b);
+}	//nicht in jedem cu eine funktion, irgwo für alle erreichbar machen
 
-	//todo: blocks und threads berechn.
-	int b = World::getInstance()->getAllBodyNum();
-	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
-
-	updateMomC <<< numBlocks, numThreads >>>(rbMass,rbForce,rbPos,rbLinMom,rbAngMom,pPos,pForce,duration,termVeloc);
-}*/
 
 __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
 
@@ -29,7 +23,7 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 	int bi = blockDim.x * blockIdx.x + threadIdx.x;
 
 	//unsigned int totalNumberOfParticles = get_global_size(0) * 27;
-	int tnop = (blockDim.x * blockIdx.x + threadIdx.x) * 27;
+	//int tnop = (blockDim.x * blockIdx.x + threadIdx.x) * 27;
 
 	int particleIndex = bi * 27;
 
@@ -67,25 +61,15 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc){
 
 	//todo: blocks und threads berechn.
+	//thread pro body
 	int b = World::getInstance()->getAllBodyNum();
 	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
+	int numThreads = (int)fmin(blockSize, b);
+	int numBlocks = rbNearHighVal(b, numThreads);
+	//geht doch bestimmt auch noch "besser"!!?
 
 	updateMomC <<< numBlocks, numThreads >>>(rbMass, rbForce, rbPos, rbLinMom, rbAngMom, pPos, pForce, duration, termVeloc);
 }
-
-//perform step		//unter kernel geschoben, funktion muss vor aufruf bekannt sein
-/*void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
-
-	//todo: blocks und threads berechn.
-	int b = World::getInstance()->getAllBodyNum();
-	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
-
-	iterateC <<< numBlocks, numThreads >>>(rbMass,rbPos,rbVeloc,rbLinMom,rbRotQuat,rbRotMat,rbAngVeloc,rbAngMom,initIITDiago,inverInertTens,duration,pRadius);
-}*/
 
 __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
 
@@ -97,11 +81,11 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 	//TODO
 
 	//unsigned int bodyIndex = get_global_id(0);
-	int bi = blockDim.x * blockIdx.x + threadIdx.x;
+/*	int bi = blockDim.x * blockIdx.x + threadIdx.x;
 	
 	//unsigned int bodyVBOIndex = bodyIndex * 24 * 3;
 
-	int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
+	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
 	//Update inverse inertia tensor
 	{
@@ -252,10 +236,12 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius){
 
 	//todo: blocks und threads berechn.
+	//thread pro body
 	int b = World::getInstance()->getAllBodyNum();
 	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
+	int numThreads = (int)fmin(blockSize, b);
+	int numBlocks = rbNearHighVal(b, numThreads);
+	//geht doch bestimmt auch noch "besser"!!?
 
 	iterateC <<< numBlocks, numThreads >>>(rbMass, rbPos, rbVeloc, rbLinMom, rbRotQuat, rbRotMat, rbAngVeloc, rbAngMom, initIITDiago, inverInertTens, duration, pRadius);
 }

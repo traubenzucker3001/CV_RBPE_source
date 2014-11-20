@@ -1,6 +1,7 @@
 #ifndef VIRTUAL_OBJECT_H
 #define VIRTUAL_OBJECT_H
 
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <string>
 #include <vector>
 #include <list>
@@ -52,12 +53,19 @@ public:
 	 */
 	~VirtualObject();
 
-	/** \brief update
+	/** \brief update modelmatrix
 	 *
-	 * ...
+	 * update modelmatrix when simulation is running on cpu
 	 * @return void
 	 */
-	void update();
+	void updateCPU();
+
+	/** \brief update modelmatrix
+	*
+	* update modelmatrix when simulation is running on gpu
+	* @return void
+	*/
+	void updateGPU();
 
 	/** \brief update particle values
 	*

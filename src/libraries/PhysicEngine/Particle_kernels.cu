@@ -1,4 +1,4 @@
-
+/*
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -10,21 +10,10 @@
 #include <glm\glm.hpp>
 
 //Round a / b to nearest higher integer value
-int nearHighVal(int a, int b){
+int pNearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
-}
+}	//nicht in jedem cu eine funktion, irgwo für alle erreichbar machen
 
-//collision detection	//unter kernel geschoben, funktion muss vor aufruf bekannt sein
-/*void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
-
-	//blocks und threads berechn.
-	int n = World::getInstance()->getAllPartNum();
-	int blockSize = 64;
-	int numThreads = (int)fmin(blockSize, n);
-	int numBlocks = nearHighVal(n, numThreads);
-
-	calcCollForcesC<<< numBlocks, numThreads >>>(pMass,pPos,pVeloc,pForce,pRadius,worldS,springC,dampC,pGridIndex,countGrid,indexGrid,gridSL);
-}*/
 
 __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
@@ -158,26 +147,16 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
 
 	//blocks und threads berechn.
-	int n = World::getInstance()->getAllPartNum();
+	//thread pro part.
+	int p = World::getInstance()->getAllPartNum();
 	int blockSize = 64;
-	int numThreads = (int)fmin(blockSize, n);
-	int numBlocks = nearHighVal(n, numThreads);
+	int numThreads = (int)fmin(blockSize, p);
+	int numBlocks = pNearHighVal(p, numThreads);
+	//geht doch bestimmt auch noch "besser"!!?
 
 	calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, countGrid, indexGrid, gridSL);
 }
 
-//update particles		//unter kernel geschoben, funktion muss vor aufruf bekannt sein
-//wie heißt es in cpu version??
-/*void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
-
-	//blocks und threads berechn.
-	int n = World::getInstance()->getAllPartNum();
-	int blockSize = 64;
-	int numThreads = fmin(blockSize, n);
-	int numBlocks = nearHighVal(n, numThreads);
-
-	updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc,rbRotMat, rbAngVeloc, pPos, pVeloc,pRadius);
-}*/
 
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
 
@@ -187,7 +166,7 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 	//TODO
 
 	//unsigned int particleIndex = get_global_id(0);
-	int pi = blockDim.x * blockIdx.x + threadIdx.x;
+/* int pi = blockDim.x * blockIdx.x + threadIdx.x;
 	int bi = pi / 27;
 	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
@@ -216,7 +195,7 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 	}
 
 	//Update particle position
-	{
+	/*{
 		glm::mat3 tempRotMat = rbRotMat[bi];
 		pPos[pi].x =
 			originalRelativePos.x * tempRotMat[0].x +				//oder doch mi+1 +2 +3 +4 +5 +... ?!	//.xyz wollt er nit
@@ -281,10 +260,12 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
 
 	//blocks und threads berechn.
-	int n = World::getInstance()->getAllPartNum();
+	//threads pro part.
+	int p = World::getInstance()->getAllPartNum();
 	int blockSize = 64;
-	int numThreads = (int)fmin(blockSize, n);
-	int numBlocks = nearHighVal(n, numThreads);
+	int numThreads = (int)fmin(blockSize, p);
+	int numBlocks = pNearHighVal(p, numThreads);
+	//geht doch bestimmt auch noch "besser"!!?
 
 	updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc, rbRotMat, rbAngVeloc, pPos, pVeloc, pRadius);
 }

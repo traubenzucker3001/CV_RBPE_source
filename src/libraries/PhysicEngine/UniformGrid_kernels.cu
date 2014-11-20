@@ -1,4 +1,4 @@
-
+/*
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -6,21 +6,18 @@
 
 #include <glm\glm.hpp>
 
+#include "UniformGrid.h"
+#include "World.h"
+
 /*	Änderung damit atomicInc funktioniert: 
 	UniformGrid_kernel.cu --> Eigenschaften --> Konfigurationseigenschaften --> CUDA C/C++ --> Device --> Code Generation
 	von "compute_20,sm_20" auf "compute_13,sm_13" geändert	*/
 
-//resetGrid		//unter kernel geschoben, funktion muss vor aufruf bekannt sein
-/*void resetGrid(int* countGrid, glm::vec4* indexGrid){
+//Round a / b to nearest higher integer value
+/*int uNearHighVal(int a, int b){
+	return (a % b != 0) ? (a / b + 1) : (a / b);
+}	//nicht in jedem cu eine funktion, irgwo für alle erreichbar machen
 
-	//blocks und threads berechn.
-	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
-	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
-
-	resetGridC<<< numBlocks, numThreads >>>(countGrid, IndexGrid);
-}*/
 
 __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid){
 
@@ -43,24 +40,16 @@ void resetGrid(int* countGrid, glm::vec4* indexGrid){
 
 	//blocks und threads berechn.
 	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
+	//thread pro gitterzelle	//wie komm ich an diese zahl?!
+	/*	int g = UniformGrid::getInstance()->getGridSize();
 	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
+	int numThreads = (int)fmin(blockSize, g);
+	int numBlocks = uNearHighVal(g, numThreads);
+	//geht doch bestimmt auch noch "besser"!!?
 
-	resetGridC <<< numBlocks, numThreads >>>(countGrid, IndexGrid);
+	resetGridC <<< numBlocks, numThreads >>>(countGrid, indexGrid);
 }
 
-//updateGRid	//unter kernel geschoben, funktion muss vor aufruf bekannt sein
-/*void updateGrid(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
-
-	//blocks und threads berechn.
-	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
-	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
-
-	updateGridC <<< numBlocks, numThreads >>>(countGrid,indexGrid,pPos,gridMinPosVec,voxelSL,gridSL,pGridIndex);
-}*/
 
 __global__ void updateGridC(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
 
@@ -89,7 +78,8 @@ __global__ void updateGridC(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPo
 		//int particlesInCell = atomic_inc(&countGrid[flatGridIndex]);	//?
 		//
 		int n = 4;
-		int particlesInCell = atomicInc(&countGrid[flatGridIndex],n);
+		unsigned int* atom = (unsigned int*)(&countGrid[flatGridIndex]);		//potenzielle fehlerquelle
+		int particlesInCell = atomicInc(atom,n);
 		//
 
 		if (particlesInCell == 3) {
@@ -112,9 +102,13 @@ void updateGrid(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3
 
 	//blocks und threads berechn.
 	//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
+	//thread pro part.
+	int p = World::getInstance()->getAllPartNum();
 	int blockSize = 64;
-	int numThreads = ;
-	int numBlocks = ;
+	int numThreads = (int)fmin(blockSize, p);
+	int numBlocks = uNearHighVal(p, numThreads);
+	//geht doch bestimmt auch noch "besser"!!?
 
 	updateGridC <<< numBlocks, numThreads >>>(countGrid, indexGrid, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex);
 }
+*/

@@ -124,6 +124,7 @@ void Demo::run(){
 		//vorher positionen und orientierung von VOs aktualisieren
 		//obj rendern
 		//earthNode->render();
+		updateVOs();
 		sceneRoot->render();
 
 		glfwSwapBuffers(window);
@@ -220,4 +221,20 @@ void Demo::stepSimulation(float duration){
 void Demo::resetScene(){
 
 	//...
+}
+
+void Demo::updateVOs(){
+
+	//wenn cpu
+	if (isGPU == false){
+		for (std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
+			(*it)->updateCPU();
+		}
+	}
+	//wenn gpu
+	else{
+		for (std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
+			(*it)->updateGPU();
+		}
+	}
 }

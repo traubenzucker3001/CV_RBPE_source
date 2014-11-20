@@ -15,9 +15,10 @@
 #include "Particle.h"
 #include "UniformGrid.h"
 
-#include "UniformGrid_kernels.cu"
-#include "RigidBody_kernels.cu"
-#include "Particle_kernels.cu"
+//#include "UniformGrid_kernels.cu"	//!!!diese hier verursachen wahrscheinlich die syntax- u. atomic-fehler!!!
+//#include "RigidBody_kernels.cu"		//durch andere struktur (.cuh,...) oder compiler lösen
+//#include "Particle_kernels.cu"
+#include "kernels.cuh"
 
 #include <cuda_gl_interop.h>
 
@@ -274,11 +275,7 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_voxelS, h_voxelS, sizeof(float), cudaMemcpyHostToDevice);
 	d_gridS = 0;
 	d_worldS = 0;
-	d_springC = 0;
-	d_dampC = 0;
-	d_pRadius = 0;
-	d_duration = 0;
-	d_termVeloc = 0;
+	...
 	*/
 	 //siehe cuda programming guide. sollte eig ohne "" gehen
 	cudaMemcpyToSymbol("d_voxelS", &h_voxelS, sizeof(float));

@@ -138,6 +138,12 @@ public:
 	*/
 	//void display();	//nicht nötig
 
+	/** \brief update virtual objects
+	*
+	* update modelmatrix from all virtual objects
+	*/
+	void updateVOs();
+
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
 	//schauen wie das mit cvk läuft
@@ -171,14 +177,6 @@ public:
 	*/
 	void keyCallback(unsigned char key, int x, int y);
 
-	/** \brief window resize callback
-	*
-	* called whenever the window size is changed
-	* @param window the glfw window reference
-	* @param w new windoe width
-	* @param h new window height
-	* @return void
-	*/
 	//void resizeCallback(GLFWwindow *window, int w, int h);		//außerhalb klasse gelegt!
 
 

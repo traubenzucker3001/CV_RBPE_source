@@ -1,8 +1,14 @@
+
+// <<<<<<<<<< includes >>>>>>>>>> //
 #include <string>
 #include <vector>
 #include <list>
 #include <iostream>
 #include <assert.h>
+#include <glm\glm.hpp>
+
+#include <cuda.h>
+#include <cuda_runtime.h>
 
 #include "VirtualObject.h"
 #include "DemoApp\Demo.h"
@@ -41,7 +47,7 @@ VirtualObject::~VirtualObject(){
 }
 
 //über cuda - opengl austausch
-void VirtualObject::update(){
+void VirtualObject::updateCPU(){
 
 	cout << "vo: update!" << endl; //zum test
 
@@ -55,6 +61,28 @@ void VirtualObject::update(){
 	//modelmatrix neu berechnen
 	glm::mat4 t = glm::translate(glm::mat4(1.0f), tempP);
 	
+	//!!rotations matrix umwandeln (mat3 zu mat4)!! oder quat zu mat4
+	//glm::mat4 r = glm::mat4(tempO, 0.0f);
+	glm::mat4 r = glm::toMat4(tempQ);			//mal schaun ob so funktioniert!!?
+
+	modelMatrix = t * r;
+
+	//set new modelmatrix from node
+	graphicBody->setModelMatrix(modelMatrix);
+}
+
+void VirtualObject::updateGPU(){
+	
+	//TODO
+	//werte von gpu beschaffen
+	glm::vec3 tempP;
+	glm::mat3 tempO;
+	glm::quat tempQ;
+	//...
+	//cudaMemcpyFromSymbol
+	//modelmatrix neu berechnen
+	glm::mat4 t = glm::translate(glm::mat4(1.0f), tempP);
+
 	//!!rotations matrix umwandeln (mat3 zu mat4)!! oder quat zu mat4
 	//glm::mat4 r = glm::mat4(tempO, 0.0f);
 	glm::mat4 r = glm::toMat4(tempQ);			//mal schaun ob so funktioniert!!?

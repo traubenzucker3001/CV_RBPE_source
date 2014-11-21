@@ -7,7 +7,7 @@
 //#define GLM_FORCE_CUDA
 #include <glm/glm.hpp>
 
-#include "DesignPatterns/Singleton.h"
+#include "DesignPatterns\Singleton.h"
 
 /** \brief cuda data structure
 *

@@ -13,7 +13,7 @@ int nearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
 }	//nicht in jedem cu eine funktion, irgwo für alle erreichbar machen
 
-extern "C"{
+//extern "C"{
 	//<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
 	void resetGrid(int* countGrid, glm::vec4* indexGrid){
 
@@ -101,4 +101,4 @@ extern "C"{
 		updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc, rbRotMat, rbAngVeloc, pPos, pVeloc, pRadius);
 	}
 
-}
+//}

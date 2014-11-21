@@ -6,8 +6,8 @@
 
 #include "Demo.h"
 #include "Scene.h"
-#include "PhysicEngine/UniformGrid.h"
-#include "PhysicEngine/Cuda.h"
+#include "PhysicEngine\UniformGrid.h"
+#include "PhysicEngine\Cuda.h"
 #include "PhysicEngine\World.h"
 #include "PhysicEngine\RigidBody.h"
 

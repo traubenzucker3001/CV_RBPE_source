@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "Timing.h"
-#include "PhysicEngine/World.h"
-#include "PhysicEngine/VirtualObject.h"
-#include "DesignPatterns/Singleton.h"
+#include "PhysicEngine\World.h"
+#include "PhysicEngine\VirtualObject.h"
+#include "DesignPatterns\Singleton.h"
 
 #include "CVK_Framework/CVK_Framework.h"
 

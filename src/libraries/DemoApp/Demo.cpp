@@ -169,6 +169,9 @@ void Demo::initScene(){
 
 	int numberRB = World::getInstance()->getAllBodyNum();
 	int numberP = World::getInstance()->getAllPartNum();
+	//int numberRB = World::getInstance()->allBodyNum;
+	//int numberP = World::getInstance()->allPartNum;
+
 	//VOs anlegen u. in vector listen
 	float pR = World::getInstance()->getPartRadius();
 

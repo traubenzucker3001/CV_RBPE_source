@@ -27,6 +27,11 @@
 */
 void resizeCallback(GLFWwindow *window, int w, int h);
 
+
+//<<<<<<<<<< linker fix - try 2
+
+//>>>>>>>>>>
+
 /** \brief Demo
  *
  * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.

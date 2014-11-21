@@ -9,6 +9,10 @@
 
 #include "DesignPatterns\Singleton.h"
 
+//<<<<<<<<<< linker fix - try 2
+class World;
+//>>>>>>>>>>
+
 /** \brief cuda data structure
 *
 * class with all necessary host and device arrays

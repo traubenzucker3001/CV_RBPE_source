@@ -20,7 +20,7 @@ template <typename C>
 	 *
 	 * get the only instance of the corresponding class
 	 */
-    static C* getInstance (){
+    static inline C* getInstance (){
 
        if (!instance)
           instance = new C ();

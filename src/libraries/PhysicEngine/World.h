@@ -11,6 +11,12 @@
 #include "Cuda.h"
 #include <GL\glew.h>
 
+
+//<<<<<<<<<< linker fix - try 2
+class Demo;
+
+//>>>>>>>>>>
+
 /** \brief physics World
  *
  * class for the physics simulation world representation

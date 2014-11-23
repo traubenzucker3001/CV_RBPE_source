@@ -53,8 +53,8 @@ private:
 	int virtObjNum;								/**< number of virtual objects in the list */
 
 	Timing *time;								/**< time data */
-	float duration;								/**< step duration */
-	float terminalVeloc;						/**< terminal velocity */
+	//float duration;								/**< step duration */
+	//float terminalVeloc;						/**< terminal velocity */
 
 	//ka ob hier oder einfach in main?!
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
@@ -186,6 +186,7 @@ public:
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
+	/*
 	float getTerminalVeloc() const {
 		return terminalVeloc;
 	}
@@ -193,7 +194,8 @@ public:
 	void setTerminalVeloc(float terminalVeloc) {
 		this->terminalVeloc = terminalVeloc;
 	}
-
+	*/
+	/*
 	float getDuration() const {
 		return duration;
 	}
@@ -201,6 +203,7 @@ public:
 	void setDuration(float duration) {
 		this->duration = duration;
 	}
+	*/
 };
 
 #endif /* DEMO_H_ */

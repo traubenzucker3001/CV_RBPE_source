@@ -24,6 +24,43 @@
 
 using namespace std;
 
+//link fix try 3
+extern float partRadius;
+
+float *h_rbMass;							/**< host array for rigid body masses */
+glm::vec3 *h_rbForce;						/**< host array for rigid body forces */
+glm::vec3 *h_rbPos;							/**< host array for rigid body positions */
+glm::vec3 *h_rbVeloc;						/**< host array for rigid body velocities */
+glm::vec3 *h_rbLinMom;						/**< host array for rigid body linear momentums */
+glm::quat *h_rbRotQuat;						/**< host array for rigid body rotation quaternions */
+glm::mat3 *h_rbRotMat;						/**< host array for rigid body rotation matrixes */
+glm::vec3 *h_rbAngVeloc;					/**< host array for rigid body angular velocities */
+glm::vec3 *h_rbAngMom;						/**< host array for rigid body angular momentums */
+glm::vec3 *h_rbInitInversInertTensDiago;	/**< host array for rigid body initial inverse inertia tensor diagonals */	//Initial Inverse Inertia Tensor Diagonal
+glm::mat3 *h_rbInverseInertTens;			/**< host array for rigid body inverse inertia tensors */
+
+float *h_pMass;				/**< host array for particle masses */
+glm::vec3 *h_pPos;			/**< host array for particle positions */
+glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
+glm::vec3 *h_pForce;		/**< host array for particle forces */
+
+extern float worldSize;
+extern float springCoeff;
+extern float dampCoeff;
+
+float h_worldS;
+float h_springC;
+float h_dampC;
+float h_pRadius;
+
+extern float terminalVeloc;
+
+extern RigidBody** allBodies;
+extern Particle** allParticles;
+
+extern float duration;
+
+
 //wollten innerhalb der klasse nicht
 __device__ __constant__ float d_voxelS;
 __device__ __constant__ int d_gridS;
@@ -177,12 +214,18 @@ void Cuda::initCUDA(){
 	//konstante vars direkt füllen
 	h_voxelS = UniformGrid::getInstance()->getVoxelSize();
 	h_gridS = UniformGrid::getInstance()->getGridSize();
-	h_worldS = World::getInstance()->getWorldSize();
-	h_springC = World::getInstance()->getSpringCoeff();
-	h_dampC = World::getInstance()->getDampCoeff();
-	h_pRadius = World::getInstance()->getPartRadius();
-	h_duration = Demo::getInstance()->getDuration();
-	h_termVeloc = Demo::getInstance()->getTerminalVeloc();
+	//h_worldS = World::getInstance()->getWorldSize();
+	h_worldS = worldSize;
+	//h_springC = World::getInstance()->getSpringCoeff();
+	h_springC = springCoeff;
+	//h_dampC = World::getInstance()->getDampCoeff();
+	h_dampC = dampCoeff;
+	//h_pRadius = World::getInstance()->getPartRadius();
+	h_pRadius = partRadius;
+	//h_duration = Demo::getInstance()->getDuration();
+	h_duration = duration;
+	//h_termVeloc = Demo::getInstance()->getTerminalVeloc();
+	h_termVeloc = terminalVeloc;
 
 	//initOpenCLGrid();
 	//init gitter
@@ -241,11 +284,13 @@ void Cuda::updateHostArrays(){
 	//Particle** allP = World::getInstance()->getAllParticles();
 	for (int i = 0; i < bodyNum; i++) {
 		//allB[i]->updateCUDArray(i);
-		World::getInstance()->allBodies[i]->updateCUDArray(i);
+		//World::getInstance()->allBodies[i]->updateCUDArray(i);
+		allBodies[i]->updateCUDArray(i);
 	}
 	for (int i=0; i<partNum; i++) {
 		//allP[i]->updateCUDArray(i);
-		World::getInstance()->allParticles[i]->updateCUDArray(i);
+		//World::getInstance()->allParticles[i]->updateCUDArray(i);
+		allParticles[i]->updateCUDArray(i);
 	}
 }
 

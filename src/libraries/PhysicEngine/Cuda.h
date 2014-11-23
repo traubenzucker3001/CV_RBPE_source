@@ -29,23 +29,24 @@ private:
 public:
 	//benötigten arrays cpu (host)
 	//rigidbody parameter
-	float *h_rbMass;							/**< host array for rigid body masses */
-	glm::vec3 *h_rbForce;						/**< host array for rigid body forces */
-	glm::vec3 *h_rbPos;							/**< host array for rigid body positions */
-	glm::vec3 *h_rbVeloc;						/**< host array for rigid body velocities */
-	glm::vec3 *h_rbLinMom;						/**< host array for rigid body linear momentums */
-	glm::quat *h_rbRotQuat;						/**< host array for rigid body rotation quaternions */
-	glm::mat3 *h_rbRotMat;						/**< host array for rigid body rotation matrixes */
-	glm::vec3 *h_rbAngVeloc;					/**< host array for rigid body angular velocities */
-	glm::vec3 *h_rbAngMom;						/**< host array for rigid body angular momentums */
-	glm::vec3 *h_rbInitInversInertTensDiago;	/**< host array for rigid body initial inverse inertia tensor diagonals */	//Initial Inverse Inertia Tensor Diagonal
-	glm::mat3 *h_rbInverseInertTens;			/**< host array for rigid body inverse inertia tensors */
+
+	//float *h_rbMass;							/**< host array for rigid body masses */
+	//glm::vec3 *h_rbForce;						/**< host array for rigid body forces */
+	//glm::vec3 *h_rbPos;							/**< host array for rigid body positions */
+	//glm::vec3 *h_rbVeloc;						/**< host array for rigid body velocities */
+	//glm::vec3 *h_rbLinMom;						/**< host array for rigid body linear momentums */
+	//glm::quat *h_rbRotQuat;						/**< host array for rigid body rotation quaternions */
+	//glm::mat3 *h_rbRotMat;						/**< host array for rigid body rotation matrixes */
+	//glm::vec3 *h_rbAngVeloc;					/**< host array for rigid body angular velocities */
+	//glm::vec3 *h_rbAngMom;						/**< host array for rigid body angular momentums */
+	//glm::vec3 *h_rbInitInversInertTensDiago;	/**< host array for rigid body initial inverse inertia tensor diagonals */	//Initial Inverse Inertia Tensor Diagonal
+	//glm::mat3 *h_rbInverseInertTens;			/**< host array for rigid body inverse inertia tensors */
 
 	//particle parameter
-	float *h_pMass;				/**< host array for particle masses */
-	glm::vec3 *h_pPos;			/**< host array for particle positions */
-	glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
-	glm::vec3 *h_pForce;		/**< host array for particle forces */
+	//float *h_pMass;				/**< host array for particle masses */
+	//glm::vec3 *h_pPos;			/**< host array for particle positions */
+	//glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
+	//glm::vec3 *h_pForce;		/**< host array for particle forces */
 
 private:
 	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
@@ -94,10 +95,10 @@ private:
 
 	float h_voxelS;
 	int h_gridS;
-	float h_worldS;
-	float h_springC;
-	float h_dampC;
-	float h_pRadius;
+	//float h_worldS;
+	//float h_springC;
+	//float h_dampC;
+	//float h_pRadius;
 	float h_duration;
 	float h_termVeloc;
 

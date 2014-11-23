@@ -13,6 +13,12 @@
 
 using namespace std;
 
+//link fix try 3
+extern int allPartNum;
+extern int allBodyNum;
+extern float partRadius;
+float terminalVeloc;
+float duration;
 
 void resizeCallback(GLFWwindow *window, int w, int h){
 
@@ -167,13 +173,16 @@ void Demo::initScene(){
 	//World::getInstance()->setAllPartNum(0);
 	//vertexCount = 0;
 
-	int numberRB = World::getInstance()->getAllBodyNum();
-	int numberP = World::getInstance()->getAllPartNum();
+	//int numberRB = World::getInstance()->getAllBodyNum();
+	//int numberP = World::getInstance()->getAllPartNum();
 	//int numberRB = World::getInstance()->allBodyNum;
 	//int numberP = World::getInstance()->allPartNum;
+	int numberRB = allBodyNum;
+	int numberP = allPartNum;
 
 	//VOs anlegen u. in vector listen
-	float pR = World::getInstance()->getPartRadius();
+	//float pR = World::getInstance()->getPartRadius();
+	float pR = partRadius;
 
 	glm::vec3 randPose = glm::vec3();
 	float mass = 0;		//todo: geeignete masse definieren!!!

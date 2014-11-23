@@ -16,6 +16,9 @@
 
 using namespace std;
 
+//link fix try 3
+extern RigidBody** allBodies;
+
 VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN){
 
 	cout << "vo: vo constr called!" << endl; //zum test
@@ -23,7 +26,8 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN);
 
 	//schauen ob body/part world arrays richtig bzw. überhaupt befüllt werden!!!
-	World::getInstance()->allBodies[bodyCount] = physicBody;
+	//World::getInstance()->allBodies[bodyCount] = physicBody;
+	allBodies[bodyCount] = physicBody;
 
 	graphicBody = new CVK::Node();
 
@@ -53,7 +57,8 @@ void VirtualObject::updateCPU(){
 
 	//...
 	//update modelmatrix with new rb values
-	RigidBody *tempB = World::getInstance()->allBodies[id];
+	//RigidBody *tempB = World::getInstance()->allBodies[id];
+	RigidBody *tempB = allBodies[id];
 	glm::vec3 tempP = tempB->getPosition();
 	glm::mat3 tempO = tempB->getRotationMat();
 	glm::quat tempQ = tempB->getRotationQuat();

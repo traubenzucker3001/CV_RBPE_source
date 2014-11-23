@@ -5,6 +5,22 @@
 #include "World.h"
 #include "Cuda.h"
 
+//link fix try 3
+extern float partRadius;
+
+extern float worldSize;
+extern float springCoeff;
+extern float dampCoeff;
+
+extern float* h_pMass;
+
+extern glm::vec3* h_pPos;
+extern glm::vec3* h_pVeloc;
+extern glm::vec3* h_pForce;
+
+extern Particle** allParticles;
+
+
 int Particle::indexCount = 0;
 
 Particle::Particle(glm::vec3 posIN, float massIN){
@@ -36,10 +52,14 @@ glm::vec3 Particle::calculateForces(){
 	//-----part1-----
 	//calculateCollisionForces();		//war auskommentiert
 
-	float partR = World::getInstance()->getPartRadius();
-	float worldS = World::getInstance()->getWorldSize();
-	float springC = World::getInstance()->getSpringCoeff();
-	float dampC = World::getInstance()->getDampCoeff();
+	//float partR = World::getInstance()->getPartRadius();
+	float partR = partRadius;
+	//float worldS = World::getInstance()->getWorldSize();
+	float worldS = worldSize;
+	//float springC = World::getInstance()->getSpringCoeff();
+	float springC = springCoeff;
+	//float dampC = World::getInstance()->getDampCoeff();
+	float dampC = dampCoeff;
 
 	//-----part2-----
 	//calculateCollisionForcesWithGrid();
@@ -52,7 +72,8 @@ glm::vec3 Particle::calculateForces(){
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
 
 				//body oder all particles?!	//müsste alle sein
-				Particle** temp = World::getInstance()->getAllParticles();
+				//Particle** temp = World::getInstance()->getAllParticles();
+				Particle** temp = allParticles;
 				Particle* neighbors = temp[neighborIndex];
 				glm::vec3 jPos = neighbors->getPosition();
 
@@ -187,7 +208,8 @@ void Particle::populateArray(){
 	partIndex = indexCount;
 
 	//body oder all part. array ?!	//müsste eig all sein
-	Particle** allP = World::getInstance()->getAllParticles();
+	//Particle** allP = World::getInstance()->getAllParticles();
+	Particle** allP = allParticles;
 	allP[indexCount] = this;	//müsste doch eig durch setter befüllt werden?!, hier wird ja nur referenz und nicht das wirkliche array beschrieben. könnte noch an mehreren stellen falsch sein, vllt array public machen
 	indexCount++;
 }
@@ -215,12 +237,16 @@ void Particle::updateCUDArray(int particleIndex){
 	cout << "part: updateCudArr called!" << endl; //zum test
 
 	int i = particleIndex;
-	//TODO
-	Cuda::getInstance()->h_pMass[i] = mass;
 
-	Cuda::getInstance()->h_pPos[i] = position;
-	Cuda::getInstance()->h_pVeloc[i] = velocity;
-	Cuda::getInstance()->h_pForce[i] = force;
+	//Cuda::getInstance()->h_pMass[i] = mass;
+	h_pMass[i] = mass;
+
+	//Cuda::getInstance()->h_pPos[i] = position;
+	h_pPos[i] = position;
+	//Cuda::getInstance()->h_pVeloc[i] = velocity;
+	h_pVeloc[i] = velocity;
+	//Cuda::getInstance()->h_pForce[i] = force;
+	h_pForce[i] = force;
 }
 
 //-----"anhang"-----

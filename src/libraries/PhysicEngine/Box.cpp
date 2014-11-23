@@ -8,6 +8,9 @@
 
 using namespace std;
 
+//link fix try 3
+extern float partRadius;
+
 Box::~Box(){
 
 	//no pointers to clear!
@@ -20,7 +23,8 @@ void Box::calcParticles(){
 
 	bodyParticles = new Particle*[numOfPart];
 	int i=0;
-	float partR = World::getInstance()->getPartRadius();
+	//float partR = World::getInstance()->getPartRadius();
+	float partR = partRadius;
 	float space = partR * 2.0f;
 	for (int j=-1; j<=1; j++) {
 		for (int k=-1; k<=1; k++) {
@@ -41,7 +45,8 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 	cout << "box: applyRoToPart called!" << endl; //zum test
 
 	int i=0;
-	float partR = World::getInstance()->getPartRadius();
+	//float partR = World::getInstance()->getPartRadius();
+	float partR = partRadius;
 	float space = partR * 2.0f;
 	for (int j=-1; j<=1; j++) {
 		for (int k=-1; k<=1; k++) {

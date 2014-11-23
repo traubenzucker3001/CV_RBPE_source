@@ -11,18 +11,20 @@
 #include "Cuda.h"
 #include <GL\glew.h>
 
+//
 
 //<<<<<<<<<< linker fix - try 2
-class Demo;
-
+//class Demo;
 //>>>>>>>>>>
 
 /** \brief physics World
  *
  * class for the physics simulation world representation
  */
-class World : public Singleton<World> {
-	friend class Singleton<World>;
+//class World : public Singleton<World> {
+	//friend class Singleton<World>;
+
+class World{
 
 private:
 	float worldSize;					/**< world size */
@@ -41,7 +43,7 @@ private:
 
 	UniformGrid *grid;					/**< uniform grid */
 
-	Cuda *cudaStruct;					/**< cuda data structure */
+	//Cuda *cudaStruct;					/**< cuda data structure */
 
 	//in demo gepackt
 	//GLuint rbVBO;						/**< vertex buffer object for rigid body positions */

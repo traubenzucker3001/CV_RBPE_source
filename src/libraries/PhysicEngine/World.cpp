@@ -5,6 +5,9 @@
 #include "RigidBody.h"
 #include "Particle.h"
 
+//link fix try 4
+Cuda* cuda;
+
 World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 
 	cout << "world: world constr called!" << endl; //zum test
@@ -19,13 +22,14 @@ World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 	allPartNum = bNum * 27;
 	allParticles = new Particle*[allPartNum];
 	grid = new UniformGrid();
-	cudaStruct = new Cuda(allBodyNum, allPartNum);
+	//cudaStruct = new Cuda(allBodyNum, allPartNum);
+	cuda = new Cuda(allBodyNum, allPartNum);
 }
 
 World::~World(){
 
 	delete grid;
-	delete cudaStruct;
+	//delete cudaStruct;
 	delete allParticles;
 	delete allBodies;
 }
@@ -38,7 +42,7 @@ void World::stepPhysics(float duration, bool isGPU){
 
 	//ausführung auf gpu
 	if(isGPU == true){
-		Cuda::getInstance()->stepCUDA();
+		cuda->stepCUDA();
 	}
 	//ausführung auf cpu
 	else{

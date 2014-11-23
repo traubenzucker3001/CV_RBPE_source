@@ -10,17 +10,21 @@
 #include "DesignPatterns\Singleton.h"
 
 //<<<<<<<<<< linker fix - try 2
-class World;
+//class World;
 //>>>>>>>>>>
+
+//link fix try 4
+
 
 /** \brief cuda data structure
 *
 * class with all necessary host and device arrays
 * singleton because it must be sure that every array should only exist once
 */
-class Cuda : public Singleton<Cuda> {
-	friend class Singleton<Cuda>;
+//class Cuda : public Singleton<Cuda> {
+	//friend class Singleton<Cuda>;
 
+class Cuda{
 private:
 
 	int bodyNum;	/**< total number of rigid bodies */

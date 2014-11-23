@@ -13,10 +13,14 @@
 
 using namespace std;
 
+//link fix try 4
+extern Demo* demo;
+World* world;
+extern Cuda* cuda;
 
 void resizeCallback(GLFWwindow *window, int w, int h){
 
-	Demo::getInstance()->camera->setWidthHeight(w, h);
+	demo->camera->setWidthHeight(w, h);
 	glViewport(0, 0, w, h);
 }
 
@@ -25,7 +29,8 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 
 	cout << "demo: demo constr called!" << endl; //zum test
 
-	physicsWorld = new World(wsIN,prIN,scIN,dcIN,bnIN);
+	//physicsWorld = new World(wsIN,prIN,scIN,dcIN,bnIN);
+	world = new World(wsIN, prIN, scIN, dcIN, bnIN);
 	virtObjNum = 0;
 	time = new Timing();
 	windowWidth = wwIN;
@@ -42,7 +47,7 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 Demo::~Demo(){
 
 	delete time;
-	delete physicsWorld;
+	//delete physicsWorld;
 	delete camera;
 }
 
@@ -102,7 +107,7 @@ void Demo::run(){
 
 	//init cuda
 	if(isGPU == true){
-		Cuda::getInstance()->initCUDA();
+		cuda->initCUDA();
 	}
 
 	//schauen wie am besten machen mit virtobjs und step simulation
@@ -137,7 +142,7 @@ void Demo::run(){
 		sprintf_s(title, "Rigid Body | %d fps", (int)fps);
 		glfwSetWindowTitle(window, title);
 	}
-	Cuda::getInstance()->~Cuda();	//free cuda stuff
+	cuda->~Cuda();	//free cuda stuff
 
 	glfwDestroyWindow( window);
 	glfwTerminate();
@@ -167,13 +172,13 @@ void Demo::initScene(){
 	//World::getInstance()->setAllPartNum(0);
 	//vertexCount = 0;
 
-	int numberRB = World::getInstance()->getAllBodyNum();
-	int numberP = World::getInstance()->getAllPartNum();
+	int numberRB = world->getAllBodyNum();
+	int numberP = world->getAllPartNum();
 	//int numberRB = World::getInstance()->allBodyNum;
 	//int numberP = World::getInstance()->allPartNum;
 
 	//VOs anlegen u. in vector listen
-	float pR = World::getInstance()->getPartRadius();
+	float pR = world->getPartRadius();
 
 	glm::vec3 randPose = glm::vec3();
 	float mass = 0;		//todo: geeignete masse definieren!!!
@@ -217,7 +222,7 @@ void Demo::stepSimulation(float duration){
 
 	cout << "demo: step simulation!" << endl; //zum test
 
-	World::getInstance()->stepPhysics(duration,isGPU);
+	world->stepPhysics(duration, isGPU);
 
 }
 

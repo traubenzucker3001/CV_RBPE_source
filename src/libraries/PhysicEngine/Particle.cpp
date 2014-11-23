@@ -5,6 +5,10 @@
 #include "World.h"
 #include "Cuda.h"
 
+//link fix try 4
+extern World* world;
+extern Cuda* cuda;
+
 int Particle::indexCount = 0;
 
 Particle::Particle(glm::vec3 posIN, float massIN){
@@ -36,10 +40,10 @@ glm::vec3 Particle::calculateForces(){
 	//-----part1-----
 	//calculateCollisionForces();		//war auskommentiert
 
-	float partR = World::getInstance()->getPartRadius();
-	float worldS = World::getInstance()->getWorldSize();
-	float springC = World::getInstance()->getSpringCoeff();
-	float dampC = World::getInstance()->getDampCoeff();
+	float partR = world->getPartRadius();
+	float worldS = world->getWorldSize();
+	float springC = world->getSpringCoeff();
+	float dampC = world->getDampCoeff();
 
 	//-----part2-----
 	//calculateCollisionForcesWithGrid();
@@ -52,7 +56,7 @@ glm::vec3 Particle::calculateForces(){
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
 
 				//body oder all particles?!	//müsste alle sein
-				Particle** temp = World::getInstance()->getAllParticles();
+				Particle** temp = world->getAllParticles();
 				Particle* neighbors = temp[neighborIndex];
 				glm::vec3 jPos = neighbors->getPosition();
 
@@ -187,7 +191,7 @@ void Particle::populateArray(){
 	partIndex = indexCount;
 
 	//body oder all part. array ?!	//müsste eig all sein
-	Particle** allP = World::getInstance()->getAllParticles();
+	Particle** allP = world->getAllParticles();
 	allP[indexCount] = this;	//müsste doch eig durch setter befüllt werden?!, hier wird ja nur referenz und nicht das wirkliche array beschrieben. könnte noch an mehreren stellen falsch sein, vllt array public machen
 	indexCount++;
 }
@@ -216,11 +220,11 @@ void Particle::updateCUDArray(int particleIndex){
 
 	int i = particleIndex;
 	//TODO
-	Cuda::getInstance()->h_pMass[i] = mass;
+	cuda->h_pMass[i] = mass;
 
-	Cuda::getInstance()->h_pPos[i] = position;
-	Cuda::getInstance()->h_pVeloc[i] = velocity;
-	Cuda::getInstance()->h_pForce[i] = force;
+	cuda->h_pPos[i] = position;
+	cuda->h_pVeloc[i] = velocity;
+	cuda->h_pForce[i] = force;
 }
 
 //-----"anhang"-----

@@ -36,8 +36,10 @@ void resizeCallback(GLFWwindow *window, int w, int h);
  *
  * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
  */
-class Demo : public Singleton<Demo> {
-	friend class Singleton<Demo>;
+//class Demo : public Singleton<Demo> {
+	//friend class Singleton<Demo>;
+
+class Demo{
 
 private:
 	int windowWidth;							/**< demo window width */
@@ -46,7 +48,7 @@ private:
 	//nicht sicher ob als extra var nötig
 	//GLFWwindow* window;						/**< glfw window reference */
 
-	World *physicsWorld;						/**< physics world that contains all rigid bodies */
+	//World *physicsWorld;						/**< physics world that contains all rigid bodies */
 
 	//oder auch array?!
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */

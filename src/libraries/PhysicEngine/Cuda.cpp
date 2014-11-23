@@ -24,6 +24,10 @@
 
 using namespace std;
 
+//link fix try 4
+extern Demo* demo;
+extern World* world;
+
 //wollten innerhalb der klasse nicht
 __device__ __constant__ float d_voxelS;
 __device__ __constant__ int d_gridS;
@@ -177,12 +181,12 @@ void Cuda::initCUDA(){
 	//konstante vars direkt füllen
 	h_voxelS = UniformGrid::getInstance()->getVoxelSize();
 	h_gridS = UniformGrid::getInstance()->getGridSize();
-	h_worldS = World::getInstance()->getWorldSize();
-	h_springC = World::getInstance()->getSpringCoeff();
-	h_dampC = World::getInstance()->getDampCoeff();
-	h_pRadius = World::getInstance()->getPartRadius();
-	h_duration = Demo::getInstance()->getDuration();
-	h_termVeloc = Demo::getInstance()->getTerminalVeloc();
+	h_worldS = world->getWorldSize();
+	h_springC = world->getSpringCoeff();
+	h_dampC = world->getDampCoeff();
+	h_pRadius = world->getPartRadius();
+	h_duration = demo->getDuration();
+	h_termVeloc = demo->getTerminalVeloc();
 
 	//initOpenCLGrid();
 	//init gitter
@@ -241,11 +245,11 @@ void Cuda::updateHostArrays(){
 	//Particle** allP = World::getInstance()->getAllParticles();
 	for (int i = 0; i < bodyNum; i++) {
 		//allB[i]->updateCUDArray(i);
-		World::getInstance()->allBodies[i]->updateCUDArray(i);
+		world->allBodies[i]->updateCUDArray(i);
 	}
 	for (int i=0; i<partNum; i++) {
 		//allP[i]->updateCUDArray(i);
-		World::getInstance()->allParticles[i]->updateCUDArray(i);
+		world->allParticles[i]->updateCUDArray(i);
 	}
 }
 

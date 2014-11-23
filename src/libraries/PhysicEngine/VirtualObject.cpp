@@ -15,8 +15,13 @@
 #include "World.h"
 
 //git branch test
+//link fix try 4
+extern World* world;
 
 using namespace std;
+
+//link fix try 4
+extern Demo* demo;
 
 VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN){
 
@@ -25,14 +30,14 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN);
 
 	//schauen ob body/part world arrays richtig bzw. überhaupt befüllt werden!!!
-	World::getInstance()->allBodies[bodyCount] = physicBody;
+	world->allBodies[bodyCount] = physicBody;
 
 	graphicBody = new CVK::Node();
 
-	graphicBody->setGeometry(Demo::getInstance()->geometry);
+	graphicBody->setGeometry(demo->geometry);
 	//graphicBody->setMaterial();
 	graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));;
-	Demo::getInstance()->sceneRoot->addChild(graphicBody);
+	demo->sceneRoot->addChild(graphicBody);
 }
 
 /*
@@ -55,7 +60,7 @@ void VirtualObject::updateCPU(){
 
 	//...
 	//update modelmatrix with new rb values
-	RigidBody *tempB = World::getInstance()->allBodies[id];
+	RigidBody *tempB = world->allBodies[id];
 	glm::vec3 tempP = tempB->getPosition();
 	glm::mat3 tempO = tempB->getRotationMat();
 	glm::quat tempQ = tempB->getRotationQuat();

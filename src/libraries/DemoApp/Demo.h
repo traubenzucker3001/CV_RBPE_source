@@ -14,7 +14,7 @@
 #include "PhysicEngine\VirtualObject.h"
 #include "DesignPatterns\Singleton.h"
 
-#include "CVK_Framework/CVK_Framework.h"
+#include "CVK_Framework\CVK_Framework.h"
 
 //doku hier nicht nötig/möglich
 /** \brief window resize callback
@@ -87,7 +87,7 @@ public:
 	* @param dcIN damping coefficient
 	* @param bnIN total number of bodies in the scene
 	*/
-	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN);
+	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN);
 
 	/** \brief default constructor
 	*

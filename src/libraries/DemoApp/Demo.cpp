@@ -25,7 +25,7 @@ void resizeCallback(GLFWwindow *window, int w, int h){
 }
 
 
-Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN){
+Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN){
 
 	cout << "demo: demo constr called!" << endl; //zum test
 
@@ -41,7 +41,11 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	sceneRoot = new CVK::Node("Root");
 
 	float temp = prIN * 6;
-	geometry = new CVK::Cube(temp);
+	cout << "-vor cube-" << endl; //zum debuggen
+	//geometry = new CVK::Cube(temp);
+	geometry = 0;
+	cout << "-nach cube-" << endl; //zum debuggen
+	isGPU = igIN;
 }
 
 Demo::~Demo(){
@@ -57,12 +61,22 @@ void Demo::run(){
 
 	// Init GLFW and GLEW
 	glfwInit();
+	cout << "-test1-" << endl; //zum debuggen
 	CVK::useOpenGL33CoreProfile();
+	cout << "-test2-" << endl; //zum debuggen
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
+	cout << "-test3-" << endl; //zum debuggen
 	glfwSetWindowPos( window, 100, 50);
+	cout << "-test4-" << endl; //zum debuggen
 	glfwMakeContextCurrent(window);
+	cout << "-test5-" << endl; //zum debuggen
 
 	glewInit();
+
+	//zum debuggen: aus konstruktor gepackt
+	float pr = world->getPartRadius();
+	float temp = pr * 6;
+	geometry = new CVK::Cube(temp);
 
 	//vbos generieren und binden. eins für gesamtes szene oder pro box eins??
 	/*glGenBuffers(1, &rbVBO);

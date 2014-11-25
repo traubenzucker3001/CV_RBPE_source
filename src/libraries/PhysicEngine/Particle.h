@@ -100,7 +100,7 @@ public:
 	// <<<<<<<<<< gpu parts >>>>>>>>>> //
 	/** \brief update cuda array
 	 *
-	 * ...
+	 * fill CUDA arrays with current particle data
 	 * @param particleIndex particle index in uniform grid
 	 * @return void
 	 */

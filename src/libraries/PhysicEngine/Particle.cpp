@@ -220,7 +220,7 @@ void Particle::updateCUDArray(int particleIndex){
 	cout << "part: updateCudArr called!" << endl; //zum test
 
 	int i = particleIndex;
-	//TODO
+
 	cuda->h_pMass[i] = mass;
 
 	cuda->h_pPos[i] = position;

@@ -15,9 +15,10 @@ extern Demo* demo;
 extern World* world;
 extern Cuda* cuda;
 
-int RigidBody::count = 0;
+//int RigidBody::count = 0;
+int bodycount = 0;
 
-RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN){
+RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN, float sizeIN){
 
 	cout << "body: rb constr called!" << endl; //zum test
 
@@ -33,20 +34,22 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN)
 		cout << "sphere shape not possible!!" << endl;
 	}
 	else{
+		//TODO inertiatensor diagonale berechnen
 
 		glm::vec3 pOrigIN = posIN;
 		float pMassIN = massIN; 
-		Particle** bPartIN;		//TODO: werte initialisieren!!
-		int numPartIN;
-		float halfsizeIN;
+		//Particle** bPartIN = new Particle*[27];		//TODO: werte initialisieren!!
+		int numPartIN = 27;
+		float halfsizeIN = sizeIN;
 
-		shape = new Box(pOrigIN,pMassIN,bPartIN,numPartIN,halfsizeIN);
+		shape = new Box(pOrigIN,pMassIN,numPartIN,halfsizeIN);
 	}
 
 	float temp1 = demo->getTerminalVeloc();
 	terminalMom = temp1 * mass;
 
-	count++;
+	//count++;
+	bodycount++;
 }
 
 RigidBody::~RigidBody(){

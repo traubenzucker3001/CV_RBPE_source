@@ -27,10 +27,9 @@ public:
 	 * creates a collision shape instance
 	 * @param origIN position
 	 * @param massIN mass
-	 * @param bPartIN particle array
 	 * @param numPartIN number of particles inside the array
 	 */
-	CollisionShape(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN);	//bodyPart noch dazu?!
+	CollisionShape(glm::vec3 origIN, float massIN, int numPartIN);	//bodyPart noch dazu?!
 
 	/** \brief destructor
 	 *

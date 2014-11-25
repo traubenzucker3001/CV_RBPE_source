@@ -23,11 +23,11 @@ using namespace std;
 //link fix try 4
 extern Demo* demo;
 
-VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN){
+VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN){
 
 	cout << "vo: vo constr called!" << endl; //zum test
 
-	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN);
+	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN,sizeIN);
 
 	//schauen ob body/part world arrays richtig bzw. überhaupt befüllt werden!!!
 	world->allBodies[bodyCount] = physicBody;

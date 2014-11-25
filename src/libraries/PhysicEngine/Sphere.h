@@ -23,11 +23,10 @@ public:
 	 * creates a collision shape as a sphere instance
 	 * @param origIN position
 	 * @param massIN mass
-	 * @param bPartIN particle array
 	 * @param numPartIN number of particles inside the array
 	 * @param radiusIN size of the sphere
 	 */
-	Sphere(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN, float radiusIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){radius = radiusIN;}
+	Sphere(glm::vec3 origIN, float massIN, int numPartIN, float radiusIN) : CollisionShape(origIN,massIN,numPartIN){radius = radiusIN;}
 
 	/** \brief destructor
 	 *

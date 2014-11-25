@@ -17,6 +17,7 @@ using namespace std;
 extern Demo* demo;
 World* world;
 extern Cuda* cuda;
+extern int bodycount;
 
 void resizeCallback(GLFWwindow *window, int w, int h){
 
@@ -41,10 +42,8 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	sceneRoot = new CVK::Node("Root");
 
 	float temp = prIN * 6;
-	cout << "-vor cube-" << endl; //zum debuggen
 	//geometry = new CVK::Cube(temp);
 	geometry = 0;
-	cout << "-nach cube-" << endl; //zum debuggen
 	isGPU = igIN;
 }
 
@@ -61,15 +60,10 @@ void Demo::run(){
 
 	// Init GLFW and GLEW
 	glfwInit();
-	cout << "-test1-" << endl; //zum debuggen
 	CVK::useOpenGL33CoreProfile();
-	cout << "-test2-" << endl; //zum debuggen
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
-	cout << "-test3-" << endl; //zum debuggen
 	glfwSetWindowPos( window, 100, 50);
-	cout << "-test4-" << endl; //zum debuggen
 	glfwMakeContextCurrent(window);
-	cout << "-test5-" << endl; //zum debuggen
 
 	glewInit();
 
@@ -95,7 +89,7 @@ void Demo::run(){
 	initScene();
 
 	//load, compile and link Shader
-	const char *shadernames[2] = {SHADERS_PATH "/Examples/Phong.vert", SHADERS_PATH "/Examples/Phong.frag"};
+	const char *shadernames[2] = {SHADERS_PATH "/Phong.vert", SHADERS_PATH "/Phong.frag"};
 	CVK::ShaderPhong phongShader( VERTEX_SHADER_BIT|FRAGMENT_SHADER_BIT, shadernames);
 
 	//OpenGL parameters
@@ -180,7 +174,7 @@ void Demo::initScene(){
 		-- parts erstellen
 		- CVK::Node erstellen
 	*/
-	cout << "scene: initObjs called!" << endl; //zum test
+	cout << "demo: initObjs called!" << endl; //zum test
 
 	//...
 	//World::getInstance()->setAllPartNum(0);
@@ -194,10 +188,18 @@ void Demo::initScene(){
 	//VOs anlegen u. in vector listen
 	float pR = world->getPartRadius();
 
-	glm::vec3 randPose = glm::vec3();
+	//glm::vec3 randPose = glm::vec3();
+	float hSize = pR * 3;
+	float x, y, z;
+	x = (bodycount % 2) * 1.9f * hSize;
+	y = bodycount * 3.0f * hSize;
+	z = ((bodycount % 4) / 2) * 1.9f * hSize;
+	glm::vec3 randPos = glm::vec3(x,y,z);
+
 	float mass = 0;		//todo: geeignete masse definieren!!!
+	//float hSize = pR * 3;
 	for (int i = 0; i < numberRB; i++){
-		VirtualObject *temp = new VirtualObject(randPose,i,mass,false,false);
+		VirtualObject *temp = new VirtualObject(randPos,i,mass,false,false,hSize);
 		virtualObjs.push_back(temp);
 	}
 
@@ -218,19 +220,7 @@ void Demo::initScene(){
 	std::cout << "Number of Particles: " << numberP << std::endl;
 	std::cout << "VBO vertex count: " << vertexCount << std::endl;
 	*/
-
-	//objekte initialisieren
-	//teapot jetzt nur zum test, später virtual objekts
-	//CVK::Teapot *teapot = new CVK::Teapot;
-	//CVK::Sphere *sphere = new CVK::Sphere(0.3f);
 }
-
-//wenn nur step simulation drin bleibt, dann ja eig überflüssig
-/*void Demo::display(){
-
-	stepSimulation(timeDelta);
-
-}*/
 
 void Demo::stepSimulation(float duration){
 

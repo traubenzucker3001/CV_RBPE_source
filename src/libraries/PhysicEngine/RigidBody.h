@@ -68,8 +68,9 @@ public:
 	 * @param staticIN static object (true) or not (false) (not observed at the moment)
 	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
 	 * @param posIN position
+	 * @param sizeIN box half size or sphere radius
 	 */
-	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN);
+	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN, float sizeIN);
 
 	/** \brief standard constructor
 	*

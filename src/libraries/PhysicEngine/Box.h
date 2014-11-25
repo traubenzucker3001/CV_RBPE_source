@@ -25,7 +25,9 @@ public:
 	 * @param numPartIN number of particles inside the array
 	 * @param halfsizeIN size of the box
 	 */
-	Box(glm::vec3 origIN, float massIN, int numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,numPartIN){halfsize = halfsizeIN;}	//calcparticles mit rein, inertia tensor auch bzw. zu rigidbody
+	Box(glm::vec3 origIN, float massIN, int numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,numPartIN){	halfsize = halfsizeIN;
+																													calcParticles();
+																												  }	//calcparticles mit rein, inertia tensor auch bzw. zu rigidbody
 
 	/** \brief destructor
 	 *

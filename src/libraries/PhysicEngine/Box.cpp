@@ -54,10 +54,7 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 				float z = space*l;
 				//float originalRelativePos[3] = {x, y, z};
 				glm::vec3 relatPos = glm::vec3(x,y,z);
-				cout << "-test-" << endl; //zum debuggen
-				cout << "-bodypart i: " << bodyParticles[i] << endl; //zum debuggen
 				bodyParticles[i]->applyRot(rotMatrix, relatPos, origin);
-				cout << "-test-" << endl; //zum debuggen
 				i++;
 			}
 		}

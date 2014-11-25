@@ -20,7 +20,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	velocity = glm::vec3(0,0,0);
 	force = glm::vec3(0,0,0);
 
-	//gridIndex = ;
+	gridIndex = glm::vec3(0,0,0);
 	partIndex = 0;
 }
 
@@ -206,12 +206,14 @@ void Particle::updateGridIndex(){
 	cout << "part: update GridIndex called!" << endl; //zum test
 
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
+	cout << "-grid min pos: " << gmp << endl; //zum debuggen
 	float vS = UniformGrid::getInstance()->getVoxelSize();
-
+	cout << "-voxelsize: " << vS << endl; //zum debuggen
 	//int cast benötigt?!	//(int)
-	gridIndex.x = ((position.x - gmp)/vS);
+	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!!
 	gridIndex.y = ((position.y - vS)/vS);
 	gridIndex.z = ((position.z - gmp)/vS);
+	cout << "-testGI22-" << endl; //zum debuggen
 }
 
 void Particle::updateCUDArray(int particleIndex){

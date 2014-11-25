@@ -42,6 +42,8 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN,
 		int numPartIN = 27;
 		float halfsizeIN = sizeIN;
 
+		initInverseInertTensDiagon.x = initInverseInertTensDiagon.y = initInverseInertTensDiagon.z = 6.0f / (mass * 4 * sizeIN*sizeIN);
+
 		shape = new Box(pOrigIN,pMassIN,numPartIN,halfsizeIN);
 	}
 

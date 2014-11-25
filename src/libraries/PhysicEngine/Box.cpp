@@ -1,4 +1,3 @@
-//!noch partikel array zugriffs fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>

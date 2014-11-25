@@ -1,5 +1,4 @@
 
-//!noch cvk fehler!
 //TODO callback funcs
 
 #ifndef DEMO_H_
@@ -16,7 +15,7 @@
 
 #include "CVK_Framework\CVK_Framework.h"
 
-//doku hier nicht nötig/möglich
+// <<<<<<<<<< callback funcs >>>>>>>>>> //
 /** \brief window resize callback
 *
 * called whenever the window size is changed
@@ -26,11 +25,6 @@
 * @return void
 */
 void resizeCallback(GLFWwindow *window, int w, int h);
-
-
-//<<<<<<<<<< linker fix - try 2
-
-//>>>>>>>>>>
 
 /** \brief Demo
  *
@@ -45,9 +39,6 @@ private:
 	int windowWidth;							/**< demo window width */
 	int windowHeight;							/**< demo window height */
 
-	//nicht sicher ob als extra var nötig
-	//GLFWwindow* window;						/**< glfw window reference */
-
 	//World *physicsWorld;						/**< physics world that contains all rigid bodies */
 
 	//oder auch array?!
@@ -58,12 +49,8 @@ private:
 	float duration;								/**< step duration */
 	float terminalVeloc;						/**< terminal velocity */
 
-	//ka ob hier oder einfach in main?!
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 
-	//eins für gesamte szene oder eins pro box??
-	/*GLuint rbVBO;						/**< vertex buffer object for rigid body positions */
-	/*GLuint pVBO;						/**< vertex buffer object for particle positions */
 	//?
 	/*int vertexCount;					/**< ... */
 

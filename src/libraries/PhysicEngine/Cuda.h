@@ -9,9 +9,6 @@
 
 #include "DesignPatterns\Singleton.h"
 
-//<<<<<<<<<< linker fix - try 2
-//class World;
-//>>>>>>>>>>
 
 //link fix try 4
 
@@ -141,9 +138,6 @@ public:
 	* @return void
 	*/
 	void initCUDAGrid();
-
-	//void initHostArrays();		//zu initcuda gepackt
-	//void initDeviceArrays();		//zu initcuda gepackt
 	
 	/** \brief update host arrays
 	*

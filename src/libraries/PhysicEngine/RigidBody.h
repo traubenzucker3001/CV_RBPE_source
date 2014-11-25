@@ -33,7 +33,7 @@ private:
 	glm::mat3 rotationMat;					/**< body rotation matrix */
 
 	glm::mat3 inertiaTensor;				/**< body inertia tensor */
-	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */	//float initialInverseInertiaTensorDiagonal[3];//
+	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */	
 	glm::mat3 inverseInertiaTensor;			/**< inverse inertia tensor */	//world oder local coords?!
 
 	//rotation
@@ -43,7 +43,7 @@ private:
 	glm::vec3 linearMomentum;				/**< linear momentum */
 	float terminalMom;						/**< terminat momentum */	//?
 
-	glm::vec3 force;						/**< body force */	//ehem. forcetobeapplied
+	glm::vec3 force;						/**< body force */
 
 	//glm::vec3 torgueToBeApplied;	//ka ob nötig
 	//glm::vec3 lastFrameVeloc;	//ka ob nötig
@@ -90,7 +90,7 @@ public:
 	 * @param duration time length of a simulation step
 	 * @return void
 	 */
-	void iterate(float duration);		//performStep, mehrere schritte zusammenfassen
+	void iterate(float duration);		//performStep
 
 	/** \brief update rotations matrix
 	 *
@@ -119,7 +119,7 @@ public:
 	 * @param duration time length of a simulation step
 	 * @return void
 	 */
-	void updateMomenta(float duration); //runter in collshape greifen und schauen ob gravity klasse noch nötig
+	void updateMomenta(float duration); //runter in collshape greifen
 
 	/** \brief reset body
 	 *
@@ -134,7 +134,7 @@ public:
 	// <<<<<<<<<< gpu parts >>>>>>>>>> //
 	/** \brief update cuda array
 	 *
-	 * ...
+	 * fill CUDA array with current rigid body data
 	 * @param bodyIndex rigid body uniform grid index
 	 * @return void
 	 */

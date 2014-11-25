@@ -50,7 +50,7 @@ void World::stepPhysics(float duration, bool isGPU){
 		//update part. values
 		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
-			//(*it)->updatePartValues();			//in array geändert
+			//(*it)->updatePartValues();
 			allBodies[i]->updatePartValues();
 		}	
 
@@ -60,18 +60,18 @@ void World::stepPhysics(float duration, bool isGPU){
 		//update momenta
 		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
-			//(*it)->updateMomenta(duration);		//in array geändert
+			//(*it)->updateMomenta(duration);
 			allBodies[i]->updateMomenta(duration);
 		}
 
 		//iterate
 		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
-			//(*it)->iterate(duration);				//in array geändert
+			//(*it)->iterate(duration);	
 			allBodies[i]->iterate(duration);
 		}
 
 		//VOs updaten
-		//TODO
+		//in demo gepackt
 	}
 }

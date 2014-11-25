@@ -1,4 +1,6 @@
 
+//momentan nicht genutzt!
+
 #ifndef SPHERE_H_
 #define SPHERE_H_
 
@@ -26,7 +28,9 @@ public:
 	 * @param numPartIN number of particles inside the array
 	 * @param radiusIN size of the sphere
 	 */
-	Sphere(glm::vec3 origIN, float massIN, int numPartIN, float radiusIN) : CollisionShape(origIN,massIN,numPartIN){radius = radiusIN;}
+	Sphere(glm::vec3 origIN, float massIN, int numPartIN, float radiusIN) : CollisionShape(origIN,massIN,numPartIN){radius = radiusIN;
+																													calcParticles();
+																												   }
 
 	/** \brief destructor
 	 *

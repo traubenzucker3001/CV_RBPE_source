@@ -1,4 +1,3 @@
-//!noch particle array zugriffs fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include "RigidBody.h"
@@ -34,14 +33,13 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN,
 		cout << "sphere shape not possible!!" << endl;
 	}
 	else{
-		//TODO inertiatensor diagonale berechnen
-
 		glm::vec3 pOrigIN = posIN;
 		float pMassIN = massIN; 
-		//Particle** bPartIN = new Particle*[27];		//TODO: werte initialisieren!!
+		//Particle** bPartIN = new Particle*[27];
 		int numPartIN = 27;
 		float halfsizeIN = sizeIN;
 
+		// inertiatensor diagonale berechnen
 		initInverseInertTensDiagon.x = initInverseInertTensDiagon.y = initInverseInertTensDiagon.z = 6.0f / (mass * 4 * sizeIN*sizeIN);
 
 		shape = new Box(pOrigIN,pMassIN,numPartIN,halfsizeIN);
@@ -280,7 +278,6 @@ void RigidBody::updateCUDArray(int bodyIndex){
 	cout << "body: updateCudArr called!" << endl; //zum test
 
 	int i = bodyIndex;
-	//TODO//done!!
 	cuda->h_rbMass[i] = mass;
 
 	cuda->h_rbForce[i] = force;

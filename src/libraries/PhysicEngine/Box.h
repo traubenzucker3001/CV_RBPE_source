@@ -27,7 +27,7 @@ public:
 	 */
 	Box(glm::vec3 origIN, float massIN, int numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,numPartIN){	halfsize = halfsizeIN;
 																													calcParticles();
-																												  }	//calcparticles mit rein, inertia tensor auch bzw. zu rigidbody
+																												  }
 
 	/** \brief destructor
 	 *

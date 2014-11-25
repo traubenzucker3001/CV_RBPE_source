@@ -29,7 +29,6 @@ Particle::~Particle(){
 	//no pointers to clear!
 }
 
-//TODO funcs
 glm::vec3 Particle::calculateForces(){
 
 	cout << "part: calcForces called!" << endl; //zum test
@@ -192,7 +191,7 @@ void Particle::populateArray(){
 
 	//body oder all part. array ?!	//müsste eig all sein
 	Particle** allP = world->getAllParticles();
-	allP[indexCount] = this;	//müsste doch eig durch setter befüllt werden?!, hier wird ja nur referenz und nicht das wirkliche array beschrieben. könnte noch an mehreren stellen falsch sein, vllt array public machen
+	allP[indexCount] = this;
 	indexCount++;
 }
 

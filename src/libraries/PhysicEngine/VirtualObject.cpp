@@ -40,13 +40,6 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	demo->sceneRoot->addChild(graphicBody);
 }
 
-/*
-VirtualObject::VirtualObject(bool shape, float shapeSize){
-
-	physicBody = ;
-}
-*/
-
 VirtualObject::~VirtualObject(){
 
 	delete physicBody;

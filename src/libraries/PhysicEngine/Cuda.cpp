@@ -65,7 +65,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_pGridIndex = 0;
 
 	h_gCountGrid = 0;
-	h_gIndexGrid = 0; //int4?!
+	h_gIndexGrid = 0;
 
 	d_rbMass = 0;
 	d_rbForce = 0;
@@ -87,7 +87,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 	d_pGridIndex = 0;
 
 	d_gCountGrid = 0;
-	d_gIndexGrid = 0; //int4?!
+	d_gIndexGrid = 0;
 
 	h_voxelS = 0;
 	h_gridS = 0;
@@ -240,7 +240,6 @@ void Cuda::updateHostArrays(){
 
 	cout << "cuda: updateHostArr called!" << endl; //zum test
 
-	//entscheiden ob vector o. arrays, dann entspr. anpassungen vornehmen. ?!auch nicht sicher ob direkter zugriff über public nicht besser, sollte hier aber eig so passen
 	//RigidBody** allB = World::getInstance()->getAllBodies();
 	//Particle** allP = World::getInstance()->getAllParticles();
 	for (int i = 0; i < bodyNum; i++) {
@@ -319,10 +318,7 @@ void Cuda::stepCUDA(){
 
 	cout << "cuda: stepCUDA!" << endl; //zum test
 
-	//TODO!
-
 	//schritte nacheinander aufrufen
-	//...
 	resetGrid(d_gCountGrid, d_gIndexGrid);
 	updateGrid(d_gCountGrid, d_gIndexGrid, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gCountGrid, d_gIndexGrid, d_gridS);
@@ -356,10 +352,3 @@ void Cuda::stepCUDA(){
 
 }
 
-/*
-void Cuda::initHostArrays(){
-
-	//host arrays füllen
-	//mit in init gepackt
-}
-*/

@@ -71,9 +71,8 @@ void UniformGrid::updateGrid(){
 
 	cout << "grid: update grid!" << endl; //zum test
 
-	//partikel/body vektoren zu arrays ändern?!
 	int aPartN = world->getAllPartNum();
-	Particle** allPart = world->getAllParticles();	//schauen ob pointer so richtig
+	Particle** allPart = world->getAllParticles();
 
 	for (int i=0; i<gridSize*partPerVoxel; i++) {
 		indexGrid[i] = -1;

@@ -50,7 +50,7 @@ public:
 	 * calculate forces with colliding neighbor particles and grid boundries
 	 * @return current calculated force
 	 */
-	glm::vec3 calculateForces();	//mehrere schritte zusammenfassen
+	glm::vec3 calculateForces();
 
 	/** \brief update particle velocity
 	 *

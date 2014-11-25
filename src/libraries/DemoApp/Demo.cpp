@@ -1,11 +1,9 @@
 
-//!noch gl fehler!
-
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
 
 #include "Demo.h"
-#include "Scene.h"
+//#include "Scene.h"
 #include "PhysicEngine\UniformGrid.h"
 #include "PhysicEngine\Cuda.h"
 #include "PhysicEngine\World.h"
@@ -72,12 +70,6 @@ void Demo::run(){
 	float temp = pr * 6;
 	geometry = new CVK::Cube(temp);
 
-	//vbos generieren und binden. eins für gesamtes szene oder pro box eins??
-	/*glGenBuffers(1, &rbVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, rbVBO);
-	int bufferSize = vertexCount * 3 * sizeof(float);
-	glBufferData(GL_ARRAY_BUFFER, 3 * bufferSize, vertexData, GL_DYNAMIC_DRAW);*/
-	//glBufferData(GL_ARRAY_BUFFER, numParticles * 3 * sizeof(float), 0, GL_DYNAMIC_DRAW); // locate the memory, but without initialize the values  
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
 	camera->setRadius( 5);
@@ -85,7 +77,6 @@ void Demo::run(){
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
 
-	//in demo mit reinpacken, keine extra scene klasse!?
 	initScene();
 
 	//load, compile and link Shader
@@ -124,7 +115,7 @@ void Demo::run(){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		time->startFrame();
-		//display();	//überflüssig
+
 		stepSimulation(duration);
 
 		//Update Camera
@@ -196,8 +187,7 @@ void Demo::initScene(){
 	z = ((bodycount % 4) / 2) * 1.9f * hSize;
 	glm::vec3 randPos = glm::vec3(x,y,z);
 
-	float mass = 0;		//todo: geeignete masse definieren!!!
-	//float hSize = pR * 3;
+	float mass = 0.2f;
 	for (int i = 0; i < numberRB; i++){
 		VirtualObject *temp = new VirtualObject(randPos,i,mass,false,false,hSize);
 		virtualObjs.push_back(temp);
@@ -217,8 +207,6 @@ void Demo::initScene(){
 	for (int i = 0; i<numberRB; i++) {
 		bodies[i]->shape->populatePartArray();
 	}
-	std::cout << "Number of Particles: " << numberP << std::endl;
-	std::cout << "VBO vertex count: " << vertexCount << std::endl;
 	*/
 }
 

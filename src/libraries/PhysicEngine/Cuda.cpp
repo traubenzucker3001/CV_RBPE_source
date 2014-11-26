@@ -62,6 +62,9 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_pVeloc = 0;
 	h_pForce = 0;
 
+	h_uVOpos = 0;
+	h_uVOrot = 0;
+
 	h_pGridIndex = 0;
 
 	h_gCountGrid = 0;
@@ -129,6 +132,9 @@ Cuda::~Cuda(){
 	delete h_gIndexGrid;
 	delete h_gCountGrid;
 
+	delete h_uVOpos;
+	delete h_uVOrot;
+
 	cudaFree(d_rbMass);
 	cudaFree(d_rbForce);
 	cudaFree(d_rbPos);
@@ -177,6 +183,10 @@ void Cuda::initCUDA(){
 	h_pPos = new glm::vec3[partNum];
 	h_pVeloc = new glm::vec3[partNum];
 	h_pForce = new glm::vec3[partNum];
+
+	//update VOs
+	h_uVOpos = new glm::vec3[bodyNum];
+	h_uVOrot = new glm::quat[bodyNum];
 
 	//konstante vars direkt füllen
 	h_voxelS = UniformGrid::getInstance()->getVoxelSize();
@@ -350,5 +360,11 @@ void Cuda::stepCUDA(){
 
 	//mit opengl rendern
 
+}
+
+void Cuda::updateVOarrays(){
+
+	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);
 }
 

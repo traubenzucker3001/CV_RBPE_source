@@ -233,6 +233,8 @@ void Demo::updateVOs(){
 	}
 	//wenn gpu
 	else{
+		cuda->updateVOarrays();		//get current pos and rot values from gpu
+
 		for (std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
 			(*it)->updateGPU();
 		}

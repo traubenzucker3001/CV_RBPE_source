@@ -13,6 +13,7 @@
 #include "VirtualObject.h"
 #include "DemoApp\Demo.h"
 #include "World.h"
+#include "Cuda.h"
 
 //git branch test
 //link fix try 4
@@ -22,6 +23,7 @@ using namespace std;
 
 //link fix try 4
 extern Demo* demo;
+extern Cuda* cuda;
 
 VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN){
 
@@ -55,7 +57,7 @@ void VirtualObject::updateCPU(){
 	//update modelmatrix with new rb values
 	RigidBody *tempB = world->allBodies[id];
 	glm::vec3 tempP = tempB->getPosition();
-	glm::mat3 tempO = tempB->getRotationMat();
+	//glm::mat3 tempO = tempB->getRotationMat();
 	glm::quat tempQ = tempB->getRotationQuat();
 
 	//modelmatrix neu berechnen
@@ -75,16 +77,15 @@ void VirtualObject::updateGPU(){
 	
 	//TODO
 	//werte von gpu beschaffen
-	glm::vec3 tempP;
-	glm::mat3 tempO;
-	glm::quat tempQ;
+	glm::vec3 tempP = cuda->h_uVOpos[id];
+	//glm::mat3 tempO;
+	glm::quat tempQ = cuda->h_uVOrot[id];
 	//...
-	//cudaMemcpyFromSymbol
+	//cudaMemcpyFromSymbol	//nicht hier, alle benötigten daten in h_array und dann daraus werte holen
+
 	//modelmatrix neu berechnen
 	glm::mat4 t = glm::translate(glm::mat4(1.0f), tempP);
 
-	//!!rotations matrix umwandeln (mat3 zu mat4)!! oder quat zu mat4
-	//glm::mat4 r = glm::mat4(tempO, 0.0f);
 	glm::mat4 r = glm::toMat4(tempQ);			//mal schaun ob so funktioniert!!?
 
 	modelMatrix = t * r;

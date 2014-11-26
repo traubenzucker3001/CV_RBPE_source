@@ -48,6 +48,10 @@ public:
 	glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
 	glm::vec3 *h_pForce;		/**< host array for particle forces */
 
+	//update VOs arrays
+	glm::vec3* h_uVOpos;
+	glm::quat* h_uVOrot;
+
 private:
 	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
@@ -160,5 +164,11 @@ public:
 	*/
 	void stepCUDA();
 
+	/** \brief update VO arrays
+	*
+	* copy current rigid body position and rotation from gpu to cpu arrays
+	* @return void
+	*/
+	void updateVOarrays();
 };
 #endif /* CUDA_H_ */

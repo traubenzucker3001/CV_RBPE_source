@@ -197,8 +197,9 @@ void Particle::populateArray(){
 	partIndex = indexCount;
 
 	//body oder all part. array ?!	//müsste eig all sein
-	Particle** allP = world->getAllParticles();
-	allP[indexCount] = this;
+	//Particle** allP = world->getAllParticles();
+	//allP[indexCount] = this;
+	world->allParticles[indexCount] = this;
 	indexCount++;
 }
 

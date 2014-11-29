@@ -193,6 +193,10 @@ void Demo::initScene(){
 		virtualObjs.push_back(temp);
 	}
 
+	for (int i = 0; i<numberRB; i++) {
+		world->allBodies[i]->shape->populatePartArray();
+	}
+
 	//----------anhang
 	//boxen erstellen
 	/*
@@ -204,9 +208,6 @@ void Demo::initScene(){
 	//todo: array in entsprechender größe erstellen, mit in world konstr. packen!!! zugriff auf array ändern?! public?!
 	particles = new Particle*[numberP];
 
-	for (int i = 0; i<numberRB; i++) {
-		bodies[i]->shape->populatePartArray();
-	}
 	*/
 }
 

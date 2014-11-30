@@ -39,7 +39,7 @@ public:
 	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
 	 * @param sizeIN box half size or sphere radius
 	 */
-	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN);
+	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN, int idIN);
 
 	/** \brief destructor
 	 *

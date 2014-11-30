@@ -17,7 +17,7 @@ UniformGrid::UniformGrid(){
 	countGrid = 0;
 	gridLength = 0;
 	gridMinPos = 0;
-	partPerVoxel = 0;
+	partPerVoxel = 4;
 
 	gridSize = 0;
 	xSteps = 0;
@@ -150,12 +150,12 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 			for (int z=0; z<3; z++) {
 				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
 				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
-
+	
 				indices[neighborCount] = indexGrid[flatIndexGridIndex];
 				indices[neighborCount+1] = indexGrid[flatIndexGridIndex+1];
 				indices[neighborCount+2] = indexGrid[flatIndexGridIndex+2];
 				indices[neighborCount+3] = indexGrid[flatIndexGridIndex+3];
-
+		
 				neighborCount += 4;
 				checkIndex.z++;
 			}

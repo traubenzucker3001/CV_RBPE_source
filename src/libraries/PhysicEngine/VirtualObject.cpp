@@ -25,9 +25,11 @@ using namespace std;
 extern Demo* demo;
 extern Cuda* cuda;
 
-VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN){
+VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN, int idIN){
 
 	cout << "vo: vo constr called!" << endl; //zum test
+
+	id = idIN;
 
 	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN,sizeIN);
 
@@ -51,15 +53,18 @@ VirtualObject::~VirtualObject(){
 //über cuda - opengl austausch
 void VirtualObject::updateCPU(){
 
-	cout << "vo: update!" << endl; //zum test
+	cout << "vo: update cpu!" << endl; //zum test
 
-	//...
 	//update modelmatrix with new rb values
-	RigidBody *tempB = world->allBodies[id];
-	glm::vec3 tempP = tempB->getPosition();
+	cout << "-test uVO 1-" << endl; //zum debuggen
+	//RigidBody *tempB = world->allBodies[id];		//<--- Fehler dort!!
+	cout << "-test uVO 2-" << endl; //zum debuggen
+	//glm::vec3 tempP = tempB->getPosition();
+	glm::vec3 tempP = world->allBodies[id]->getPosition();
+	glm::quat tempQ = world->allBodies[id]->getRotationQuat();
 	//glm::mat3 tempO = tempB->getRotationMat();
-	glm::quat tempQ = tempB->getRotationQuat();
-
+	//glm::quat tempQ = tempB->getRotationQuat();
+	cout << "-test uVO 3-" << endl; //zum debuggen
 	//modelmatrix neu berechnen
 	glm::mat4 t = glm::translate(glm::mat4(1.0f), tempP);
 	
@@ -71,16 +76,18 @@ void VirtualObject::updateCPU(){
 
 	//set new modelmatrix from node
 	graphicBody->setModelMatrix(modelMatrix);
+	cout << "-test uVO-" << endl; //zum debuggen
 }
 
 void VirtualObject::updateGPU(){
-	
-	//TODO
+
+	cout << "vo: update gpu!" << endl; //zum test
+
 	//werte von gpu beschaffen
 	glm::vec3 tempP = cuda->h_uVOpos[id];
 	//glm::mat3 tempO;
 	glm::quat tempQ = cuda->h_uVOrot[id];
-	//...
+
 	//cudaMemcpyFromSymbol	//nicht hier, alle benötigten daten in h_array und dann daraus werte holen
 
 	//modelmatrix neu berechnen

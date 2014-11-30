@@ -189,7 +189,7 @@ void Demo::initScene(){
 
 	float mass = 0.2f;
 	for (int i = 0; i < numberRB; i++){
-		VirtualObject *temp = new VirtualObject(randPos,i,mass,false,false,hSize);
+		VirtualObject *temp = new VirtualObject(randPos,i,mass,false,false,hSize,i);
 		virtualObjs.push_back(temp);
 	}
 

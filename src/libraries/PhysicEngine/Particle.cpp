@@ -51,13 +51,15 @@ glm::vec3 Particle::calculateForces(){
 	//-----part2-----
 	//calculateCollisionForcesWithGrid();
 	if (UniformGrid::getInstance()->isValidIndex(gridIndex) == true) {
-		int* neighborParticleIndices = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
 
+		int* neighborParticleIndices = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
 		int ppv = UniformGrid::getInstance()->getPartPerVoxel();
-		for (int i=0; i<ppv*27; i++) {
+		
+		int target = ppv * 27;
+		for (int i=0; i<target; i++) {
 			int neighborIndex = neighborParticleIndices[i];
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
-
+	
 				//body oder all particles?!	//müsste alle sein
 				Particle** temp = world->getAllParticles();
 				Particle* neighbors = temp[neighborIndex];
@@ -67,7 +69,7 @@ glm::vec3 Particle::calculateForces(){
 				distance.x = jPos.x - position.x;
 				distance.y = jPos.y - position.y;
 				distance.z = jPos.z - position.z;
-
+	
 				float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
 
 				//float partR = World::getInstance()->getPartRadius();
@@ -185,9 +187,6 @@ void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bod
 	position.x = position.x + bodyPos.x;
 	position.y = position.y + bodyPos.y;
 	position.z = position.z + bodyPos.z;
-	cout << "-pos: " << position.x << endl; //zum debuggen
-	cout << "-pos: " << position.y << endl; //zum debuggen
-	cout << "-pos: " << position.z << endl; //zum debuggen
 }
 
 void Particle::populateArray(){
@@ -213,16 +212,11 @@ void Particle::updateGridIndex(){
 	cout << "part: update GridIndex called!" << endl; //zum test
 
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
-	cout << "-grid min pos: " << gmp << endl; //zum debuggen
 	float vS = UniformGrid::getInstance()->getVoxelSize();
-	cout << "-voxelsize: " << vS << endl; //zum debuggen
 	//int cast benötigt?!	//(int)
-	cout << "-pos: " << position.x << endl; //zum debuggen
-	cout << "-gridindex: " << gridIndex.x << endl; //zum debuggen
 	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
 	gridIndex.y = ((position.y - vS)/vS);
 	gridIndex.z = ((position.z - gmp)/vS);
-	cout << "-testGI22-" << endl; //zum debuggen
 }
 
 void Particle::updateCUDArray(int particleIndex){
@@ -230,9 +224,7 @@ void Particle::updateCUDArray(int particleIndex){
 	cout << "part: updateCudArr called!" << endl; //zum test
 
 	int i = particleIndex;
-	cout << "-test1-" << endl; //zum debuggen
 	cuda->h_pMass[i] = mass;
-	cout << "-test2-" << endl; //zum debuggen
 	cuda->h_pPos[i] = position;
 	cuda->h_pVeloc[i] = velocity;
 	cuda->h_pForce[i] = force;

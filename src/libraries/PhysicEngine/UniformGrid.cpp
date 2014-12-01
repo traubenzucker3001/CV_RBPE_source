@@ -41,11 +41,9 @@ void UniformGrid::createGrid(){
 
 	voxelSize = 2.00f * partR;
 	gridLength = (int)ceil(2.0f * worldS/ voxelSize);
-	cout << "-gridlenght: " << gridLength << endl; //zum debuggen
-	cout << "-worldsize: " << worldS << endl; //zum debuggen
-	cout << "-voxelsize: " << voxelSize << endl; //zum debuggen
+
 	/* 2 extra grid voxels in each dimension in case particles go slightly outside the world borders */
-	gridLength += 2;
+	gridLength = gridLength + 2;
 
 	xSteps = gridLength*gridLength;
 	ySteps = gridLength;

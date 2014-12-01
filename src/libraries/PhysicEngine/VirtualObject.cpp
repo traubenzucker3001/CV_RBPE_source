@@ -56,15 +56,12 @@ void VirtualObject::updateCPU(){
 	cout << "vo: update cpu!" << endl; //zum test
 
 	//update modelmatrix with new rb values
-	cout << "-test uVO 1-" << endl; //zum debuggen
-	//RigidBody *tempB = world->allBodies[id];		//<--- Fehler dort!!
-	cout << "-test uVO 2-" << endl; //zum debuggen
+	//RigidBody *tempB = world->allBodies[id];		
 	//glm::vec3 tempP = tempB->getPosition();
 	glm::vec3 tempP = world->allBodies[id]->getPosition();
 	glm::quat tempQ = world->allBodies[id]->getRotationQuat();
 	//glm::mat3 tempO = tempB->getRotationMat();
 	//glm::quat tempQ = tempB->getRotationQuat();
-	cout << "-test uVO 3-" << endl; //zum debuggen
 	//modelmatrix neu berechnen
 	glm::mat4 t = glm::translate(glm::mat4(1.0f), tempP);
 	
@@ -76,7 +73,6 @@ void VirtualObject::updateCPU(){
 
 	//set new modelmatrix from node
 	graphicBody->setModelMatrix(modelMatrix);
-	cout << "-test uVO-" << endl; //zum debuggen
 }
 
 void VirtualObject::updateGPU(){

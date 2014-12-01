@@ -18,17 +18,21 @@ int nearHighVal(int a, int b){
 //extern "C"{
 	//<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
 	void resetGrid(int* countGrid, glm::vec4* indexGrid){
-
+		cout << "-test reset grid 1-" << endl; //zum debuggen
 		//blocks und threads berechn.
 		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
-		int g = UniformGrid::getInstance()->getGridSize();
+		int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
+		cout << "-test reset grid 1.3- g: " << g << endl; //zum debuggen
 		int blockSize = 64;
+		cout << "-test reset grid 1.5-" << endl; //zum debuggen
 		int numThreads = (int)fmin(blockSize, g);
-		int numBlocks = nearHighVal(g, numThreads);
+		cout << "-test reset grid 1.7- threads: " << numThreads << endl; //zum debuggen
+		int numBlocks = nearHighVal(g, numThreads);		//<--- fehler dort
 		//geht doch bestimmt auch noch "besser"!!?
-
+		cout << "-test reset grid 2-" << endl; //zum debuggen
 		resetGridC <<< numBlocks, numThreads >>>(countGrid, indexGrid);
+		cout << "-test reset grid 3-" << endl; //zum debuggen
 	}
 
 	//updateGRid

@@ -4,9 +4,11 @@
 #include "UniformGrid.h"
 #include "World.h"
 #include "Particle.h"
+#include "DemoApp\Demo.h"
 
 //link fix try 4
 extern World* world;
+extern Demo* demo;
 
 UniformGrid::UniformGrid(){
 	
@@ -39,6 +41,9 @@ void UniformGrid::createGrid(){
 
 	voxelSize = 2.00f * partR;
 	gridLength = (int)ceil(2.0f * worldS/ voxelSize);
+	cout << "-gridlenght: " << gridLength << endl; //zum debuggen
+	cout << "-worldsize: " << worldS << endl; //zum debuggen
+	cout << "-voxelsize: " << voxelSize << endl; //zum debuggen
 	/* 2 extra grid voxels in each dimension in case particles go slightly outside the world borders */
 	gridLength += 2;
 
@@ -55,15 +60,19 @@ void UniformGrid::createGrid(){
 
 	gridSize = gridLength * gridLength * gridLength;
 
-	indexGrid = new int[gridSize*partPerVoxel];
-	countGrid = new int[gridSize];
+	bool gpu = demo->isIsGpu();
+	if (gpu == false){
 
-	for (int i=0; i<gridSize*partPerVoxel; i++) {
-		indexGrid[i] = -1;
-	}
+		indexGrid = new int[gridSize*partPerVoxel];
+		countGrid = new int[gridSize];
+	
+		for (int i=0; i<gridSize*partPerVoxel; i++) {
+			indexGrid[i] = -1;
+		}
 
-	for (int i=0; i<gridSize; i++) {
-		countGrid[i] = 0;
+		for (int i=0; i<gridSize; i++) {
+			countGrid[i] = 0;
+		}
 	}
 }
 

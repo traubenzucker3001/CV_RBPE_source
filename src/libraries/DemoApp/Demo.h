@@ -191,6 +191,14 @@ public:
 	void setDuration(float duration) {
 		this->duration = duration;
 	}
+
+	bool isIsGpu() const {
+		return isGPU;
+	}
+
+	void setIsGpu(bool isGpu) {
+		isGPU = isGpu;
+	}
 };
 
 #endif /* DEMO_H_ */

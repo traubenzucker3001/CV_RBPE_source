@@ -184,6 +184,9 @@ void Cuda::initCUDA(){
 	h_pVeloc = new glm::vec3[partNum];
 	h_pForce = new glm::vec3[partNum];
 
+	//grid arrays
+	//in initCUDAGrid
+
 	//update VOs
 	h_uVOpos = new glm::vec3[bodyNum];
 	h_uVOrot = new glm::quat[bodyNum];
@@ -200,6 +203,7 @@ void Cuda::initCUDA(){
 
 	//initOpenCLGrid();
 	//init gitter
+	UniformGrid::getInstance()->createGrid();
 	initCUDAGrid();
 
 	//initializeDeviceBuffers();
@@ -284,6 +288,9 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_pVeloc, h_pVeloc, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_pForce, h_pForce, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 
+	cudaMemcpy(d_gCountGrid, h_gCountGrid, bodyNum*sizeof(int), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_gIndexGrid, h_gIndexGrid, bodyNum*sizeof(glm::vec4), cudaMemcpyHostToDevice);
+
 	/*
 	cudaMemcpy(d_voxelS, h_voxelS, sizeof(float), cudaMemcpyHostToDevice);
 	d_gridS = 0;
@@ -308,14 +315,23 @@ void Cuda::initCUDAGrid(){
 
 	cout << "cuda: initGrid called!" << endl; //zum test
 
-	//TODO
-
 	//host arrays
 	h_pGridIndex = new glm::vec3[partNum];
 
 	int gS = UniformGrid::getInstance()->getGridSize();
 	h_gCountGrid = new int[gS];
 	h_gIndexGrid = new glm::vec4[gS];	//int4?!
+
+	//
+	for (int i = 0; i<gS; i++) {
+		h_gIndexGrid[i].x = -1;
+		h_gIndexGrid[i].y = -1;
+		h_gIndexGrid[i].z = -1;
+	}
+
+	for (int i = 0; i<gS; i++) {
+		h_gCountGrid[i] = 0;
+	}
 
 	//device arrays
 	cudaMalloc((void**)&d_pGridIndex, bodyNum*sizeof(glm::vec3));
@@ -329,13 +345,19 @@ void Cuda::stepCUDA(){
 	cout << "cuda: stepCUDA!" << endl; //zum test
 
 	//schritte nacheinander aufrufen
+	cout << "-test stepCUDA 1-" << endl; //zum debuggen
 	resetGrid(d_gCountGrid, d_gIndexGrid);
+	cout << "-test stepCUDA 2-" << endl; //zum debuggen
 	updateGrid(d_gCountGrid, d_gIndexGrid, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
+	cout << "-test stepCUDA 3-" << endl; //zum debuggen
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gCountGrid, d_gIndexGrid, d_gridS);
+	cout << "-test stepCUDA 4-" << endl; //zum debuggen
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
+	cout << "-test stepCUDA 5-" << endl; //zum debuggen
 	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens, d_duration, d_pRadius);
+	cout << "-test stepCUDA 6-" << endl; //zum debuggen
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc, d_pRadius);
-
+	cout << "-test stepCUDA 7-" << endl; //zum debuggen
 	//VOs updaten
 	//TODO
 

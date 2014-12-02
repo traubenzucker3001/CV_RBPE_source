@@ -42,6 +42,7 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	float temp = prIN * 6;
 	//geometry = new CVK::Cube(temp);
 	geometry = 0;
+	plane = 0;
 	isGPU = igIN;
 }
 
@@ -69,11 +70,29 @@ void Demo::run(){
 	float pr = world->getPartRadius();
 	float temp = pr * 6;
 	geometry = new CVK::Cube(temp);
+	//material setzten, geht aber nur bei node, also in VO
+	
+	//plane für boden
+	plane = new CVK::Plane();
+	CVK::Node* planeNode = new CVK::Node("Plane");
+	CVK::Material mat_brick((char*)RESOURCES_PATH "/brick.bmp", black, darkgrey, 100.0f);
+	planeNode->setGeometry(plane);
+	planeNode->setMaterial(&mat_brick);
+	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
+	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -2, 0)), glm::vec3(7)), -90.0f, glm::vec3(1, 0, 0)));
+	demo->sceneRoot->addChild(planeNode);
 
+	//zum test
+	/*
+	CVK::Teapot *teapot = new CVK::Teapot;
+	CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+	sceneRoot->setGeometry(teapot);
+	sceneRoot->setMaterial(&mat_cvlogo); 
+	*/
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
-	camera->setRadius( 5);
-	camera->setNearFar( 1.0f, 10.0f);
+	camera->setRadius( 20);
+	camera->setNearFar( 1.0f, 30.0f);
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
 
@@ -180,15 +199,17 @@ void Demo::initScene(){
 	float pR = world->getPartRadius();
 
 	//glm::vec3 randPose = glm::vec3();
-	float hSize = pR * 3;
-	float x, y, z;
-	x = (bodycount % 2) * 1.9f * hSize;
-	y = bodycount * 3.0f * hSize;
-	z = ((bodycount % 4) / 2) * 1.9f * hSize;
-	glm::vec3 randPos = glm::vec3(x,y,z);
-
-	float mass = 0.2f;
 	for (int i = 0; i < numberRB; i++){
+		float hSize = pR * 3;
+		float x, y, z;
+		x = (bodycount % 2) * 1.9f * hSize;
+		y = bodycount * 3.0f * hSize;
+		z = ((bodycount % 4) / 2) * 1.9f * hSize;
+		glm::vec3 randPos = glm::vec3(x,y,z);
+
+
+		float mass = 0.2f;
+	//for (int i = 0; i < numberRB; i++){
 		VirtualObject *temp = new VirtualObject(randPos,i,mass,false,false,hSize,i);
 		virtualObjs.push_back(temp);
 	}

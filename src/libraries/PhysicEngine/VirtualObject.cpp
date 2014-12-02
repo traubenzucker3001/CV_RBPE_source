@@ -30,6 +30,7 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	cout << "vo: vo constr called!" << endl; //zum test
 
 	id = idIN;
+	position = posIN;
 
 	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN,sizeIN);
 
@@ -37,10 +38,15 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	world->allBodies[bodyCount] = physicBody;
 
 	graphicBody = new CVK::Node();
+	//material setzten, funktioniert noch nicht ganz
+	CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
 
 	graphicBody->setGeometry(demo->geometry);
-	//graphicBody->setMaterial();
-	graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));;
+	graphicBody->setMaterial(&mat_cvlogo);
+
+	//liegen alle aufeinander weil hier pos nicht berücksichtigt wird
+	//graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
+	graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
 	demo->sceneRoot->addChild(graphicBody);
 }
 

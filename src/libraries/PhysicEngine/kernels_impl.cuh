@@ -12,7 +12,8 @@
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
 __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
-	//printf(“var:%d\n”, var);
+	//printf(“var:%d\n”, var);
+
 	//cout bzw. printf() in kernel möglich?!
 	//ja, siehe --> cuda samples - 0_simple - simpleprintf
 
@@ -25,10 +26,10 @@ __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
 	}
 	if (i < gs){
 		//countGrid[i] = 0;
-	//	indexGrid[i].x = -1;
-	//	indexGrid[i].y = -1;
-		//indexGrid[i].z = -1;
-	//	indexGrid[i].w = -1;
+		//indexGrid[i].x = -1;
+		//indexGrid[i].y = -1;
+	//	indexGrid[i].z = -1;
+		//indexGrid[i].w = -1;
 	}
 }
 
@@ -37,6 +38,9 @@ __global__ void updateGridC(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPo
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 
+	if (pi >= nop){
+		return;
+	}
 	if (pi < nop){
 		pGridIndex[pi].x = (pPos[pi].x - gridMinPosVec.x) / voxelSL;
 		pGridIndex[pi].y = (pPos[pi].y - gridMinPosVec.y) / voxelSL;
@@ -92,7 +96,9 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 	//int tnop = (blockDim.x * blockIdx.x + threadIdx.x) * 27;
 
 	int particleIndex = bi * 27;
-
+	if (bi >= nob){
+		return;
+	}
 	if (bi < nob){
 
 		rbForce[bi].x = 0.0f;
@@ -141,6 +147,10 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 	//unsigned int bodyVBOIndex = bodyIndex * 24 * 3;
 
 	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
+	
+	if (bi >= nob){
+		return;
+	}
 	if (bi < nob){
 
 		//Update inverse inertia tensor
@@ -296,6 +306,9 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 
+	if (pi >= nop){
+		return;
+	}
 	if (pi < nop){
 		pForce[pi].x = 0.0f;
 		pForce[pi].y = 0.0f;
@@ -338,7 +351,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		}
 
 		for (int j = 0; j < 27; j++) {
-			//oder glm::...
+
 			glm::vec4 neighborParticles = glm::vec4(neighborCells[j].x,
 				neighborCells[j].y,
 				neighborCells[j].z,
@@ -432,6 +445,9 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 	int bi = pi / 27;
 	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
+	if (pi >= nop){
+		return;
+	}
 	if (pi < nop){
 		glm::vec3 originalRelativePos;
 		//Calculate original relative position

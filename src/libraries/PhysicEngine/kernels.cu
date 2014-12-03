@@ -13,7 +13,7 @@ extern World* world;
 
 int nearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
-}	//nicht in jedem cu eine funktion, irgwo für alle erreichbar machen
+}
 
 //extern "C"{
 	//<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
@@ -24,13 +24,14 @@ int nearHighVal(int a, int b){
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
 		int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
 		cout << "gridsize: " << g << endl;	//zum debuggen
-		int blockSize = 1024;	//64, 256
+		int blockSize = 512;	//64, 256
 		int numThreads = (int)fmin(blockSize, g);
 		int numBlocks = nearHighVal(g, numThreads);		//<--- fehler dort, viel zu viele blocks
 		cout << "threads: " << numThreads << endl;	//zum debuggen
 		cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
 		resetGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, g);
+		cudaThreadSynchronize();
 	}
 
 	//updateGRid
@@ -49,6 +50,7 @@ int nearHighVal(int a, int b){
 		//geht doch bestimmt auch noch "besser"!!?
 
 		updateGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex,p);
+		cudaThreadSynchronize();
 	}
 
 	//<<<<<<<<<< rigidbody kernels >>>>>>>>>>
@@ -64,6 +66,7 @@ int nearHighVal(int a, int b){
 		//geht doch bestimmt auch noch "besser"!!?
 
 		updateMomC<<<numBlocks, numThreads>>>(rbMass, rbForce, rbPos, rbLinMom, rbAngMom, pPos, pForce, duration, termVeloc,b);
+		cudaThreadSynchronize();
 	}
 
 	//perform step
@@ -78,6 +81,7 @@ int nearHighVal(int a, int b){
 		//geht doch bestimmt auch noch "besser"!!?
 
 		iterateC<<<numBlocks, numThreads>>>(rbMass, rbPos, rbVeloc, rbLinMom, rbRotQuat, rbRotMat, rbAngVeloc, rbAngMom, initIITDiago, inverInertTens, duration, pRadius,b);
+		cudaThreadSynchronize();
 	}
 
 	//<<<<<<<<<< particles kernels >>>>>>>>>>
@@ -93,6 +97,7 @@ int nearHighVal(int a, int b){
 		//geht doch bestimmt auch noch "besser"!!?
 
 		calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, countGrid, indexGrid, gridSL,p);
+		cudaThreadSynchronize();
 	}
 
 	void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
@@ -106,6 +111,7 @@ int nearHighVal(int a, int b){
 		//geht doch bestimmt auch noch "besser"!!?
 
 		updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc, rbRotMat, rbAngVeloc, pPos, pVeloc, pRadius,p);
+		cudaThreadSynchronize();
 	}
 
 //}

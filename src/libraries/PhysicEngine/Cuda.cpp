@@ -346,6 +346,7 @@ void Cuda::stepCUDA(){
 
 	//schritte nacheinander aufrufen
 	cout << "-test stepCUDA 1-" << endl; //zum debuggen
+	//int g = UniformGrid::getInstance()->getGridSize();
 	resetGrid(d_gCountGrid, d_gIndexGrid);
 	cout << "-test stepCUDA 2-" << endl; //zum debuggen
 	updateGrid(d_gCountGrid, d_gIndexGrid, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);

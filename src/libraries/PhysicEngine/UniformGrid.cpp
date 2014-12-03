@@ -40,7 +40,7 @@ void UniformGrid::createGrid(){
 	float partR = world->getPartRadius();
 
 	voxelSize = 2.00f * partR;
-	gridLength = (int)ceil(2.0f * worldS/ voxelSize);
+	gridLength = (int)ceil(2.0f * worldS / voxelSize);
 
 	/* 2 extra grid voxels in each dimension in case particles go slightly outside the world borders */
 	gridLength = gridLength + 2;

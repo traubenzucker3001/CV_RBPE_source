@@ -23,11 +23,14 @@ int nearHighVal(int a, int b){
 		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
 		int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
-		int blockSize = 64;
+		cout << "gridsize: " << g << endl;	//zum debuggen
+		int blockSize = 1024;	//64, 256
 		int numThreads = (int)fmin(blockSize, g);
-		int numBlocks = nearHighVal(g, numThreads);		//<--- fehler dort
+		int numBlocks = nearHighVal(g, numThreads);		//<--- fehler dort, viel zu viele blocks
+		cout << "threads: " << numThreads << endl;	//zum debuggen
+		cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
-		resetGridC <<< numBlocks, numThreads >>>(countGrid, indexGrid);
+		resetGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, g);
 	}
 
 	//updateGRid
@@ -37,12 +40,15 @@ int nearHighVal(int a, int b){
 		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
 		//thread pro part.
 		int p = world->getAllPartNum();
+		cout << "gridsize: " << p << endl;	//zum debuggen
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);
+		cout << "threads: " << numThreads << endl;	//zum debuggen
+		cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
 
-		updateGridC <<< numBlocks, numThreads >>>(countGrid, indexGrid, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex);
+		updateGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex,p);
 	}
 
 	//<<<<<<<<<< rigidbody kernels >>>>>>>>>>
@@ -57,7 +63,7 @@ int nearHighVal(int a, int b){
 		int numBlocks = nearHighVal(b, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?
 
-		updateMomC <<< numBlocks, numThreads >>>(rbMass, rbForce, rbPos, rbLinMom, rbAngMom, pPos, pForce, duration, termVeloc);
+		updateMomC<<<numBlocks, numThreads>>>(rbMass, rbForce, rbPos, rbLinMom, rbAngMom, pPos, pForce, duration, termVeloc,b);
 	}
 
 	//perform step
@@ -71,7 +77,7 @@ int nearHighVal(int a, int b){
 		int numBlocks = nearHighVal(b, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?
 
-		iterateC <<< numBlocks, numThreads >>>(rbMass, rbPos, rbVeloc, rbLinMom, rbRotQuat, rbRotMat, rbAngVeloc, rbAngMom, initIITDiago, inverInertTens, duration, pRadius);
+		iterateC<<<numBlocks, numThreads>>>(rbMass, rbPos, rbVeloc, rbLinMom, rbRotQuat, rbRotMat, rbAngVeloc, rbAngMom, initIITDiago, inverInertTens, duration, pRadius,b);
 	}
 
 	//<<<<<<<<<< particles kernels >>>>>>>>>>
@@ -86,7 +92,7 @@ int nearHighVal(int a, int b){
 		int numBlocks = nearHighVal(p, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?
 
-		calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, countGrid, indexGrid, gridSL);
+		calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, countGrid, indexGrid, gridSL,p);
 	}
 
 	void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius){
@@ -99,7 +105,7 @@ int nearHighVal(int a, int b){
 		int numBlocks = nearHighVal(p, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?
 
-		updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc, rbRotMat, rbAngVeloc, pPos, pVeloc, pRadius);
+		updatePartC <<< numBlocks, numThreads >>>(rbPos, rbVeloc, rbRotMat, rbAngVeloc, pPos, pVeloc, pRadius,p);
 	}
 
 //}

@@ -30,6 +30,8 @@ int nearHighVal(int a, int b){
 		cout << "threads: " << numThreads << endl;	//zum debuggen
 		cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
+		//int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;	//aus vectorAdd
+
 		resetGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, g);
 		cudaThreadSynchronize();
 	}

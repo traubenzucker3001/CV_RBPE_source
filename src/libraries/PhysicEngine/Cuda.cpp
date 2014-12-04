@@ -70,27 +70,27 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_gCountGrid = 0;
 	h_gIndexGrid = 0;
 
-	d_rbMass = 0;
-	d_rbForce = 0;
-	d_rbPos = 0;
-	d_rbVeloc = 0;
-	d_rbLinMom = 0;
-	d_rbRotQuat = 0;
-	d_rbRotMat = 0;
-	d_rbAngVeloc = 0;
-	d_rbAngMom = 0;
-	d_rbInitInversInertTensDiago = 0;
-	d_rbInverseInertTens = 0;
+	d_rbMass = NULL;
+	d_rbForce = NULL;
+	d_rbPos = NULL;
+	d_rbVeloc = NULL;
+	d_rbLinMom = NULL;
+	d_rbRotQuat = NULL;
+	d_rbRotMat = NULL;
+	d_rbAngVeloc = NULL;
+	d_rbAngMom = NULL;
+	d_rbInitInversInertTensDiago = NULL;
+	d_rbInverseInertTens = NULL;
 
-	d_pMass = 0;
-	d_pPos = 0;
-	d_pVeloc = 0;
-	d_pForce = 0;
+	d_pMass = NULL;
+	d_pPos = NULL;
+	d_pVeloc = NULL;
+	d_pForce = NULL;
 
-	d_pGridIndex = 0;
+	d_pGridIndex = NULL;
 
-	d_gCountGrid = 0;
-	d_gIndexGrid = 0;
+	d_gCountGrid = NULL;
+	d_gIndexGrid = NULL;
 
 	h_voxelS = 0;
 	h_gridS = 0;
@@ -101,6 +101,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_duration = 0;
 	h_termVeloc = 0;
 
+	/*
 	d_voxelS = 0;
 	d_gridS = 0;
 	d_worldS = 0;
@@ -109,6 +110,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 	d_pRadius = 0;
 	d_duration = 0;
 	d_termVeloc = 0;
+	*/
 }
 
 Cuda::~Cuda(){

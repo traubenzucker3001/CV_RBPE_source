@@ -8,7 +8,7 @@
 #include <glm\glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
-//#include <stdio.h>
+#include <stdio.h>
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
 __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
@@ -20,7 +20,7 @@ __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
 	//...
 	//unsigned int flatGridIndex = get_global_id(0);
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
-
+	//printf("tid:%d\n", i);
 	if (i >= gs){
 		return;
 	}

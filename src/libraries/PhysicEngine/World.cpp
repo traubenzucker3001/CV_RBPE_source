@@ -5,17 +5,6 @@
 #include "RigidBody.h"
 #include "Particle.h"
 
-//link fix try 3
-int allBodyNum;
-int allPartNum;
-float partRadius;
-float worldSize;
-float springCoeff;
-float dampCoeff;
-RigidBody **allBodies;				/**< list of all bodies in the world */
-Particle **allParticles;			/**< list of all particles in the world */
-float gravity;
-
 World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 
 	cout << "world: world constr called!" << endl; //zum test

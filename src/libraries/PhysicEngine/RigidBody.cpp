@@ -10,26 +10,6 @@
 
 using namespace std;
 
-//link fix try 3
-extern float partRadius;
-extern int allPartNum;
-
-extern float* h_rbMass;
-extern glm::vec3* h_rbForce;
-extern glm::vec3* h_rbPos;
-extern glm::vec3* h_rbVeloc;
-extern glm::vec3* h_rbLinMom;
-extern glm::vec3* h_rbAngVeloc;
-extern glm::vec3* h_rbAngMom;
-extern glm::vec3* h_rbInitInversInertTensDiago;
-extern glm::quat* h_rbRotQuat;
-extern glm::mat3* h_rbRotMat;
-extern glm::mat3* h_rbInverseInertTens;
-extern float terminalVeloc;
-
-extern float gravity;
-
-
 int RigidBody::count = 0;
 
 RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN){
@@ -52,14 +32,13 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN)
 		glm::vec3 pOrigIN = posIN;
 		float pMassIN = massIN; 
 		Particle** bPartIN;		//TODO: werte initialisieren!!
-		int numPartIN = allPartNum;
-		float halfsizeIN = partRadius*3;
+		int numPartIN;
+		float halfsizeIN;
 
 		shape = new Box(pOrigIN,pMassIN,bPartIN,numPartIN,halfsizeIN);
 	}
 
-	//float temp1 = Demo::getInstance()->getTerminalVeloc();
-	float temp1 = terminalVeloc;
+	float temp1 = Demo::getInstance()->getTerminalVeloc();
 	terminalMom = temp1 * mass;
 
 	count++;
@@ -228,9 +207,8 @@ void RigidBody::updateMomenta(float duration){
 	force = glm::vec3 (0.0f, 0.0f, 0.0f); //reset forces
 
 	//gravity klasse nicht nötig
-	//float gravity = World::getInstance()->getGravity();
-	float tgravity = gravity;
-	force.y = force.y + mass * -tgravity; //force of gravity
+	float gravity = World::getInstance()->getGravity();
+	force.y = force.y + mass * -gravity; //force of gravity
 
 	glm::vec3 torque = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -293,29 +271,18 @@ void RigidBody::updateCUDArray(int bodyIndex){
 
 	int i = bodyIndex;
 	//TODO//done!!
-	//Cuda::getInstance()->h_rbMass[i] = mass;
-	h_rbMass[i] = mass;
+	Cuda::getInstance()->h_rbMass[i] = mass;
 
-	//Cuda::getInstance()->h_rbForce[i] = force;
-	h_rbForce[i] = force;
-	//Cuda::getInstance()->h_rbPos[i] = position;
-	h_rbPos[i] = position;
-	//Cuda::getInstance()->h_rbVeloc[i] = velocity;
-	h_rbVeloc[i] = velocity;
-	//Cuda::getInstance()->h_rbLinMom[i] = linearMomentum;
-	h_rbLinMom[i] = linearMomentum;
-	//Cuda::getInstance()->h_rbAngVeloc[i] = angularVelocity;
-	h_rbAngVeloc[i] = angularVelocity;
-	//Cuda::getInstance()->h_rbAngMom[i] = angularMomentum;
-	h_rbAngMom[i] = angularMomentum;
-	//Cuda::getInstance()->h_rbInitInversInertTensDiago[i] = initInverseInertTensDiagon;
-	h_rbInitInversInertTensDiago[i] = initInverseInertTensDiagon;
+	Cuda::getInstance()->h_rbForce[i] = force;
+	Cuda::getInstance()->h_rbPos[i] = position;
+	Cuda::getInstance()->h_rbVeloc[i] = velocity;
+	Cuda::getInstance()->h_rbLinMom[i] = linearMomentum;
+	Cuda::getInstance()->h_rbAngVeloc[i] = angularVelocity;
+	Cuda::getInstance()->h_rbAngMom[i] = angularMomentum;
+	Cuda::getInstance()->h_rbInitInversInertTensDiago[i] = initInverseInertTensDiagon;
 
-	//Cuda::getInstance()->h_rbRotQuat[i] = rotationQuat;
-	h_rbRotQuat[i] = rotationQuat;
+	Cuda::getInstance()->h_rbRotQuat[i] = rotationQuat;
 
-	//Cuda::getInstance()->h_rbRotMat[i] = rotationMat;
-	h_rbRotMat[i] = rotationMat;
-	//Cuda::getInstance()->h_rbInverseInertTens[i] = inverseInertiaTensor;
-	h_rbInverseInertTens[i] = inverseInertiaTensor;
+	Cuda::getInstance()->h_rbRotMat[i] = rotationMat;
+	Cuda::getInstance()->h_rbInverseInertTens[i] = inverseInertiaTensor;
 }

@@ -8,9 +8,6 @@
 
 #include "kernels_impl.cuh"
 
-//link fix try 3
-extern int allPartNum;
-extern int allBodyNum;
 
 int nearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
@@ -38,8 +35,7 @@ int nearHighVal(int a, int b){
 		//blocks und threads berechn.
 		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
 		//thread pro part.
-		//int p = World::getInstance()->getAllPartNum();
-		int p = allPartNum;
+		int p = World::getInstance()->getAllPartNum();
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);
@@ -54,8 +50,7 @@ int nearHighVal(int a, int b){
 
 		//todo: blocks und threads berechn.
 		//thread pro body
-		//int b = World::getInstance()->getAllBodyNum();
-		int b = allBodyNum;
+		int b = World::getInstance()->getAllBodyNum();
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, b);
 		int numBlocks = nearHighVal(b, numThreads);
@@ -69,8 +64,7 @@ int nearHighVal(int a, int b){
 
 		//todo: blocks und threads berechn.
 		//thread pro body
-		//int b = World::getInstance()->getAllBodyNum();
-		int b = allBodyNum;
+		int b = World::getInstance()->getAllBodyNum();
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, b);
 		int numBlocks = nearHighVal(b, numThreads);
@@ -85,8 +79,7 @@ int nearHighVal(int a, int b){
 
 		//blocks und threads berechn.
 		//thread pro part.
-		//int p = World::getInstance()->getAllPartNum();
-		int p = allPartNum;
+		int p = World::getInstance()->getAllPartNum();
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);
@@ -99,8 +92,7 @@ int nearHighVal(int a, int b){
 
 		//blocks und threads berechn.
 		//threads pro part.
-		//int p = World::getInstance()->getAllPartNum();
-		int p = allPartNum;
+		int p = World::getInstance()->getAllPartNum();
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);

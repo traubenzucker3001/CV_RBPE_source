@@ -5,12 +5,6 @@
 #include "World.h"
 #include "Particle.h"
 
-//link fix try 3
-extern float partRadius;
-extern int allPartNum;
-extern float worldSize;
-extern Particle** allParticles;
-
 UniformGrid::UniformGrid(){
 	
 	cout << "grid: grid constr. called!" << endl; //zum test
@@ -37,10 +31,8 @@ void UniformGrid::createGrid(){
 
 	cout << "grid: create grid!" << endl; //zum test
 
-	//float worldS = World::getInstance()->getWorldSize();
-	float worldS = worldSize;
-	//float partR = World::getInstance()->getPartRadius();
-	float partR = partRadius;
+	float worldS = World::getInstance()->getWorldSize();
+	float partR = World::getInstance()->getPartRadius();
 
 	voxelSize = 2.00f * partR;
 	gridLength = (int)ceil(2.0f * worldS/ voxelSize);
@@ -77,10 +69,8 @@ void UniformGrid::updateGrid(){
 	cout << "grid: update grid!" << endl; //zum test
 
 	//partikel/body vektoren zu arrays ändern?!
-	//int aPartN = World::getInstance()->getAllPartNum();
-	int aPartN = allPartNum;
-	//Particle** allPart = World::getInstance()->getAllParticles();
-	Particle** allPart = allParticles;
+	int aPartN = World::getInstance()->getAllPartNum();
+	Particle** allPart = World::getInstance()->getAllParticles();	//schauen ob pointer so richtig
 
 	for (int i=0; i<gridSize*partPerVoxel; i++) {
 		indexGrid[i] = -1;

@@ -25,19 +25,19 @@ class World : public Singleton<World> {
 	friend class Singleton<World>;
 
 private:
-	//float worldSize;					/**< world size */
-	//float partRadius;					/**< particle radius */
+	float worldSize;					/**< world size */
+	float partRadius;					/**< particle radius */
 
-	//float springCoeff;					/**< spring coefficient */
+	float springCoeff;					/**< spring coefficient */
 
-	//float dampCoeff;					/**< damping coefficient */		//welt oder jeder body einzeln?!
-	//float gravity;						/**< gravity force value */
+	float dampCoeff;					/**< damping coefficient */		//welt oder jeder body einzeln?!
+	float gravity;						/**< gravity force value */
 
 	//RigidBody** allBodies;			/**< list of all bodies in the world */		//std::vector<RigidBody*> allBodies;	//array wahrscheinl. besser
-	//int allBodyNum;						/**< number of bodies in the world */
+	int allBodyNum;						/**< number of bodies in the world */
 	
 	//Particle** allParticles;			/**< list of all particles in the world */	//std::vector<Particle*> allParticles;	//array wahrscheinl. besser	//**
-	//int allPartNum;						/**< number of particles in the world */
+	int allPartNum;						/**< number of particles in the world */
 
 	UniformGrid *grid;					/**< uniform grid */
 
@@ -52,8 +52,8 @@ private:
 public:
 
 	//private or public?!
-	//RigidBody **allBodies;				/**< list of all bodies in the world */
-	//Particle **allParticles;			/**< list of all particles in the world */
+	RigidBody **allBodies;				/**< list of all bodies in the world */
+	Particle **allParticles;			/**< list of all particles in the world */
 
 	/** \brief constructor
 	 *
@@ -89,7 +89,6 @@ public:
 	void stepPhysics(float duration, bool isGPU);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
-	/*
 	int getAllPartNum() const {
 		return allPartNum;
 	}
@@ -97,8 +96,7 @@ public:
 	void setAllPartNum(int allPartNum) {
 		this->allPartNum = allPartNum;
 	}
-	*/
-	/*
+
 	float getPartRadius() const {
 		return partRadius;
 	}
@@ -106,8 +104,7 @@ public:
 	void setPartRadius(float partRadius) {
 		this->partRadius = partRadius;
 	}
-	*/
-	/*
+
 	float getWorldSize() const {
 		return worldSize;
 	}
@@ -131,8 +128,7 @@ public:
 	void setDampCoeff(float dampCoeff) {
 		this->dampCoeff = dampCoeff;
 	}
-	*/
-	/*
+
 	float getGravity() const {
 		return gravity;
 	}
@@ -140,8 +136,7 @@ public:
 	void setGravity(float gravity) {
 		this->gravity = gravity;
 	}
-	*/
-	/*
+
 	int getAllBodyNum() const {
 		return allBodyNum;
 	}
@@ -149,8 +144,7 @@ public:
 	void setAllBodyNum(int allbodyNum) {
 		this->allBodyNum = allbodyNum;
 	}
-	*/
-	/*
+
 	 RigidBody**& getAllBodies() {
 		return allBodies;
 	}
@@ -166,7 +160,6 @@ public:
 	void setAllParticles( Particle**& allParticles) {
 		this->allParticles = allParticles;
 	}
-	*/
 };
 
 #endif /* WORLD_H_ */

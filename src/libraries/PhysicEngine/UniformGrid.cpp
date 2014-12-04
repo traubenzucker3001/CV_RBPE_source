@@ -4,6 +4,11 @@
 #include "UniformGrid.h"
 #include "World.h"
 #include "Particle.h"
+#include "DemoApp\Demo.h"
+
+//link fix try 4
+extern World* world;
+extern Demo* demo;
 
 UniformGrid::UniformGrid(){
 	
@@ -14,7 +19,7 @@ UniformGrid::UniformGrid(){
 	countGrid = 0;
 	gridLength = 0;
 	gridMinPos = 0;
-	partPerVoxel = 0;
+	partPerVoxel = 4;
 
 	gridSize = 0;
 	xSteps = 0;
@@ -31,13 +36,14 @@ void UniformGrid::createGrid(){
 
 	cout << "grid: create grid!" << endl; //zum test
 
-	float worldS = World::getInstance()->getWorldSize();
-	float partR = World::getInstance()->getPartRadius();
+	float worldS = world->getWorldSize();
+	float partR = world->getPartRadius();
 
 	voxelSize = 2.00f * partR;
-	gridLength = (int)ceil(2.0f * worldS/ voxelSize);
+	gridLength = (int)ceil(2.0f * worldS / voxelSize);
+
 	/* 2 extra grid voxels in each dimension in case particles go slightly outside the world borders */
-	gridLength += 2;
+	gridLength = gridLength + 2;
 
 	xSteps = gridLength*gridLength;
 	ySteps = gridLength;
@@ -52,15 +58,19 @@ void UniformGrid::createGrid(){
 
 	gridSize = gridLength * gridLength * gridLength;
 
-	indexGrid = new int[gridSize*partPerVoxel];
-	countGrid = new int[gridSize];
+	bool gpu = demo->isIsGpu();
+	if (gpu == false){
 
-	for (int i=0; i<gridSize*partPerVoxel; i++) {
-		indexGrid[i] = -1;
-	}
+		indexGrid = new int[gridSize*partPerVoxel];
+		countGrid = new int[gridSize];
+	
+		for (int i=0; i<gridSize*partPerVoxel; i++) {
+			indexGrid[i] = -1;
+		}
 
-	for (int i=0; i<gridSize; i++) {
-		countGrid[i] = 0;
+		for (int i=0; i<gridSize; i++) {
+			countGrid[i] = 0;
+		}
 	}
 }
 
@@ -68,9 +78,8 @@ void UniformGrid::updateGrid(){
 
 	cout << "grid: update grid!" << endl; //zum test
 
-	//partikel/body vektoren zu arrays ändern?!
-	int aPartN = World::getInstance()->getAllPartNum();
-	Particle** allPart = World::getInstance()->getAllParticles();	//schauen ob pointer so richtig
+	int aPartN = world->getAllPartNum();
+	Particle** allPart = world->getAllParticles();
 
 	for (int i=0; i<gridSize*partPerVoxel; i++) {
 		indexGrid[i] = -1;
@@ -148,12 +157,12 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 			for (int z=0; z<3; z++) {
 				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
 				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
-
+	
 				indices[neighborCount] = indexGrid[flatIndexGridIndex];
 				indices[neighborCount+1] = indexGrid[flatIndexGridIndex+1];
 				indices[neighborCount+2] = indexGrid[flatIndexGridIndex+2];
 				indices[neighborCount+3] = indexGrid[flatIndexGridIndex+3];
-
+		
 				neighborCount += 4;
 				checkIndex.z++;
 			}

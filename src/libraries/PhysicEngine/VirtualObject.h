@@ -19,7 +19,7 @@ class VirtualObject
 private:
 	RigidBody* physicBody;		/**< RigidBody as physics component of this object */
 
-	CVK::Node* graphicBody;	/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
+	CVK::Node* graphicBody;		/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
 	glm::vec3 position;			/**< position */	//eig  überflüssig wenn model matrix habe
 
@@ -37,15 +37,9 @@ public:
 	 * @param massIN body mass
 	 * @param staticIN static object (true) or not (false) (not observed at the moment)
 	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
+	 * @param sizeIN box half size or sphere radius
 	 */
-	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN);
-
-	/** \brief constructor
-	 *
-	 * for sphere as graphics component
-	 * ...
-	 */
-	//VirtualObject(bool shape, float shapeSize);
+	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN, int idIN);
 
 	/** \brief destructor
 	 *

@@ -22,11 +22,12 @@ public:
 	 * creates a collision shape as a box instance
 	 * @param origIN position
 	 * @param massIN mass
-	 * @param bPartIN particle array
 	 * @param numPartIN number of particles inside the array
 	 * @param halfsizeIN size of the box
 	 */
-	Box(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,bPartIN,numPartIN){halfsize = halfsizeIN;}
+	Box(glm::vec3 origIN, float massIN, int numPartIN, float halfsizeIN) : CollisionShape(origIN,massIN,numPartIN){	halfsize = halfsizeIN;
+																													calcParticles();
+																												  }
 
 	/** \brief destructor
 	 *

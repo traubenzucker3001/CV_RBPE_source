@@ -1,5 +1,6 @@
 //neuer cuda file zum lösen der include/compiler fehler
 
+#define GLM_FORCE_CUDA
 #include <glm\glm.hpp>
 
 

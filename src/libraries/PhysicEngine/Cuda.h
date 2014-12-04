@@ -9,18 +9,19 @@
 
 #include "DesignPatterns\Singleton.h"
 
-//<<<<<<<<<< linker fix - try 2
-class World;
-//>>>>>>>>>>
+
+//link fix try 4
+
 
 /** \brief cuda data structure
 *
 * class with all necessary host and device arrays
 * singleton because it must be sure that every array should only exist once
 */
-class Cuda : public Singleton<Cuda> {
-	friend class Singleton<Cuda>;
+//class Cuda : public Singleton<Cuda> {
+	//friend class Singleton<Cuda>;
 
+class Cuda{
 private:
 
 	int bodyNum;	/**< total number of rigid bodies */
@@ -47,11 +48,15 @@ public:
 	glm::vec3 *h_pVeloc;		/**< host array for particle velocities */
 	glm::vec3 *h_pForce;		/**< host array for particle forces */
 
+	//update VOs arrays
+	glm::vec3* h_uVOpos;		/**< ... */
+	glm::quat* h_uVOrot;		/**< ... */
+
 private:
 	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
 	int* h_gCountGrid;			/**< host array for grid ... */
-	glm::vec4 *h_gIndexGrid;	/**< host array for grid ... */		//int4?!
+	glm::vec4 *h_gIndexGrid;	/**< host array for grid ... */
 
 
 	//benötigte arrays gpu (device)
@@ -79,8 +84,10 @@ private:
 	int* d_gCountGrid;			/**< device array for grid ... */
 	glm::vec4 *d_gIndexGrid;	/**< device array for grid ... */		//int4?!
 
+	/*
 	glm::vec3 d_gridMinPosVector;		//?!	//todo: auch auf gpu packen!!
 	glm::vec3 h_gridMinPosVector;
+	*/
 
 	//weitere auf gpu benötigte werte //todo: auf gpu allokieren und von cpu auf gpu übertagen
 	/*__constant__ float d_voxelS;
@@ -92,15 +99,16 @@ private:
 	__device__ float d_duration;
 	__device__ float d_termVeloc;*/
 
-	float h_voxelS;
-	int h_gridS;
-	float h_worldS;
-	float h_springC;
-	float h_dampC;
-	float h_pRadius;
-	float h_duration;
-	float h_termVeloc;
+	float h_voxelS;						/**< ... */
+	int h_gridS;						/**< ... */
+	float h_worldS;						/**< ... */
+	float h_springC;					/**< ... */
+	float h_dampC;						/**< ... */
+	float h_pRadius;					/**< ... */
+	float h_duration;					/**< ... */
+	float h_termVeloc;					/**< ... */
 
+	glm::vec3 h_gridMinPosVector;		/**< ... */
 
 public:
 	/** \brief constructor
@@ -137,9 +145,6 @@ public:
 	* @return void
 	*/
 	void initCUDAGrid();
-
-	//void initHostArrays();		//zu initcuda gepackt
-	//void initDeviceArrays();		//zu initcuda gepackt
 	
 	/** \brief update host arrays
 	*
@@ -162,5 +167,11 @@ public:
 	*/
 	void stepCUDA();
 
+	/** \brief update VO arrays
+	*
+	* copy current rigid body position and rotation from gpu to cpu arrays
+	* @return void
+	*/
+	void updateVOarrays();
 };
 #endif /* CUDA_H_ */

@@ -5,6 +5,10 @@
 #include "World.h"
 #include "Cuda.h"
 
+//link fix try 4
+extern World* world;
+extern Cuda* cuda;
+
 int Particle::indexCount = 0;
 
 Particle::Particle(glm::vec3 posIN, float massIN){
@@ -12,12 +16,16 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	cout << "part: part constr called!" << endl; //zum test
 
 	position = posIN;
+	cout << "-constr pos: " << position.x << endl; //zum debuggen
+	cout << "-constr pos: " << position.y << endl; //zum debuggen
+	cout << "-constr pos: " << position.z << endl; //zum debuggen
 	mass = massIN;
 	velocity = glm::vec3(0,0,0);
 	force = glm::vec3(0,0,0);
 
-	//gridIndex = ;
+	gridIndex = glm::vec3(0,0,0);
 	partIndex = 0;
+	cout << "-mass: " << mass << endl; //zum debuggen
 }
 
 Particle::~Particle(){
@@ -25,7 +33,6 @@ Particle::~Particle(){
 	//no pointers to clear!
 }
 
-//TODO funcs
 glm::vec3 Particle::calculateForces(){
 
 	cout << "part: calcForces called!" << endl; //zum test
@@ -36,23 +43,25 @@ glm::vec3 Particle::calculateForces(){
 	//-----part1-----
 	//calculateCollisionForces();		//war auskommentiert
 
-	float partR = World::getInstance()->getPartRadius();
-	float worldS = World::getInstance()->getWorldSize();
-	float springC = World::getInstance()->getSpringCoeff();
-	float dampC = World::getInstance()->getDampCoeff();
+	float partR = world->getPartRadius();
+	float worldS = world->getWorldSize();
+	float springC = world->getSpringCoeff();
+	float dampC = world->getDampCoeff();
 
 	//-----part2-----
 	//calculateCollisionForcesWithGrid();
 	if (UniformGrid::getInstance()->isValidIndex(gridIndex) == true) {
-		int* neighborParticleIndices = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
 
+		int* neighborParticleIndices = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
 		int ppv = UniformGrid::getInstance()->getPartPerVoxel();
-		for (int i=0; i<ppv*27; i++) {
+		
+		int target = ppv * 27;
+		for (int i=0; i<target; i++) {
 			int neighborIndex = neighborParticleIndices[i];
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
-
+	
 				//body oder all particles?!	//müsste alle sein
-				Particle** temp = World::getInstance()->getAllParticles();
+				Particle** temp = world->getAllParticles();
 				Particle* neighbors = temp[neighborIndex];
 				glm::vec3 jPos = neighbors->getPosition();
 
@@ -60,7 +69,7 @@ glm::vec3 Particle::calculateForces(){
 				distance.x = jPos.x - position.x;
 				distance.y = jPos.y - position.y;
 				distance.z = jPos.z - position.z;
-
+	
 				float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
 
 				//float partR = World::getInstance()->getPartRadius();
@@ -187,8 +196,9 @@ void Particle::populateArray(){
 	partIndex = indexCount;
 
 	//body oder all part. array ?!	//müsste eig all sein
-	Particle** allP = World::getInstance()->getAllParticles();
-	allP[indexCount] = this;	//müsste doch eig durch setter befüllt werden?!, hier wird ja nur referenz und nicht das wirkliche array beschrieben. könnte noch an mehreren stellen falsch sein, vllt array public machen
+	//Particle** allP = world->getAllParticles();
+	//allP[indexCount] = this;
+	world->allParticles[indexCount] = this;
 	indexCount++;
 }
 
@@ -203,9 +213,8 @@ void Particle::updateGridIndex(){
 
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
 	float vS = UniformGrid::getInstance()->getVoxelSize();
-
 	//int cast benötigt?!	//(int)
-	gridIndex.x = ((position.x - gmp)/vS);
+	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
 	gridIndex.y = ((position.y - vS)/vS);
 	gridIndex.z = ((position.z - gmp)/vS);
 }
@@ -215,12 +224,10 @@ void Particle::updateCUDArray(int particleIndex){
 	cout << "part: updateCudArr called!" << endl; //zum test
 
 	int i = particleIndex;
-	//TODO
-	Cuda::getInstance()->h_pMass[i] = mass;
-
-	Cuda::getInstance()->h_pPos[i] = position;
-	Cuda::getInstance()->h_pVeloc[i] = velocity;
-	Cuda::getInstance()->h_pForce[i] = force;
+	cuda->h_pMass[i] = mass;
+	cuda->h_pPos[i] = position;
+	cuda->h_pVeloc[i] = velocity;
+	cuda->h_pForce[i] = force;
 }
 
 //-----"anhang"-----

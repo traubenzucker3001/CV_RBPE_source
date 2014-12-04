@@ -18,7 +18,7 @@ protected:
 	glm::vec3 origin;			/**< origin of the shape = position of RigidBody */
 	float mass;					/**< mass of the shape = mass of RigidBody */
 
-	Particle** bodyParticles;	/**< array with body representing particles */		//std::vector<Particle*> bodyParticles;	//besser ist array //**
+	Particle** bodyParticles;	/**< array with body representing particles */
 	int numOfPart;				/**< number of body representing particles */
 
 public:
@@ -27,10 +27,9 @@ public:
 	 * creates a collision shape instance
 	 * @param origIN position
 	 * @param massIN mass
-	 * @param bPartIN particle array
 	 * @param numPartIN number of particles inside the array
 	 */
-	CollisionShape(glm::vec3 origIN, float massIN, Particle** bPartIN, int numPartIN);	//bodyPart noch dazu?!
+	CollisionShape(glm::vec3 origIN, float massIN, int numPartIN);
 
 	/** \brief destructor
 	 *
@@ -58,7 +57,7 @@ public:
 	 * fill the world particle array
 	 * @return void
 	 */
-	virtual void populatePartArray() = 0;	//virtual?!
+	virtual void populatePartArray() = 0;
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	int getNumOfPart() const {
@@ -69,11 +68,11 @@ public:
 		this->numOfPart = numOfPart;
 	}
 
-	 Particle** getBodyParticles() const {					//falsch generiert?!
+	 Particle** getBodyParticles() const {
 		return bodyParticles;
 	}
 
-	void setBodyParticles( Particle**& bodyParticles) {		//falsch generiert?!
+	void setBodyParticles( Particle**& bodyParticles) {	
 		this->bodyParticles = bodyParticles;
 	}
 };

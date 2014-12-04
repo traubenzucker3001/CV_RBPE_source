@@ -1,4 +1,3 @@
-//!noch partikel array zugriffs fehler!
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
@@ -7,6 +6,9 @@
 #include "World.h"
 
 using namespace std;
+
+//link fix try 4
+extern World* world;
 
 Box::~Box(){
 
@@ -20,7 +22,7 @@ void Box::calcParticles(){
 
 	bodyParticles = new Particle*[numOfPart];
 	int i=0;
-	float partR = World::getInstance()->getPartRadius();
+	float partR = world->getPartRadius();
 	float space = partR * 2.0f;
 	for (int j=-1; j<=1; j++) {
 		for (int k=-1; k<=1; k++) {
@@ -41,7 +43,7 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 	cout << "box: applyRoToPart called!" << endl; //zum test
 
 	int i=0;
-	float partR = World::getInstance()->getPartRadius();
+	float partR = world->getPartRadius();
 	float space = partR * 2.0f;
 	for (int j=-1; j<=1; j++) {
 		for (int k=-1; k<=1; k++) {
@@ -51,7 +53,6 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 				float z = space*l;
 				//float originalRelativePos[3] = {x, y, z};
 				glm::vec3 relatPos = glm::vec3(x,y,z);
-
 				bodyParticles[i]->applyRot(rotMatrix, relatPos, origin);
 				i++;
 			}

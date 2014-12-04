@@ -33,7 +33,7 @@ private:
 	glm::mat3 rotationMat;					/**< body rotation matrix */
 
 	glm::mat3 inertiaTensor;				/**< body inertia tensor */
-	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */	//float initialInverseInertiaTensorDiagonal[3];//
+	glm::vec3 initInverseInertTensDiagon;	/**< initial inverse inertia tensor diagonal */	
 	glm::mat3 inverseInertiaTensor;			/**< inverse inertia tensor */	//world oder local coords?!
 
 	//rotation
@@ -43,7 +43,7 @@ private:
 	glm::vec3 linearMomentum;				/**< linear momentum */
 	float terminalMom;						/**< terminat momentum */	//?
 
-	glm::vec3 force;						/**< body force */	//ehem. forcetobeapplied
+	glm::vec3 force;						/**< body force */
 
 	//glm::vec3 torgueToBeApplied;	//ka ob nötig
 	//glm::vec3 lastFrameVeloc;	//ka ob nötig
@@ -55,11 +55,14 @@ private:
 
 	glm::mat4 transformMatrix;				/**< transformation matrix */
 
-	CollisionShape *shape;					/**< body shape */	//partikel erst in collshape
+	//CollisionShape *shape;					/**< body shape */	//partikel erst in collshape	//zu public verschoben
 
 	static int count;						/**< help variable for all bodies array/vector */
 
 public:
+
+	CollisionShape *shape;					/**< body shape */	//partikel erst in collshape
+
 
 	/** \brief constructor
 	 *
@@ -68,8 +71,9 @@ public:
 	 * @param staticIN static object (true) or not (false) (not observed at the moment)
 	 * @param shapeIN collision shape, true for sphere, false for box (only box is possible at the moment)
 	 * @param posIN position
+	 * @param sizeIN box half size or sphere radius
 	 */
-	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN);
+	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN, float sizeIN);
 
 	/** \brief standard constructor
 	*
@@ -89,7 +93,7 @@ public:
 	 * @param duration time length of a simulation step
 	 * @return void
 	 */
-	void iterate(float duration);		//performStep, mehrere schritte zusammenfassen
+	void iterate(float duration);		//performStep
 
 	/** \brief update rotations matrix
 	 *
@@ -118,7 +122,7 @@ public:
 	 * @param duration time length of a simulation step
 	 * @return void
 	 */
-	void updateMomenta(float duration); //runter in collshape greifen und schauen ob gravity klasse noch nötig
+	void updateMomenta(float duration); //runter in collshape greifen
 
 	/** \brief reset body
 	 *
@@ -133,7 +137,7 @@ public:
 	// <<<<<<<<<< gpu parts >>>>>>>>>> //
 	/** \brief update cuda array
 	 *
-	 * ...
+	 * fill CUDA array with current rigid body data
 	 * @param bodyIndex rigid body uniform grid index
 	 * @return void
 	 */

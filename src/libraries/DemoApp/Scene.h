@@ -1,4 +1,4 @@
-
+/*
 #ifndef SCENE_H_
 #define SCENE_H_
 
@@ -7,7 +7,7 @@
  * help method to create scene with objects
  * @return void
  */
-static void initObjs();
+/*static void initObjs();
 
 
 #endif /* SCENE_H_ */

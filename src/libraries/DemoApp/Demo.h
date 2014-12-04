@@ -1,5 +1,4 @@
 
-//!noch cvk fehler!
 //TODO callback funcs
 
 #ifndef DEMO_H_
@@ -14,9 +13,9 @@
 #include "PhysicEngine\VirtualObject.h"
 #include "DesignPatterns\Singleton.h"
 
-#include "CVK_Framework/CVK_Framework.h"
+#include "CVK_Framework\CVK_Framework.h"
 
-//doku hier nicht nötig/möglich
+// <<<<<<<<<< callback funcs >>>>>>>>>> //
 /** \brief window resize callback
 *
 * called whenever the window size is changed
@@ -27,26 +26,20 @@
 */
 void resizeCallback(GLFWwindow *window, int w, int h);
 
-
-//<<<<<<<<<< linker fix - try 2
-
-//>>>>>>>>>>
-
 /** \brief Demo
  *
  * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
  */
-class Demo : public Singleton<Demo> {
-	friend class Singleton<Demo>;
+//class Demo : public Singleton<Demo> {
+	//friend class Singleton<Demo>;
+
+class Demo{
 
 private:
 	int windowWidth;							/**< demo window width */
 	int windowHeight;							/**< demo window height */
 
-	//nicht sicher ob als extra var nötig
-	//GLFWwindow* window;						/**< glfw window reference */
-
-	World *physicsWorld;						/**< physics world that contains all rigid bodies */
+	//World *physicsWorld;						/**< physics world that contains all rigid bodies */
 
 	//oder auch array?!
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
@@ -56,12 +49,8 @@ private:
 	float duration;								/**< step duration */
 	float terminalVeloc;						/**< terminal velocity */
 
-	//ka ob hier oder einfach in main?!
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 
-	//eins für gesamte szene oder eins pro box??
-	/*GLuint rbVBO;						/**< vertex buffer object for rigid body positions */
-	/*GLuint pVBO;						/**< vertex buffer object for particle positions */
 	//?
 	/*int vertexCount;					/**< ... */
 
@@ -71,6 +60,7 @@ public:
 
 	CVK::Node *sceneRoot;				/**< ... */
 	CVK::Geometry *geometry;			/**< ... */
+	CVK::Plane *plane;					/**< ... */
 
 	/** \brief constructor
 	*
@@ -84,8 +74,9 @@ public:
 	* @param scIN spring coefficient
 	* @param dcIN damping coefficient
 	* @param bnIN total number of bodies in the scene
+	* @param igIN true for executuin on gpu, false for cpu
 	*/
-	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN);
+	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN);
 
 	/** \brief default constructor
 	*
@@ -200,6 +191,14 @@ public:
 
 	void setDuration(float duration) {
 		this->duration = duration;
+	}
+
+	bool isIsGpu() const {
+		return isGPU;
+	}
+
+	void setIsGpu(bool isGpu) {
+		isGPU = isGpu;
 	}
 };
 

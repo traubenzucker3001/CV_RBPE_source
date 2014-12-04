@@ -50,7 +50,7 @@ public:
 	 * calculate forces with colliding neighbor particles and grid boundries
 	 * @return current calculated force
 	 */
-	glm::vec3 calculateForces();	//mehrere schritte zusammenfassen
+	glm::vec3 calculateForces();
 
 	/** \brief update particle velocity
 	 *
@@ -100,7 +100,7 @@ public:
 	// <<<<<<<<<< gpu parts >>>>>>>>>> //
 	/** \brief update cuda array
 	 *
-	 * ...
+	 * fill CUDA arrays with current particle data
 	 * @param particleIndex particle index in uniform grid
 	 * @return void
 	 */

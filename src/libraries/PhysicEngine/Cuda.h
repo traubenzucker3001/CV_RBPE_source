@@ -49,14 +49,14 @@ public:
 	glm::vec3 *h_pForce;		/**< host array for particle forces */
 
 	//update VOs arrays
-	glm::vec3* h_uVOpos;
-	glm::quat* h_uVOrot;
+	glm::vec3* h_uVOpos;		/**< ... */
+	glm::quat* h_uVOrot;		/**< ... */
 
 private:
 	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
 	int* h_gCountGrid;			/**< host array for grid ... */
-	glm::vec4 *h_gIndexGrid;	/**< host array for grid ... */		//int4?!
+	glm::vec4 *h_gIndexGrid;	/**< host array for grid ... */
 
 
 	//benötigte arrays gpu (device)
@@ -84,8 +84,10 @@ private:
 	int* d_gCountGrid;			/**< device array for grid ... */
 	glm::vec4 *d_gIndexGrid;	/**< device array for grid ... */		//int4?!
 
+	/*
 	glm::vec3 d_gridMinPosVector;		//?!	//todo: auch auf gpu packen!!
 	glm::vec3 h_gridMinPosVector;
+	*/
 
 	//weitere auf gpu benötigte werte //todo: auf gpu allokieren und von cpu auf gpu übertagen
 	/*__constant__ float d_voxelS;
@@ -97,15 +99,16 @@ private:
 	__device__ float d_duration;
 	__device__ float d_termVeloc;*/
 
-	float h_voxelS;
-	int h_gridS;
-	float h_worldS;
-	float h_springC;
-	float h_dampC;
-	float h_pRadius;
-	float h_duration;
-	float h_termVeloc;
+	float h_voxelS;						/**< ... */
+	int h_gridS;						/**< ... */
+	float h_worldS;						/**< ... */
+	float h_springC;					/**< ... */
+	float h_dampC;						/**< ... */
+	float h_pRadius;					/**< ... */
+	float h_duration;					/**< ... */
+	float h_termVeloc;					/**< ... */
 
+	glm::vec3 h_gridMinPosVector;		/**< ... */
 
 public:
 	/** \brief constructor

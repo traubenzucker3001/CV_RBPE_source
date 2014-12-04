@@ -40,8 +40,7 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	graphicBody = new CVK::Node();
 	//material setzten, funktioniert noch nicht ganz
 	CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
-	float shininess = 0.0f;
-	CVK::Material mat_red(red, black, shininess);	//anderes material, logo wird irgwie nicht angezeigt, das neue will so aber auch noch nicht
+	//todo: anderes material, logo wird irgwie nicht angezeigt. vllt auch auslagern dass nur es einmal vorliegt
 
 	graphicBody->setGeometry(demo->geometry);
 	graphicBody->setMaterial(&mat_cvlogo);

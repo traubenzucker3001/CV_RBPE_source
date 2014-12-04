@@ -38,6 +38,8 @@ __device__ __constant__ float d_pRadius;
 __device__ __constant__ float d_duration;
 __device__ __constant__ float d_termVeloc;
 
+__device__ __constant__ glm::vec3 d_gridMinPosVector;
+
 Cuda::Cuda(int bnIN, int pnIN){
 
 	cout << "cuda: cuda constr called!" << endl; //zum test
@@ -101,6 +103,8 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_duration = 0;
 	h_termVeloc = 0;
 
+	h_gridMinPosVector = glm::vec3(0,0,0);
+
 	/*
 	d_voxelS = 0;
 	d_gridS = 0;
@@ -110,6 +114,8 @@ Cuda::Cuda(int bnIN, int pnIN){
 	d_pRadius = 0;
 	d_duration = 0;
 	d_termVeloc = 0;
+
+	d_gridMinPosVector = 0;
 	*/
 }
 
@@ -194,14 +200,20 @@ void Cuda::initCUDA(){
 	h_uVOrot = new glm::quat[bodyNum];
 
 	//konstante vars direkt füllen
-	h_voxelS = UniformGrid::getInstance()->getVoxelSize();
+	float tempVS = UniformGrid::getInstance()->getVoxelSize();
+	h_voxelS = tempVS;
 	h_gridS = UniformGrid::getInstance()->getGridSize();
-	h_worldS = world->getWorldSize();
+	float tempWS = world->getWorldSize();
+	h_worldS = tempWS;
 	h_springC = world->getSpringCoeff();
 	h_dampC = world->getDampCoeff();
 	h_pRadius = world->getPartRadius();
 	h_duration = demo->getDuration();
 	h_termVeloc = demo->getTerminalVeloc();
+
+	h_gridMinPosVector.x = -tempWS - tempVS;
+	h_gridMinPosVector.y = -tempVS;
+	h_gridMinPosVector.z = -tempWS - tempVS;
 
 	//initOpenCLGrid();
 	//init gitter
@@ -239,6 +251,8 @@ void Cuda::initCUDA(){
 	cudaMalloc((void**)&d_pRadius, sizeof(float));
 	cudaMalloc((void**)&d_duration, sizeof(float));
 	cudaMalloc((void**)&d_termVeloc, sizeof(float));
+
+	cudaMalloc((void**)&d_gridMinPosVector, sizeof(glm::vec3));
 	*/
 
 	//cudaMemcpyToSymbol(d_voxelS,&h_voxelS,1 * sizeof(int));
@@ -308,6 +322,8 @@ void Cuda::hostToDevice(){
 	cudaMemcpyToSymbol("d_pRadius", &h_pRadius, sizeof(float));
 	cudaMemcpyToSymbol("d_duration", &h_duration, sizeof(float));
 	cudaMemcpyToSymbol("d_termVeloc", &h_termVeloc, sizeof(float));
+
+	cudaMemcpyToSymbol("d_gridMinPosVector", &h_gridMinPosVector, sizeof(glm::vec3));
 
 	//vbo data
 

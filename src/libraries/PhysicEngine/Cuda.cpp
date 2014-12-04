@@ -356,6 +356,8 @@ void Cuda::stepCUDA(){
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
 	cout << "-test stepCUDA 5-" << endl; //zum debuggen
 	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens, d_duration, d_pRadius);
+	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+	cout << "pos: " << h_rbPos[2].y << endl;	//zum debuggen
 	cout << "-test stepCUDA 6-" << endl; //zum debuggen
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc, d_pRadius);
 	cout << "-test stepCUDA 7-" << endl; //zum debuggen
@@ -386,6 +388,8 @@ void Cuda::stepCUDA(){
 }
 
 void Cuda::updateVOarrays(){
+
+	cout << "update vo arrays!" << endl;	//zum debuggen
 
 	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);

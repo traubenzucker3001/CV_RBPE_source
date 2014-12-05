@@ -20,13 +20,14 @@ int nearHighVal(int a, int b){
 	void resetGrid(int* countGrid, glm::vec4* indexGrid){
 
 		//blocks und threads berechn.
-		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
 		int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
 		cout << "gridsize: " << g << endl;	//zum debuggen
-		int blockSize = 512;	//64, 256
-		int numThreads = (int)fmin(blockSize, g);
-		int numBlocks = nearHighVal(g, numThreads);		//<--- fehler dort, viel zu viele blocks
+		int blockSize = 1024;	//64, 256, 512, 1024
+		//int numThreads = (int)fmin(blockSize, g);
+		int numThreads = blockSize;
+		int numBlocks = nearHighVal(g, numThreads);	
+		//int numBlocks = ((g + 1024 -1) / 1024);
 		cout << "threads: " << numThreads << endl;	//zum debuggen
 		cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?

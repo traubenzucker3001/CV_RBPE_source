@@ -69,8 +69,8 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	h_pGridIndex = 0;
 
-	h_gCountGrid = 0;
-	h_gIndexGrid = 0;
+	h_gridCounters = 0;
+	h_gridCells = 0;
 
 	d_rbMass = NULL;
 	d_rbForce = NULL;
@@ -91,8 +91,8 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	d_pGridIndex = NULL;
 
-	d_gCountGrid = NULL;
-	d_gIndexGrid = NULL;
+	d_gridCounters = NULL;
+	d_gridCells = NULL;
 
 	h_voxelS = 0;
 	h_gridS = 0;
@@ -137,8 +137,8 @@ Cuda::~Cuda(){
 	delete h_pMass;
 	delete h_pGridIndex;
 	delete h_pForce;
-	delete h_gIndexGrid;
-	delete h_gCountGrid;
+	delete h_gridCells;
+	delete h_gridCounters;
 
 	delete h_uVOpos;
 	delete h_uVOrot;
@@ -159,8 +159,8 @@ Cuda::~Cuda(){
 	cudaFree(d_pVeloc);
 	cudaFree(d_pForce);
 	cudaFree(d_pGridIndex);
-	cudaFree(d_gCountGrid);
-	cudaFree(d_gIndexGrid);
+	cudaFree(d_gridCounters);
+	cudaFree(d_gridCells);
 
 }
 
@@ -304,8 +304,8 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_pVeloc, h_pVeloc, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_pForce, h_pForce, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 
-	cudaMemcpy(d_gCountGrid, h_gCountGrid, bodyNum*sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_gIndexGrid, h_gIndexGrid, bodyNum*sizeof(glm::vec4), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_gridCounters, h_gridCounters, bodyNum*sizeof(int), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_gridCells, h_gridCells, bodyNum*sizeof(glm::vec4), cudaMemcpyHostToDevice);
 
 	/*
 	cudaMemcpy(d_voxelS, h_voxelS, sizeof(float), cudaMemcpyHostToDevice);
@@ -337,25 +337,25 @@ void Cuda::initCUDAGrid(){
 	h_pGridIndex = new glm::vec3[partNum];
 
 	int gS = UniformGrid::getInstance()->getGridSize();
-	h_gCountGrid = new int[gS];
-	h_gIndexGrid = new glm::vec4[gS];	//int4?!
+	h_gridCounters = new int[gS];
+	h_gridCells = new glm::vec4[gS];	//int4?!
 
 	//
 	for (int i = 0; i<gS; i++) {
-		h_gIndexGrid[i].x = -1;
-		h_gIndexGrid[i].y = -1;
-		h_gIndexGrid[i].z = -1;
+		h_gridCells[i].x = -1;
+		h_gridCells[i].y = -1;
+		h_gridCells[i].z = -1;
 	}
 
 	for (int i = 0; i<gS; i++) {
-		h_gCountGrid[i] = 0;
+		h_gridCounters[i] = 0;
 	}
 
 	//device arrays
 	cudaMalloc((void**)&d_pGridIndex, bodyNum*sizeof(glm::vec3));
 
-	cudaMalloc((void**)&d_gCountGrid, bodyNum*sizeof(int));
-	cudaMalloc((void**)&d_gIndexGrid, bodyNum*sizeof(glm::vec4));	//int4?!
+	cudaMalloc((void**)&d_gridCounters, bodyNum*sizeof(int));
+	cudaMalloc((void**)&d_gridCells, bodyNum*sizeof(glm::vec4));	//int4?!
 }
 
 void Cuda::stepCUDA(){
@@ -365,11 +365,11 @@ void Cuda::stepCUDA(){
 	//schritte nacheinander aufrufen
 	cout << "-test stepCUDA 1-" << endl; //zum debuggen
 	//int g = UniformGrid::getInstance()->getGridSize();
-	resetGrid(d_gCountGrid, d_gIndexGrid);
+	resetGrid(d_gridCounters, d_gridCells);
 	cout << "-test stepCUDA 2-" << endl; //zum debuggen
-	updateGrid(d_gCountGrid, d_gIndexGrid, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
+	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
 	cout << "-test stepCUDA 3-" << endl; //zum debuggen
-	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gCountGrid, d_gIndexGrid, d_gridS);
+	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gridCounters, d_gridCells, d_gridS);
 	cout << "-test stepCUDA 4-" << endl; //zum debuggen
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
 	cout << "-test stepCUDA 5-" << endl; //zum debuggen

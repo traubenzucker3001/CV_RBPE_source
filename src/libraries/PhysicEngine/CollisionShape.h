@@ -18,10 +18,13 @@ protected:
 	glm::vec3 origin;			/**< origin of the shape = position of RigidBody */
 	float mass;					/**< mass of the shape = mass of RigidBody */
 
-	Particle** bodyParticles;	/**< array with body representing particles */
+	//Particle** bodyParticles;	/**< array with body representing particles */
 	int numOfPart;				/**< number of body representing particles */
 
 public:
+
+	Particle** bodyParticles;	/**< array with body representing particles */
+
 	/** \brief constructor
 	 *
 	 * creates a collision shape instance

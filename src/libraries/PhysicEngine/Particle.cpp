@@ -61,8 +61,9 @@ glm::vec3 Particle::calculateForces(){
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
 	
 				//body oder all particles?!	//müsste alle sein
-				Particle** temp = world->getAllParticles();
-				Particle* neighbors = temp[neighborIndex];
+				//Particle** temp = world->getAllParticles();
+				//Particle* neighbors = temp[neighborIndex];
+				Particle* neighbors = world->allParticles[neighborIndex];
 				glm::vec3 jPos = neighbors->getPosition();
 
 				glm::vec3 distance;

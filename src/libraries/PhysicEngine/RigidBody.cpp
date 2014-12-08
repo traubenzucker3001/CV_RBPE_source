@@ -201,9 +201,10 @@ void RigidBody::updatePartValues(){
 
 	//Update particle velocity	//collshape bodypart.
 	int numP = shape->getNumOfPart();
-	Particle** bodyP = shape->getBodyParticles();
+	//Particle** bodyP = shape->getBodyParticles();
 	for (int i=0; i<numP; i++) {
-		bodyP[i]->updateVeloc(position, velocity, angularVelocity);
+		//bodyP[i]->updateVeloc(position, velocity, angularVelocity);
+		shape->bodyParticles[i]->updateVeloc(position, velocity, angularVelocity);
 	}
 }
 
@@ -221,14 +222,16 @@ void RigidBody::updateMomenta(float duration){
 	glm::vec3 torque = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	int numP = shape->getNumOfPart();
-	Particle** bodyP = shape->getBodyParticles();
+	//Particle** bodyP = shape->getBodyParticles();
 	for (int i=0; i<numP; i++) {
-		glm::vec3 particleForce = bodyP[i]->calculateForces();
+		//glm::vec3 particleForce = bodyP[i]->calculateForces();
+		glm::vec3 particleForce = shape->bodyParticles[i]->calculateForces();
 		force.x += particleForce.x;
 		force.y += particleForce.y;
 		force.z += particleForce.z;
 
-		glm::vec3 particlePos = bodyP[i]->getPosition();
+		//glm::vec3 particlePos = bodyP[i]->getPosition();
+		glm::vec3 particlePos = shape->bodyParticles[i]->getPosition();
 		glm::vec3 relativePos;
 		relativePos.x = particlePos.x - position.x;
 		relativePos.y = particlePos.y - position.y;

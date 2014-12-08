@@ -16,9 +16,9 @@ class UniformGrid : public Singleton<UniformGrid> {
 	friend class Singleton<UniformGrid>;
 
 private:
-	int* indexGrid;			/**< ... */		//?
+	int* gridCells;			/**< ... */	
 
-	int* countGrid; 		/**< ... */
+	int* gridCounters; 		/**< ... */
 	float voxelSize;		/**< voxel size */
 
 	int partPerVoxel = 4;	/**< particles per voxel */		//4 nach gpu gems

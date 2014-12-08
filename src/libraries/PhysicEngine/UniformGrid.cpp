@@ -15,8 +15,8 @@ UniformGrid::UniformGrid(){
 	cout << "grid: grid constr. called!" << endl; //zum test
 
 	voxelSize = 0;
-	indexGrid = 0;
-	countGrid = 0;
+	gridCells = 0;
+	gridCounters = 0;
 	gridLength = 0;
 	gridMinPos = 0;
 	partPerVoxel = 4;
@@ -28,8 +28,8 @@ UniformGrid::UniformGrid(){
 
 UniformGrid::~UniformGrid(){
 
-	delete indexGrid;
-	delete countGrid;
+	delete gridCells;
+	delete gridCounters;
 }
 
 void UniformGrid::createGrid(){
@@ -61,15 +61,15 @@ void UniformGrid::createGrid(){
 	bool gpu = demo->isIsGpu();
 	if (gpu == false){
 
-		indexGrid = new int[gridSize*partPerVoxel];
-		countGrid = new int[gridSize];
+		gridCells = new int[gridSize*partPerVoxel];
+		gridCounters = new int[gridSize];
 	
 		for (int i=0; i<gridSize*partPerVoxel; i++) {
-			indexGrid[i] = -1;
+			gridCells[i] = -1;
 		}
 
 		for (int i=0; i<gridSize; i++) {
-			countGrid[i] = 0;
+			gridCounters[i] = 0;
 		}
 	}
 }
@@ -79,27 +79,29 @@ void UniformGrid::updateGrid(){
 	cout << "grid: update grid!" << endl; //zum test
 
 	int aPartN = world->getAllPartNum();
-	Particle** allPart = world->getAllParticles();
+	//Particle** allPart = world->getAllParticles();
 
 	for (int i=0; i<gridSize*partPerVoxel; i++) {
-		indexGrid[i] = -1;
+		gridCells[i] = -1;
 	}
 	for (int i=0; i<gridSize; i++) {
-		countGrid[i] = 0;
+		gridCounters[i] = 0;
 	}
 
 	for (int i=0; i<aPartN; i++) {
 
-		allPart[i]->updateGridIndex();
-		glm::vec3 gridIndex = allPart[i]->getGridIndex();
+		//allPart[i]->updateGridIndex();
+		world->allParticles[i]->updateGridIndex();
+		//glm::vec3 gridIndex = allPart[i]->getGridIndex();
+		glm::vec3 gridIndex = world->allParticles[i]->getGridIndex();
 
 		if (isValidIndex(gridIndex) == true) {
 			int flatCountGridIndex = (int)(gridIndex[0]*xSteps + gridIndex[1]*ySteps + gridIndex[2]);
 			int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 
-			indexGrid[flatIndexGridIndex + countGrid[flatCountGridIndex]] = i;
+			gridCells[flatIndexGridIndex + gridCounters[flatCountGridIndex]] = i;
 
-			countGrid[flatCountGridIndex]++;
+			gridCounters[flatCountGridIndex]++;
 		}
 	}
 }
@@ -158,10 +160,10 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
 				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 	
-				indices[neighborCount] = indexGrid[flatIndexGridIndex];
-				indices[neighborCount+1] = indexGrid[flatIndexGridIndex+1];
-				indices[neighborCount+2] = indexGrid[flatIndexGridIndex+2];
-				indices[neighborCount+3] = indexGrid[flatIndexGridIndex+3];
+				indices[neighborCount] = gridCells[flatIndexGridIndex];
+				indices[neighborCount + 1] = gridCells[flatIndexGridIndex + 1];
+				indices[neighborCount + 2] = gridCells[flatIndexGridIndex + 2];
+				indices[neighborCount + 3] = gridCells[flatIndexGridIndex + 3];
 		
 				neighborCount += 4;
 				checkIndex.z++;

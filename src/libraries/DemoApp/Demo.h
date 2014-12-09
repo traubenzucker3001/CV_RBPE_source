@@ -61,6 +61,7 @@ public:
 	CVK::Node *sceneRoot;				/**< ... */
 	CVK::Geometry *geometry;			/**< ... */
 	CVK::Plane *plane;					/**< ... */
+	CVK::Material* cubeMaterial;		/**< ... */
 
 	/** \brief constructor
 	*

@@ -61,6 +61,7 @@ void World::stepPhysics(float duration, bool isGPU){
 		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
 			//(*it)->updateMomenta(duration);
+			cout << "i: " << i << endl;	//zum debuggen
 			allBodies[i]->updateMomenta(duration);
 		}
 

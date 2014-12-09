@@ -345,6 +345,7 @@ void Cuda::initCUDAGrid(){
 		h_gridCells[i].x = -1;
 		h_gridCells[i].y = -1;
 		h_gridCells[i].z = -1;
+		h_gridCells[i].w = -1;
 	}
 
 	for (int i = 0; i<gS; i++) {

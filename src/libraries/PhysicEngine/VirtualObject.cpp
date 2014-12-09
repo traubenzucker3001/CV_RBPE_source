@@ -39,11 +39,12 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 
 	graphicBody = new CVK::Node();
 	//material setzten, funktioniert noch nicht ganz
-	CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+	//CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
 	//todo: anderes material, logo wird irgwie nicht angezeigt. vllt auch auslagern dass nur es einmal vorliegt
+	//CVK::Material mat = demo->cubeMaterial;
 
 	graphicBody->setGeometry(demo->geometry);
-	graphicBody->setMaterial(&mat_cvlogo);
+	graphicBody->setMaterial((demo->cubeMaterial));
 
 	//liegen alle aufeinander weil hier pos nicht berücksichtigt wird
 	//graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));

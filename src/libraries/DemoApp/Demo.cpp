@@ -44,6 +44,8 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	geometry = 0;
 	plane = 0;
 	isGPU = igIN;
+	cubeMaterial = 0;
+	//cubeMaterial = CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
 }
 
 Demo::~Demo(){
@@ -71,7 +73,8 @@ void Demo::run(){
 	float temp = pr * 6;
 	geometry = new CVK::Cube(temp);
 	//material setzten, geht aber nur bei node, also in VO
-	
+	cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+
 	//plane für boden
 	plane = new CVK::Plane();
 	CVK::Node* planeNode = new CVK::Node("Plane");
@@ -79,7 +82,7 @@ void Demo::run(){
 	planeNode->setGeometry(plane);
 	planeNode->setMaterial(&mat_brick);
 	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
-	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -2, 0)), glm::vec3(7)), -90.0f, glm::vec3(1, 0, 0)));
+	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(7)), -90.0f, glm::vec3(1, 0, 0)));
 	demo->sceneRoot->addChild(planeNode);
 
 	//zum test
@@ -202,9 +205,9 @@ void Demo::initScene(){
 	for (int i = 0; i < numberRB; i++){
 		float hSize = pR * 3;
 		float x, y, z;
-		x = (bodycount % 2) * 1.9f * hSize;
-		y = bodycount * 3.0f * hSize;
-		z = ((bodycount % 4) / 2) * 1.9f * hSize;
+		x = (bodycount % 2) * 3.9f * hSize;
+		y = bodycount * 6.0f * hSize;
+		z = ((bodycount % 4) / 2) * 3.9f * hSize;
 		glm::vec3 randPos = glm::vec3(x,y,z);
 
 

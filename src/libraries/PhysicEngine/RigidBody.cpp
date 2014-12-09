@@ -226,9 +226,9 @@ void RigidBody::updateMomenta(float duration){
 	for (int i=0; i<numP; i++) {
 		//glm::vec3 particleForce = bodyP[i]->calculateForces();
 		glm::vec3 particleForce = shape->bodyParticles[i]->calculateForces();
-		force.x += particleForce.x;
-		force.y += particleForce.y;
-		force.z += particleForce.z;
+		force.x = force.x + particleForce.x;
+		force.y = force.y - particleForce.y;	//von + auf - gesetzt
+		force.z = force.z + particleForce.z;
 
 		//glm::vec3 particlePos = bodyP[i]->getPosition();
 		glm::vec3 particlePos = shape->bodyParticles[i]->getPosition();
@@ -241,34 +241,36 @@ void RigidBody::updateMomenta(float duration){
 		torque.y = torque.y + relativePos.z * particleForce.x - relativePos.x * particleForce.z;
 		torque.z = torque.z + relativePos.x * particleForce.y - relativePos.y * particleForce.x;
 	}
-
+	cout << "RBforceX: " << force.x << endl;	//zum debuggen
+	cout << "RBforceY: " << force.y << endl;	//zum debuggen
+	cout << "RBforceZ: " << force.z << endl;	//zum debuggen
 	//for (int i=0; i<3; i++) {
-	linearMomentum.x += force.x * duration;
+	linearMomentum.x = linearMomentum.x + force.x * duration;
 	if (linearMomentum.x > 0.0f) {
 		linearMomentum.x = std::min(linearMomentum.x,terminalMom);
 	} else {
 		linearMomentum.x = std::max(linearMomentum.x,-terminalMom);
 	}
 
-	angularMomentum.x += torque.x * duration;
+	angularMomentum.x = angularMomentum.x + torque.x * duration;
 
-	linearMomentum.y += force.y * duration;
+	linearMomentum.y = linearMomentum.y + force.y * duration;
 	if (linearMomentum.y > 0.0f) {
 		linearMomentum.y = std::min(linearMomentum.y,terminalMom);
 	} else {
 		linearMomentum.y = std::max(linearMomentum.y,-terminalMom);
 	}
 
-	angularMomentum.y += torque.y * duration;
+	angularMomentum.y = angularMomentum.y + torque.y * duration;
 
-	linearMomentum.z += force.z * duration;
+	linearMomentum.z = linearMomentum.z + force.z * duration;
 	if (linearMomentum.z > 0.0f) {
 		linearMomentum.z = std::min(linearMomentum.z,terminalMom);
 	} else {
 		linearMomentum.z = std::max(linearMomentum.z,-terminalMom);
 	}
 
-	angularMomentum.z += torque.z * duration;
+	angularMomentum.z = angularMomentum.z + torque.z * duration;
 }
 
 void RigidBody::reset(float newPosition){

@@ -10,7 +10,7 @@ Cuda* cuda;
 
 World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 
-	cout << "world: world constr called!" << endl; //zum test
+	//cout << "world: world constr called!" << endl; //zum test
 
 	worldSize = wsIN;
 	partRadius = prIN;
@@ -36,7 +36,7 @@ World::~World(){
 
 void World::stepPhysics(float duration, bool isGPU){
 
-	cout << "world: step physics!" << endl; //zum test
+	//cout << "world: step physics!" << endl; //zum test
 
 	//unterteilen in cpu und gpu
 

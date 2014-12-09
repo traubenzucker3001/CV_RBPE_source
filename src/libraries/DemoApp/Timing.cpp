@@ -10,7 +10,7 @@ using namespace std;
 
 Timing::Timing(){
 
-	cout << "time: timing constr called!" << endl; //zum test
+	//cout << "time: timing constr called!" << endl; //zum test
 
 	frameNum = 0;
 	fps = 0;
@@ -28,7 +28,7 @@ Timing::~Timing(){
 
 void Timing::startFrame(){
 
-	cout << "time: start frame!" << endl; //zum test
+	//cout << "time: start frame!" << endl; //zum test
 
 	startTime = getTime();
 	frameNum++;
@@ -36,7 +36,7 @@ void Timing::startFrame(){
 
 void Timing::endFrame(){
 
-	cout << "time: end frame!" << endl; //zum test
+	//cout << "time: end frame!" << endl; //zum test
 
 	endTime = getTime();
 	totalTime = totalTime + (endTime - startTime);

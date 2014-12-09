@@ -26,7 +26,7 @@ void resizeCallback(GLFWwindow *window, int w, int h){
 
 Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN){
 
-	cout << "demo: demo constr called!" << endl; //zum test
+	//cout << "demo: demo constr called!" << endl; //zum test
 
 	//physicsWorld = new World(wsIN,prIN,scIN,dcIN,bnIN);
 	world = new World(wsIN, prIN, scIN, dcIN, bnIN);
@@ -57,7 +57,7 @@ Demo::~Demo(){
 
 void Demo::run(){
 
-	cout << "demo: run!" << endl; //zum test
+	//cout << "demo: run!" << endl; //zum test
 
 	// Init GLFW and GLEW
 	glfwInit();
@@ -171,7 +171,7 @@ void Demo::run(){
 
 void Demo::initScene(){
 
-	cout << "demo: initScene called!" << endl; //zum test
+	//cout << "demo: initScene called!" << endl; //zum test
 
 	//gpu benutzt andere create grid
 	if(isGPU == false){
@@ -187,7 +187,7 @@ void Demo::initScene(){
 		-- parts erstellen
 		- CVK::Node erstellen
 	*/
-	cout << "demo: initObjs called!" << endl; //zum test
+	//cout << "demo: initObjs called!" << endl; //zum test
 
 	//...
 	//World::getInstance()->setAllPartNum(0);
@@ -202,14 +202,18 @@ void Demo::initScene(){
 	float pR = world->getPartRadius();
 
 	//glm::vec3 randPose = glm::vec3();
+	
 	for (int i = 0; i < numberRB; i++){
 		float hSize = pR * 3;
+		/*
 		float x, y, z;
-		x = (bodycount % 2) * 3.9f * hSize;
-		y = bodycount * 6.0f * hSize;
-		z = ((bodycount % 4) / 2) * 3.9f * hSize;
+		x = (bodycount % 2) * 3.9f * hSize;			//1.9
+		y = bodycount * 12.0f * hSize;				//3.0
+		z = ((bodycount % 4) / 2) * 3.9f * hSize;	//1.9
 		glm::vec3 randPos = glm::vec3(x,y,z);
-
+		*/
+		glm::vec3 randPos = glm::vec3(0.0, 6.0, 0.0);
+		cout << "vopos: " << randPos.x << ", " << randPos.y << ", " << randPos.z << endl;	//zum debuggen
 
 		float mass = 0.2f;
 	//for (int i = 0; i < numberRB; i++){
@@ -237,7 +241,7 @@ void Demo::initScene(){
 
 void Demo::stepSimulation(float duration){
 
-	cout << "demo: step simulation!" << endl; //zum test
+	//cout << "demo: step simulation!" << endl; //zum test
 
 	world->stepPhysics(duration, isGPU);
 

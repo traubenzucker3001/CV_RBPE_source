@@ -13,19 +13,21 @@ int Particle::indexCount = 0;
 
 Particle::Particle(glm::vec3 posIN, float massIN){
 
-	cout << "part: part constr called!" << endl; //zum test
+	//cout << "part: part constr called!" << endl; //zum test
 
 	position = posIN;
+	/*
 	cout << "-constr pos: " << position.x << endl; //zum debuggen
 	cout << "-constr pos: " << position.y << endl; //zum debuggen
 	cout << "-constr pos: " << position.z << endl; //zum debuggen
+	*/
 	mass = massIN;
 	velocity = glm::vec3(0,0,0);
 	force = glm::vec3(0,0,0);
 
 	gridIndex = glm::vec3(0,0,0);
 	partIndex = 0;
-	cout << "-mass: " << mass << endl; //zum debuggen
+	//cout << "-mass: " << mass << endl; //zum debuggen
 }
 
 Particle::~Particle(){
@@ -35,11 +37,11 @@ Particle::~Particle(){
 
 glm::vec3 Particle::calculateForces(){
 
-	cout << "part: calcForces called!" << endl; //zum test
+	//cout << "part: calcForces called!" << endl; //zum test
 
 	//mehrere schritte zusammenfassen
 	force = glm::vec3(0,0,0);
-
+	//cout << "1pFy: " << force.y << endl;	//zum debuggen
 	//-----part1-----
 	//calculateCollisionForces();		//war auskommentiert
 
@@ -50,6 +52,7 @@ glm::vec3 Particle::calculateForces(){
 
 	//-----part2-----
 	//calculateCollisionForcesWithGrid();
+	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
 	if (UniformGrid::getInstance()->isValidIndex(gridIndex) == true) {
 
 		int* neighborParticleIndices = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
@@ -94,6 +97,7 @@ glm::vec3 Particle::calculateForces(){
 			}
 		}
 		delete neighborParticleIndices;
+		//cout << "2pFy: " << force.y << endl;	//zum debuggen
 	}
 
 	//-----part3-----
@@ -102,24 +106,29 @@ glm::vec3 Particle::calculateForces(){
 
 	// Ground collision
 	if (position.y-partR < 0.0f) {
+		//cout << "groundcoll" << endl;	//zum debuggen
 		collisionOccured = true;
 		force.y = force.y + springC*(partR - position.y);
 	}
 
 	// X-axis Wall Collision
 	if (position.x-partR < -worldS) {
+		cout << "xwallcoll" << endl;	//zum debuggen
 		collisionOccured = true;
 		force.x = force.x + springC*(-worldS - position.x + partR);
 	} else if (position.x+partR > worldS) {
+		cout << "xwallcoll" << endl;	//zum debuggen
 		collisionOccured = true;
 		force.x = force.x + springC*(worldS - position.x - partR);
 	}
 
 	// Z-axis Wall Collision
 	if (position.z-partR < -worldS) {
+		cout << "zwallcoll" << endl;	//zum debuggen
 		collisionOccured = true;
 		force.z = force.z + springC*(-worldS - position.z + partR);
 	} else if (position.z+partR > worldS) {
+		cout << "xwallcoll" << endl;	//zum debuggen
 		collisionOccured = true;
 		force.z = force.z + springC*(worldS - position.z - partR);
 	}
@@ -130,13 +139,13 @@ glm::vec3 Particle::calculateForces(){
 		force.y = force.y - dampC*velocity.y;
 		force.z = force.z - dampC*velocity.z;
 	}
-
+	//cout << "3pFy: " << force.y << endl;	//zum debuggen
 	return force;
 }
 
 void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::vec3 bodyAngularVelocity){
 
-	cout << "part: updateVeloc called!" << endl; //zum test
+	//cout << "part: updateVeloc called!" << endl; //zum test
 
 	velocity = glm::vec3(0,0,0);
 
@@ -171,7 +180,7 @@ void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::
 
 void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bodyPos){
 
-	cout << "part: appRot called!" << endl; //zum test
+	//cout << "part: appRot called!" << endl; //zum test
 
 	position.x = relatPos.x*rotatMatrix[0].x +
 			relatPos.y*rotatMatrix[0].y +
@@ -188,11 +197,12 @@ void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bod
 	position.x = position.x + bodyPos.x;
 	position.y = position.y + bodyPos.y;
 	position.z = position.z + bodyPos.z;
+	//cout << "partpos: " << position.x << ", " << position.x << ", " << position.x << endl;	//zum debuggen
 }
 
 void Particle::populateArray(){
 
-	cout << "part: popuArr called!" << endl; //zum test
+	//cout << "part: popuArr called!" << endl; //zum test
 
 	partIndex = indexCount;
 
@@ -210,19 +220,20 @@ void Particle::reset(float* oldBodyPos, float* newBodyPos){
 
 void Particle::updateGridIndex(){
 
-	cout << "part: update GridIndex called!" << endl; //zum test
+	//cout << "part: update GridIndex called!" << endl; //zum test
 
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
 	float vS = UniformGrid::getInstance()->getVoxelSize();
 	//int cast benötigt?!	//(int)
 	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
-	gridIndex.y = ((position.y - vS)/vS);
+	//gridIndex.y = ((position.y - vS)/vS);
+	gridIndex.y = ((position.y - gmp) / vS);
 	gridIndex.z = ((position.z - gmp)/vS);
 }
 
 void Particle::updateCUDArray(int particleIndex){
 
-	cout << "part: updateCudArr called!" << endl; //zum test
+	//cout << "part: updateCudArr called!" << endl; //zum test
 
 	int i = particleIndex;
 	cuda->h_pMass[i] = mass;

@@ -42,7 +42,7 @@ __device__ __constant__ glm::vec3 d_gridMinPosVector;
 
 Cuda::Cuda(int bnIN, int pnIN){
 
-	cout << "cuda: cuda constr called!" << endl; //zum test
+	//cout << "cuda: cuda constr called!" << endl; //zum test
 
 	bodyNum = bnIN;
 	partNum = pnIN;
@@ -166,7 +166,7 @@ Cuda::~Cuda(){
 
 void Cuda::initCUDA(){
 
-	cout << "cuda: initCuda called!" << endl; //zum test
+	//cout << "cuda: initCuda called!" << endl; //zum test
 
 	//...
 
@@ -268,7 +268,7 @@ void Cuda::initCUDA(){
 
 void Cuda::updateHostArrays(){
 
-	cout << "cuda: updateHostArr called!" << endl; //zum test
+	//cout << "cuda: updateHostArr called!" << endl; //zum test
 
 	//RigidBody** allB = World::getInstance()->getAllBodies();
 	//Particle** allP = World::getInstance()->getAllParticles();
@@ -284,7 +284,7 @@ void Cuda::updateHostArrays(){
 
 void Cuda::hostToDevice(){
 
-	cout << "cuda: hostTOdevice called!" << endl; //zum test
+	//cout << "cuda: hostTOdevice called!" << endl; //zum test
 
 	//cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbMass, h_rbMass, bodyNum*sizeof(float), cudaMemcpyHostToDevice);
@@ -331,7 +331,7 @@ void Cuda::hostToDevice(){
 
 void Cuda::initCUDAGrid(){
 
-	cout << "cuda: initGrid called!" << endl; //zum test
+	//cout << "cuda: initGrid called!" << endl; //zum test
 
 	//host arrays
 	h_pGridIndex = new glm::vec3[partNum];
@@ -361,7 +361,7 @@ void Cuda::initCUDAGrid(){
 
 void Cuda::stepCUDA(){
 
-	cout << "cuda: stepCUDA!" << endl; //zum test
+	//cout << "cuda: stepCUDA!" << endl; //zum test
 
 	//schritte nacheinander aufrufen
 	cout << "-test stepCUDA 1-" << endl; //zum debuggen

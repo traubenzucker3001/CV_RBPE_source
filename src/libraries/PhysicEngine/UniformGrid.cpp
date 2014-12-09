@@ -12,7 +12,7 @@ extern Demo* demo;
 
 UniformGrid::UniformGrid(){
 	
-	cout << "grid: grid constr. called!" << endl; //zum test
+	//cout << "grid: grid constr. called!" << endl; //zum test
 
 	voxelSize = 0;
 	gridCells = 0;
@@ -34,7 +34,7 @@ UniformGrid::~UniformGrid(){
 
 void UniformGrid::createGrid(){
 
-	cout << "grid: create grid!" << endl; //zum test
+	//cout << "grid: create grid!" << endl; //zum test
 
 	float worldS = world->getWorldSize();
 	float partR = world->getPartRadius();
@@ -76,7 +76,7 @@ void UniformGrid::createGrid(){
 
 void UniformGrid::updateGrid(){
 
-	cout << "grid: update grid!" << endl; //zum test
+	//cout << "grid: update grid!" << endl; //zum test
 
 	int aPartN = world->getAllPartNum();
 	//Particle** allPart = world->getAllParticles();
@@ -96,7 +96,7 @@ void UniformGrid::updateGrid(){
 		glm::vec3 gridIndex = world->allParticles[i]->getGridIndex();
 
 		if (isValidIndex(gridIndex) == true) {
-			int flatCountGridIndex = (int)(gridIndex[0]*xSteps + gridIndex[1]*ySteps + gridIndex[2]);
+			int flatCountGridIndex = (int)(gridIndex.x*xSteps + gridIndex.y*ySteps + gridIndex.z);
 			int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 
 			gridCells[flatIndexGridIndex + gridCounters[flatCountGridIndex]] = i;
@@ -108,7 +108,7 @@ void UniformGrid::updateGrid(){
 
 bool UniformGrid::isValidIndex(glm::vec3 gridIndex){
 
-	cout << "grid: valid grid index?!" << endl; //zum test
+	//cout << "grid: valid grid index?!" << endl; //zum test
 
 	bool valid = true;
 
@@ -126,7 +126,7 @@ bool UniformGrid::isValidIndex(glm::vec3 gridIndex){
 
 int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 
-	cout << "grid: get neighbors!" << endl; //zum test
+	//cout << "grid: get neighbors!" << endl; //zum test
 
 	//If you're at the border, go 1 cell inwards to prevent going out of bounds
 	if (gridIndex.x == 0) {

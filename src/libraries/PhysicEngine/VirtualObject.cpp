@@ -27,7 +27,7 @@ extern Cuda* cuda;
 
 VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN, int idIN){
 
-	cout << "vo: vo constr called!" << endl; //zum test
+	//	cout << "vo: vo constr called!" << endl; //zum test
 
 	id = idIN;
 	position = posIN;
@@ -61,7 +61,7 @@ VirtualObject::~VirtualObject(){
 //über cuda - opengl austausch
 void VirtualObject::updateCPU(){
 
-	cout << "vo: update cpu!" << endl; //zum test
+	//cout << "vo: update cpu!" << endl; //zum test
 
 	//update modelmatrix with new rb values
 	//RigidBody *tempB = world->allBodies[id];		
@@ -85,7 +85,7 @@ void VirtualObject::updateCPU(){
 
 void VirtualObject::updateGPU(){
 
-	cout << "vo: update gpu!" << endl; //zum test
+	//cout << "vo: update gpu!" << endl; //zum test
 
 	//werte von gpu beschaffen
 	glm::vec3 tempP = cuda->h_uVOpos[id];

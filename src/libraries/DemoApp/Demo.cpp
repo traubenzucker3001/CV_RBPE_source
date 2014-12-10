@@ -82,7 +82,7 @@ void Demo::run(){
 	demo->sceneRoot->addChild(planeNode);
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
-	camera->setRadius( 20);
+	camera->setRadius( 30);
 	camera->setNearFar( 1.0f, 100.0f);
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
@@ -186,7 +186,7 @@ void Demo::initScene(){
 
 	for (int i = 0; i<numberRB; i++) {
 		world->allBodies[i]->shape->populatePartArray();
-	}
+	}	//TODO alle part pos ausgeben lassen
 }
 
 void Demo::stepSimulation(float duration){

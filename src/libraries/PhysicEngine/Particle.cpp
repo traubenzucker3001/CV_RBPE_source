@@ -35,7 +35,7 @@ Particle::~Particle(){
 	//no pointers to clear!
 }
 
-glm::vec3 Particle::calculateForces(){
+glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel reagieren nicht aufeinander, nachbarfindung oder kraft berechnung nicht korrekt
 
 	//cout << "part: calcForces called!" << endl; //zum test
 
@@ -67,8 +67,11 @@ glm::vec3 Particle::calculateForces(){
 				//glm::vec3 jPos = neighbors->getPosition();
 				glm::vec3 jPos = world->allParticles[neighborIndex]->position;
 
+				/*
 				cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 				cout << "jPos: " << jPos.x << ", " << jPos.y << ", " << jPos.z << endl;	//zum debuggen
+				*/
+
 				glm::vec3 distance;
 				distance.x = jPos.x - position.x;
 				distance.y = jPos.y - position.y;

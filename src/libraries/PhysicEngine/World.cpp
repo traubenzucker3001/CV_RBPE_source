@@ -20,7 +20,7 @@ World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 	allBodyNum = bNum;
 	allBodies = new RigidBody*[allBodyNum];
 	allPartNum = bNum * 27;
-	allParticles = new Particle*[allPartNum];
+	allParticles = new Particle*[allPartNum];		//mall alle position ausgeben lassen
 	grid = new UniformGrid();
 	//cudaStruct = new Cuda(allBodyNum, allPartNum);
 	cuda = new Cuda(allBodyNum, allPartNum);

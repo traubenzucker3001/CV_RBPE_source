@@ -4,10 +4,10 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-#define GLM_FORCE_CUDA
-#include <glm\glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
+//#define GLM_FORCE_CUDA
+//#include <glm\glm.hpp>
+//#include <glm/gtc/quaternion.hpp>
+//#include <glm/gtx/quaternion.hpp>
 #include <stdio.h>
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
@@ -25,8 +25,8 @@ __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
 		return;
 	}
 	if (i < gs){
-		//countGrid[i] = 0;
-		//indexGrid[i].x = -1;
+		countGrid[i] = 0;
+		//indexGrid[i].x = -1;	//als int
 		//indexGrid[i].y = -1;
 		//indexGrid[i].z = -1;
 		//indexGrid[i].w = -1;

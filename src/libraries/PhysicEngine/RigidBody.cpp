@@ -59,7 +59,7 @@ RigidBody::~RigidBody(){
 
 void RigidBody::iterate(float duration){
 
-	cout << "body: iterate!" << endl; //zum test
+	//cout << "body: iterate!" << endl; //zum test
 
 	updateInverseInertiaTensor();
 
@@ -75,7 +75,7 @@ void RigidBody::iterate(float duration){
 	position.z = position.z + velocity.z*duration;
 
 	//performAngularStep(delta);
-	{ //update angular velocity		//was das fürn konstrukt?
+	{ //update angular velocity	
 		float a = inverseInertiaTensor[0].x;
 		float b = inverseInertiaTensor[0].y;
 		float c = inverseInertiaTensor[0].z;
@@ -122,7 +122,7 @@ void RigidBody::iterate(float duration){
 		rotationQuat.z = ds*vz + s*dvz + dvx*vy - dvy*vx;
 		//cout << "3bodypos: " << position.x << ", " << position.x << ", " << position.x << endl;	//zum debuggen
 	}
-	cout << "3bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
+	//cout << "3bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 }
 
 void RigidBody::updateRotMatrix(){
@@ -196,25 +196,26 @@ void RigidBody::updateInverseInertiaTensor(){
 void RigidBody::updatePartValues(){
 
 	//cout << "body: update part values!" << endl; //zum test
-	cout << "bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
+	//cout << "bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
+	shape->setOrigin(position);		//origin von shape durch neue rbpos aktualisieren
 	updateRotMatrix();
 	//runter in collshape greifen
-	shape->applyRotToPart(rotationMat, position);
+	shape->applyRotToPart(rotationMat);
 
 	//Update particle velocity	//collshape bodypart.
 	int numP = shape->getNumOfPart();
-	//Particle** bodyP = shape->getBodyParticles();
+
 	for (int i=0; i<numP; i++) {
-		//bodyP[i]->updateVeloc(position, velocity, angularVelocity);
+
 		shape->bodyParticles[i]->updateVeloc(position, velocity, angularVelocity);
 	}
 }
 
 void RigidBody::updateMomenta(float duration){
 
-	cout << "body: updateMom called!" << endl; //zum test
+	//cout << "body: updateMom called!" << endl; //zum test
 
-	//runter in collshape greifen#
+	//runter in collshape greifen
 	force = glm::vec3 (0.0f, 0.0f, 0.0f); //reset forces
 
 	//gravity klasse nicht nötig
@@ -224,15 +225,13 @@ void RigidBody::updateMomenta(float duration){
 	glm::vec3 torque = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	int numP = shape->getNumOfPart();
-	//Particle** bodyP = shape->getBodyParticles();
 	for (int i=0; i<numP; i++) {
-		//glm::vec3 particleForce = bodyP[i]->calculateForces();
+
 		glm::vec3 particleForce = shape->bodyParticles[i]->calculateForces();
 		force.x = force.x + particleForce.x;
 		force.y = force.y + particleForce.y;	//von + auf - gesetzt
 		force.z = force.z + particleForce.z;
 		//cout << "4rbFy: " << force.y << endl;	//zum debuggen
-		//glm::vec3 particlePos = bodyP[i]->getPosition();
 		glm::vec3 particlePos = shape->bodyParticles[i]->getPosition();
 		glm::vec3 relativePos;
 		relativePos.x = particlePos.x - position.x;
@@ -243,14 +242,15 @@ void RigidBody::updateMomenta(float duration){
 		torque.y = torque.y + relativePos.z * particleForce.x - relativePos.x * particleForce.z;
 		torque.z = torque.z + relativePos.x * particleForce.y - relativePos.y * particleForce.x;
 	}
-	cout << "RBforceX: " << force.x << endl;	//zum debuggen
-	cout << "RBforceY: " << force.y << endl;	//zum debuggen
-	cout << "RBforceZ: " << force.z << endl;	//zum debuggen
+	//cout << "RBforceX: " << force.x << endl;	//zum debuggen
+	//cout << "RBforceY: " << force.y << endl;	//zum debuggen
+	//cout << "RBforceZ: " << force.z << endl;	//zum debuggen
 	//for (int i=0; i<3; i++) {
 	linearMomentum.x = linearMomentum.x + force.x * duration;
 	if (linearMomentum.x > 0.0f) {
 		linearMomentum.x = std::min(linearMomentum.x,terminalMom);
-	} else {
+	} 
+	else {
 		linearMomentum.x = std::max(linearMomentum.x,-terminalMom);
 	}
 
@@ -273,7 +273,7 @@ void RigidBody::updateMomenta(float duration){
 	}
 
 	angularMomentum.z = angularMomentum.z + torque.z * duration;
-	cout << "2bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
+	//cout << "2bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 }
 
 void RigidBody::reset(float newPosition){

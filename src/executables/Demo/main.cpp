@@ -21,7 +21,7 @@ bool iGPU = false;			//false für cpu, true für gpu
 float worldSize = 15.0f;	//Half length of world
 float partRadius = 0.20f;
 float boxHSize = partRadius * 3;
-int bodyNumber = 1;
+int bodyNumber = 3;
 
 int main() {
 

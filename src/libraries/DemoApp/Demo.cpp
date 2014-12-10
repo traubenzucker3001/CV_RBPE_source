@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "Demo.h"
-//#include "Scene.h"
 #include "PhysicEngine\UniformGrid.h"
 #include "PhysicEngine\Cuda.h"
 #include "PhysicEngine\World.h"
@@ -28,7 +27,6 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 
 	//cout << "demo: demo constr called!" << endl; //zum test
 
-	//physicsWorld = new World(wsIN,prIN,scIN,dcIN,bnIN);
 	world = new World(wsIN, prIN, scIN, dcIN, bnIN);
 	virtObjNum = 0;
 	time = new Timing();
@@ -40,12 +38,10 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	sceneRoot = new CVK::Node("Root");
 
 	float temp = prIN * 6;
-	//geometry = new CVK::Cube(temp);
 	geometry = 0;
 	plane = 0;
 	isGPU = igIN;
 	cubeMaterial = 0;
-	//cubeMaterial = CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
 }
 
 Demo::~Demo(){
@@ -82,16 +78,8 @@ void Demo::run(){
 	planeNode->setGeometry(plane);
 	planeNode->setMaterial(&mat_brick);
 	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
-	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(7)), -90.0f, glm::vec3(1, 0, 0)));
+	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.4, 0)), glm::vec3(7)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
 	demo->sceneRoot->addChild(planeNode);
-
-	//zum test
-	/*
-	CVK::Teapot *teapot = new CVK::Teapot;
-	CVK::Material mat_cvlogo((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
-	sceneRoot->setGeometry(teapot);
-	sceneRoot->setMaterial(&mat_cvlogo); 
-	*/
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
 	camera->setRadius( 20);
@@ -111,9 +99,6 @@ void Demo::run(){
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//hierarchie aufbau
-
-
 	CVK::State::getInstance()->setCamera( camera);
 
 	//define light
@@ -131,7 +116,6 @@ void Demo::run(){
 		cuda->initCUDA();
 	}
 
-	//schauen wie am besten machen mit virtobjs und step simulation
 	while( !glfwWindowShouldClose(window)){
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -146,10 +130,6 @@ void Demo::run(){
 		//update shader and render
 		phongShader.update();
 
-		//unterschiedlich bei cpu o. gpu ausführung
-		//vorher positionen und orientierung von VOs aktualisieren
-		//obj rendern
-		//earthNode->render();
 		updateVOs();
 		sceneRoot->render();
 
@@ -178,45 +158,28 @@ void Demo::initScene(){
 		UniformGrid::getInstance()->createGrid();
 	}
 
-	//obj initialisieren
-	//initObjs();
-
-
-	/*	VOs erstellen
-		- RB erstellen
-		-- parts erstellen
-		- CVK::Node erstellen
-	*/
 	//cout << "demo: initObjs called!" << endl; //zum test
-
-	//...
-	//World::getInstance()->setAllPartNum(0);
-	//vertexCount = 0;
 
 	int numberRB = world->getAllBodyNum();
 	int numberP = world->getAllPartNum();
-	//int numberRB = World::getInstance()->allBodyNum;
-	//int numberP = World::getInstance()->allPartNum;
 
 	//VOs anlegen u. in vector listen
 	float pR = world->getPartRadius();
-
-	//glm::vec3 randPose = glm::vec3();
 	
 	for (int i = 0; i < numberRB; i++){
 		float hSize = pR * 3;
-		/*
+		
 		float x, y, z;
-		x = (bodycount % 2) * 3.9f * hSize;			//1.9
-		y = bodycount * 12.0f * hSize;				//3.0
-		z = ((bodycount % 4) / 2) * 3.9f * hSize;	//1.9
+		x = (bodycount % 2) * 1.9f * hSize;			//1.9
+		y = bodycount * 6.0f * hSize;				//3.0
+		z = ((bodycount % 4) / 2) * 1.9f * hSize;	//1.9
 		glm::vec3 randPos = glm::vec3(x,y,z);
-		*/
-		glm::vec3 randPos = glm::vec3(0.0, 6.0, 0.0);
-		cout << "vopos: " << randPos.x << ", " << randPos.y << ", " << randPos.z << endl;	//zum debuggen
+		
+		//glm::vec3 randPos = glm::vec3(0.0, 6.0, 0.0);
+		//cout << "vopos: " << randPos.x << ", " << randPos.y << ", " << randPos.z << endl;	//zum debuggen
 
 		float mass = 0.2f;
-	//for (int i = 0; i < numberRB; i++){
+
 		VirtualObject *temp = new VirtualObject(randPos,i,mass,false,false,hSize,i);
 		virtualObjs.push_back(temp);
 	}
@@ -224,19 +187,6 @@ void Demo::initScene(){
 	for (int i = 0; i<numberRB; i++) {
 		world->allBodies[i]->shape->populatePartArray();
 	}
-
-	//----------anhang
-	//boxen erstellen
-	/*
-	for (int i = 0; i<numberRB; i++) {
-		World::getInstance()->allBodies[i] = new Box();
-		numberP += 27;
-		vertexCount += 24;
-	}
-	//todo: array in entsprechender größe erstellen, mit in world konstr. packen!!! zugriff auf array ändern?! public?!
-	particles = new Particle*[numberP];
-
-	*/
 }
 
 void Demo::stepSimulation(float duration){

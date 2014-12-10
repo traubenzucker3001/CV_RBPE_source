@@ -39,7 +39,6 @@ void World::stepPhysics(float duration, bool isGPU){
 	//cout << "world: step physics!" << endl; //zum test
 
 	//unterteilen in cpu und gpu
-
 	//ausführung auf gpu
 	if(isGPU == true){
 		cuda->stepCUDA();
@@ -48,9 +47,8 @@ void World::stepPhysics(float duration, bool isGPU){
 	else{
 
 		//update part. values
-		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
-			//(*it)->updatePartValues();
+
 			allBodies[i]->updatePartValues();
 		}	
 
@@ -58,21 +56,16 @@ void World::stepPhysics(float duration, bool isGPU){
 		UniformGrid::getInstance()->updateGrid();
 
 		//update momenta
-		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
-			//(*it)->updateMomenta(duration);
-			cout << "i: " << i << endl;	//zum debuggen
+
+			//cout << "i: " << i << endl;	//zum debuggen
 			allBodies[i]->updateMomenta(duration);
 		}
 
 		//iterate
-		//for(std::vector<RigidBody*>::iterator it = allBodies.begin(); it != allBodies.end(); ++it){
 		for (int i = 0; i < allBodyNum; i++){
-			//(*it)->iterate(duration);	
+
 			allBodies[i]->iterate(duration);
 		}
-
-		//VOs updaten
-		//in demo gepackt
 	}
 }

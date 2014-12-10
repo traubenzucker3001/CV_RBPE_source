@@ -146,17 +146,18 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 	}
 
 	glm::vec3 checkIndex = glm::vec3(gridIndex.x-1,gridIndex.y-1,gridIndex.z-1);
+	//glm::vec3 checkIndex = glm::vec3(gridIndex.x, gridIndex.y, gridIndex.z );
 
 	int neighborCount = 0;
 	int* indices = new int[27*partPerVoxel];
 
-	for (int x=0; x<3; x++) {
+	for (int ix=0; ix<3; ix++) {
 		checkIndex.y = gridIndex.y - 1; //reset y index before y-loop
 
-		for (int y=0; y<3; y++) {
+		for (int iy=0; iy<3; iy++) {
 			checkIndex.z = gridIndex.z-1; //reset z index before z-loop
 
-			for (int z=0; z<3; z++) {
+			for (int iz=0; iz<3; iz++) {
 				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
 				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 	
@@ -165,7 +166,7 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){
 				indices[neighborCount + 2] = gridCells[flatIndexGridIndex + 2];
 				indices[neighborCount + 3] = gridCells[flatIndexGridIndex + 3];
 		
-				neighborCount += 4;
+				neighborCount = neighborCount + 4;
 				checkIndex.z++;
 			}
 			checkIndex.y++;

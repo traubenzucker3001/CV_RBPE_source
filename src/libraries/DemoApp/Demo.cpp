@@ -78,12 +78,12 @@ void Demo::run(){
 	planeNode->setGeometry(plane);
 	planeNode->setMaterial(&mat_brick);
 	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
-	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.4, 0)), glm::vec3(7)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
+	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.6, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
 	demo->sceneRoot->addChild(planeNode);
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
 	camera->setRadius( 20);
-	camera->setNearFar( 1.0f, 30.0f);
+	camera->setNearFar( 1.0f, 100.0f);
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
 

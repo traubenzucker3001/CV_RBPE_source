@@ -63,8 +63,10 @@ glm::vec3 Particle::calculateForces(){
 			int neighborIndex = neighborParticleIndices[i];
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
 	
-				Particle* neighbors = world->allParticles[neighborIndex];
-				glm::vec3 jPos = neighbors->getPosition();
+				//Particle* neighbors = world->allParticles[neighborIndex];
+				//glm::vec3 jPos = neighbors->getPosition();
+				glm::vec3 jPos = world->allParticles[neighborIndex]->position;
+
 				cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 				cout << "jPos: " << jPos.x << ", " << jPos.y << ", " << jPos.z << endl;	//zum debuggen
 				glm::vec3 distance;
@@ -79,7 +81,9 @@ glm::vec3 Particle::calculateForces(){
 					force.y = force.y - springC*(2.0f*partR - absDistance)*(distance.y/absDistance);
 					force.z = force.z - springC*(2.0f*partR - absDistance)*(distance.z/absDistance);
 
-					glm::vec3 jVel = neighbors->getVelocity();
+					//glm::vec3 jVel = neighbors->getVelocity();
+					glm::vec3 jVel = world->allParticles[neighborIndex]->velocity;
+
 					glm::vec3 relativeVelocity;
 					relativeVelocity.x = jVel.x - velocity.x;
 					relativeVelocity.y = jVel.y - velocity.y;
@@ -220,8 +224,8 @@ void Particle::updateGridIndex(){
 	//cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
 	gridIndex.y = ((position.y - vS)/vS);
-	gridIndex.y = ((position.y - gmp) / vS);
-	//gridIndex.z = ((position.z - gmp)/vS);
+	//gridIndex.y = ((position.y - gmp) / vS);
+	gridIndex.z = ((position.z - gmp)/vS);
 	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
 }
 

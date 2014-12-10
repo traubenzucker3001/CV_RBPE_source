@@ -225,10 +225,12 @@ void Particle::updateGridIndex(){
 	float gmp = UniformGrid::getInstance()->getGridMinPos();
 	float vS = UniformGrid::getInstance()->getVoxelSize();
 	//int cast benötigt?!	//(int)
+	cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
 	//gridIndex.y = ((position.y - vS)/vS);
 	gridIndex.y = ((position.y - gmp) / vS);
 	gridIndex.z = ((position.z - gmp)/vS);
+	cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
 }
 
 void Particle::updateCUDArray(int particleIndex){

@@ -195,11 +195,11 @@ void RigidBody::updateInverseInertiaTensor(){
 
 void RigidBody::updatePartValues(){
 
-	cout << "body: update part values!" << endl; //zum test
+	//cout << "body: update part values!" << endl; //zum test
 	cout << "bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 	updateRotMatrix();
 	//runter in collshape greifen
-	shape->applyRotToPart(rotationMat);
+	shape->applyRotToPart(rotationMat, position);
 
 	//Update particle velocity	//collshape bodypart.
 	int numP = shape->getNumOfPart();

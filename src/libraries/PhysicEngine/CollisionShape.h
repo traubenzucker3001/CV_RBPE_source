@@ -53,7 +53,7 @@ public:
 	 * @param rotMatrix rotation matrix
 	 * @return void
 	 */
-	virtual void applyRotToPart(glm::mat3 rotMatrix) = 0;	//von wo aufgerufen vorher updateRotationMatrix();
+	virtual void applyRotToPart(glm::mat3 rotMatrix, glm::vec3 bodypos) = 0;	//von wo aufgerufen vorher updateRotationMatrix();
 
 	/** \brief fill particle array
 	 *

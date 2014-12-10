@@ -38,7 +38,7 @@ void Box::calcParticles(){
 	}
 }
 
-void Box::applyRotToPart(glm::mat3 rotMatrix){
+void Box::applyRotToPart(glm::mat3 rotMatrix, glm::vec3 bodypos){
 
 	//cout << "box: applyRoToPart called!" << endl; //zum test
 
@@ -53,7 +53,7 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 				float z = space*l;
 				//float originalRelativePos[3] = {x, y, z};
 				glm::vec3 relatPos = glm::vec3(x,y,z);
-				bodyParticles[i]->applyRot(rotMatrix, relatPos, origin);
+				bodyParticles[i]->applyRot(rotMatrix, relatPos, bodypos);
 				i++;
 			}
 		}

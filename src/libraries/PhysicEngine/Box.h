@@ -48,7 +48,7 @@ public:
 	 * @param rotMatrix rotation matrix
 	 * @return void
 	 */
-	void applyRotToPart(glm::mat3 rotMatrix);
+	void applyRotToPart(glm::mat3 rotMatrix, glm::vec3 bodypos);
 
 	/** \brief fill particle array
 	 *

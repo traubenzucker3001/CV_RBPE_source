@@ -171,12 +171,26 @@ void Demo::initScene(){
 		
 		float x, y, z;
 		x = (bodycount % 2) * 1.9f * hSize;			//1.9
-		y = bodycount * 6.0f * hSize;				//3.0
+		y = bodycount * 3.0f * hSize;				//3.0
 		z = ((bodycount % 4) / 2) * 1.9f * hSize;	//1.9
-		glm::vec3 randPos = glm::vec3(x,y,z);
+		//glm::vec3 randPos = glm::vec3(x,y,z);
 		
-		//glm::vec3 randPos = glm::vec3(0.0, 6.0, 0.0);
+		
+		glm::vec3 randPos;
+		glm::vec3 randPos1 = glm::vec3(0.0, 6.0, 0.0);
+		glm::vec3 randPos2 = glm::vec3(0.0, 6.0, 0.0);
+		glm::vec3 randPos3 = glm::vec3(0.0, 6.0, 0.0);
 		//cout << "vopos: " << randPos.x << ", " << randPos.y << ", " << randPos.z << endl;	//zum debuggen
+		if (i == 0){
+			randPos = randPos1;
+		}
+		if (i == 1){
+			randPos = randPos2;
+		}
+		if (i == 2){
+			randPos = randPos3;
+		}
+		
 
 		float mass = 0.2f;
 
@@ -186,7 +200,17 @@ void Demo::initScene(){
 
 	for (int i = 0; i<numberRB; i++) {
 		world->allBodies[i]->shape->populatePartArray();
-	}	//TODO alle part pos ausgeben lassen
+	}
+	//TODO alle part pos ausgeben lassen
+	/*
+	int temp = world->getAllPartNum();
+	for (int i = 0; i < temp; i++){
+		glm::vec3 pos = world->allParticles[i]->getPosition();
+		//glm::vec3 grid = world->allParticles[i]->getGridIndex();
+		cout << "partpos " << i << ": " << pos.x << ", " << pos.y << ", " << pos.z << endl;	//zum debuggen
+		//cout << "partgrid " << i << ": " << grid.x << ", " << grid.y << ", " << grid.z << endl;	//zum debuggen
+	}
+	*/
 }
 
 void Demo::stepSimulation(float duration){

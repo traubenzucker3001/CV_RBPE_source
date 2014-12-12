@@ -1,9 +1,14 @@
 //vectorAdd aus CUDA Samples
+#define GLM_FORCE_CUDA
+#include <glm\glm.hpp>
 
 #include <stdio.h>
 
 // For the CUDA runtime routines (prefixed with "cuda_")
+#include <cuda.h>
 #include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+
 
 /**
  * CUDA Kernel Device code
@@ -11,8 +16,9 @@
  * Computes the vector addition of A and B into C. The 3 vectors have the same
  * number of elements numElements.
  */
-__global__ void
-vectorAdd(const float *A, const float *B, float *C, int numElements)
+//__global__ void
+//vectorAdd(const float *A, const float *B, float *C, int numElements)
+__global__ void vectorAdd(glm::vec3 *A, glm::vec3 *B, glm::vec3 *C, int numElements)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -20,6 +26,9 @@ vectorAdd(const float *A, const float *B, float *C, int numElements)
     {
         C[i] = A[i] + B[i];
     }
+	C.x = A[i] + B[i];
+	C.y = A[i] + B[i];
+	C.z = A[i] + B[i];
 }
 
 /**
@@ -29,21 +38,24 @@ int
 main(void)
 {
     // Error code to check return values for CUDA calls
-    cudaError_t err = cudaSuccess;
+    //cudaError_t err = cudaSuccess;
 
     // Print the vector length to be used, and compute its size
-    int numElements = 50000;
-    size_t size = numElements * sizeof(float);
+    int numElements = 3;
+    //size_t size = numElements * sizeof(float);
+	size_t size = numElements * sizeof(glm::vec3);
     printf("[Vector addition of %d elements]\n", numElements);
 
     // Allocate the host input vector A
-    float *h_A = (float *)malloc(size);
-
+    //float *h_A = (float *)malloc(size);
+	glm::vec3 h_A;// =
+	h_A=glm::vec3(0.0f, 0.0f, 0.0f);
     // Allocate the host input vector B
-    float *h_B = (float *)malloc(size);
-
+    //float *h_B = (float *)malloc(size);
+	glm::vec3 h_B = new glm::vec3(0.0, 0.0, 0.0);
     // Allocate the host output vector C
-    float *h_C = (float *)malloc(size);
+    //float *h_C = (float *)malloc(size);
+	glm::vec3 h_C = new glm::vec3(0.0, 0.0, 0.0);
 
     // Verify that allocations succeeded
     if (h_A == NULL || h_B == NULL || h_C == NULL)
@@ -53,126 +65,80 @@ main(void)
     }
 
     // Initialize the host input vectors
-    for (int i = 0; i < numElements; ++i)
-    {
-        h_A[i] = rand()/(float)RAND_MAX;
-        h_B[i] = rand()/(float)RAND_MAX;
-    }
+    //for (int i = 0; i < numElements; ++i){
+        //h_A[i] = rand()/(float)RAND_MAX;
+		h_A.x = rand() / (float)RAND_MAX;
+		h_A.y = rand() / (float)RAND_MAX;
+		h_A.z = rand() / (float)RAND_MAX;
+        //h_B[i] = rand()/(float)RAND_MAX;
+		h_B.x = rand() / (float)RAND_MAX;
+		h_B.y = rand() / (float)RAND_MAX;
+		h_B.z = rand() / (float)RAND_MAX;
+   // }
 
     // Allocate the device input vector A
-    float *d_A = NULL;
-    err = cudaMalloc((void **)&d_A, size);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
-
+	glm::vec3 *d_A = NULL;
+    cudaMalloc((void **)&d_A, size);
     // Allocate the device input vector B
-    float *d_B = NULL;
-    err = cudaMalloc((void **)&d_B, size);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to allocate device vector B (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
-
+	glm::vec3 *d_B = NULL;
+    cudaMalloc((void **)&d_B, size);
     // Allocate the device output vector C
-    float *d_C = NULL;
-    err = cudaMalloc((void **)&d_C, size);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to allocate device vector C (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+	glm::vec3 *d_C = NULL;
+    cudaMalloc((void **)&d_C, size);
 
     // Copy the host input vectors A and B in host memory to the device input vectors in
     // device memory
     printf("Copy input data from the host memory to the CUDA device\n");
-    err = cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to copy vector A from host to device (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
-
-    err = cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to copy vector B from host to device (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+    cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
 
     // Launch the Vector Add CUDA Kernel
     int threadsPerBlock = 256;
     int blocksPerGrid =(numElements + threadsPerBlock - 1) / threadsPerBlock;
     printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
     vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, numElements);
-    err = cudaGetLastError();
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to launch vectorAdd kernel (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+	cudaGetLastError();
 
     // Copy the device result vector in device memory to the host result vector
     // in host memory.
     printf("Copy output data from the CUDA device to the host memory\n");
-    err = cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to copy vector C from device to host (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+	cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
 
     // Verify that the result vector is correct
     for (int i = 0; i < numElements; ++i)
     {
-        if (fabs(h_A[i] + h_B[i] - h_C[i]) > 1e-5)
-        {
-            fprintf(stderr, "Result verification failed at element %d!\n", i);
-            exit(EXIT_FAILURE);
-        }
+        //if (fabs(h_A[i] + h_B[i] - h_C[i]) > 1e-5){
+        //    fprintf(stderr, "Result verification failed at element %d!\n", i);
+        //    exit(EXIT_FAILURE);
+        //}
+		if (fabs(h_A.x + h_B.x - h_C.x) > 1e-5){
+			fprintf(stderr, "Result verification failed at element %d!\n", i);
+			exit(EXIT_FAILURE);
+		}
+		if (fabs(h_A.y + h_B.y - h_C.y) > 1e-5){
+			fprintf(stderr, "Result verification failed at element %d!\n", i);
+			exit(EXIT_FAILURE);
+		}
+		if (fabs(h_A.z + h_B.z - h_C.z) > 1e-5){
+			fprintf(stderr, "Result verification failed at element %d!\n", i);
+			exit(EXIT_FAILURE);
+		}
     }
 
     printf("Test PASSED\n");
 
     // Free device global memory
-    err = cudaFree(d_A);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to free device vector A (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
-
-    err = cudaFree(d_B);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to free device vector B (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
-
-    err = cudaFree(d_C);
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to free device vector C (error code %s)!\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+    cudaFree(d_A);
+    cudaFree(d_B);
+    cudaFree(d_C);
 
     // Free host memory
-    free(h_A);
-    free(h_B);
-    free(h_C);
+    //free(h_A);
+    //free(h_B);
+    //free(h_C);
+	delete h_A;
+	delete h_B;
+	delete h_C;
 
     // Reset the device and exit
     // cudaDeviceReset causes the driver to clean up all state. While
@@ -180,13 +146,7 @@ main(void)
     // needed to ensure correct operation when the application is being
     // profiled. Calling cudaDeviceReset causes all profile data to be
     // flushed before the application exits
-    err = cudaDeviceReset();
-
-    if (err != cudaSuccess)
-    {
-        fprintf(stderr, "Failed to deinitialize the device! error=%s\n", cudaGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+    cudaDeviceReset();
 
     printf("Done\n");
     return 0;

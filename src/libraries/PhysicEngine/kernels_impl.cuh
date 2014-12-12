@@ -1,14 +1,15 @@
 //neuer cuda file zum lösen der include/compiler fehler
+#define GLM_FORCE_CUDA
+#include <glm\glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+
+#include <stdio.h>
 
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-//#define GLM_FORCE_CUDA
-//#include <glm\glm.hpp>
-//#include <glm/gtc/quaternion.hpp>
-//#include <glm/gtx/quaternion.hpp>
-#include <stdio.h>
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
 __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){

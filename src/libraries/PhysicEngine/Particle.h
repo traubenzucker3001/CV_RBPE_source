@@ -13,7 +13,7 @@ class Particle {
 
 private:
 
-	glm::vec3 gridIndex;	/**< particle grid index */
+	glm::ivec3 gridIndex;	/**< particle grid index */
 	int partIndex;			/**< particle index */
 
 	glm::vec3 position;		/**< particle position */
@@ -124,11 +124,11 @@ public:
 		this->velocity = velocity;
 	}
 
-	const glm::vec3& getGridIndex() const {
+	const glm::ivec3& getGridIndex() const {
 		return gridIndex;
 	}
 
-	void setGridIndex(const glm::vec3& gridIndex) {
+	void setGridIndex(const glm::ivec3& gridIndex) {
 		this->gridIndex = gridIndex;
 	}
 };

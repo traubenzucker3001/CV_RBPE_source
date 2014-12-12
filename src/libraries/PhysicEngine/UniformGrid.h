@@ -65,7 +65,7 @@ public:
 	 * @param gridIndex ...
 	 * @return true if it is a valid index, false if not
 	 */
-	bool isValidIndex(glm::vec3 gridIndex);
+	bool isValidIndex(glm::ivec3 gridIndex);
 
 	/** \brief get neighbor particle indices
 	 *
@@ -73,7 +73,7 @@ public:
 	 * @param gridIndex ...
 	 * @return array of neighbor particles
 	 */
-	int* getNeighborPartIndices(glm::vec3 gridIndex);
+	int* getNeighborPartIndices(glm::ivec3 gridIndex);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	int getPartPerVoxel() const {

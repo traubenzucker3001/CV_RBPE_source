@@ -94,7 +94,7 @@ void UniformGrid::updateGrid(){		//!sollte korrekt sein! :debugging - cpu vers
 		world->allParticles[i]->updateGridIndex();
 		//glm::vec3 gridIndex = allPart[i]->getGridIndex();
 
-		glm::vec3 gridIndex = world->allParticles[i]->getGridIndex();
+		glm::ivec3 gridIndex = world->allParticles[i]->getGridIndex();
 		//cout << "" << gridIndex.x << 
 		if (isValidIndex(gridIndex) == true) {
 			//int flatCountGridIndex = (int)(gridIndex.x*xSteps + gridIndex.y*ySteps + gridIndex.z);
@@ -126,14 +126,14 @@ void UniformGrid::updateGrid(){		//!sollte korrekt sein! :debugging - cpu vers
 	int temp = world->getAllPartNum();
 	for (int i = 0; i < temp; i++){
 		glm::vec3 pos = world->allParticles[i]->getPosition();
-		glm::vec3 grid = world->allParticles[i]->getGridIndex();
+		glm::ivec3 grid = world->allParticles[i]->getGridIndex();
 		//cout << "partpos " << i << ": " << pos.x << ", " << pos.y << ", " << pos.z << endl;	//zum debuggen
 		//cout << "partgrid " << i << ": " << grid.x << ", " << grid.y << ", " << grid.z << endl;	//zum debuggen
 	}
 	
 }
 
-bool UniformGrid::isValidIndex(glm::vec3 gridIndex){
+bool UniformGrid::isValidIndex(glm::ivec3 gridIndex){
 
 	//cout << "grid: valid grid index?!" << endl; //zum test
 
@@ -151,7 +151,7 @@ bool UniformGrid::isValidIndex(glm::vec3 gridIndex){
 	return valid;
 }
 
-int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){		//<--da drin müsste fehler liegen!!
+int* UniformGrid::getNeighborPartIndices(glm::ivec3 gridIndex){		//<--da drin müsste fehler liegen!!
 
 	//cout << "grid: get neighbors!" << endl; //zum test
 
@@ -190,7 +190,7 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){		//<--da drin müs
 	}	//zum debuggen
 	*/
 
-	glm::vec3 checkIndex = glm::vec3(gridIndex.x - 1, gridIndex.y - 1, gridIndex.z - 1);	//vllt mit ivec (int vector) versuchen
+	glm::ivec3 checkIndex = glm::ivec3(gridIndex.x - 1, gridIndex.y - 1, gridIndex.z - 1);	//vllt mit ivec (int vector) versuchen
 	//glm::vec3 checkIndex = glm::vec3(gridIndex.x, gridIndex.y, gridIndex.z );
 	//cout << "checki: " << checkIndex.x << ", " << checkIndex.y << ", " << checkIndex.z << endl;	//zum debuggen
 	int neighborCount = 0;

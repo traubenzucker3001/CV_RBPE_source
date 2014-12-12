@@ -171,15 +171,16 @@ void Demo::initScene(){
 		
 		float x, y, z;
 		x = (bodycount % 2) * 1.9f * hSize;			//1.9
-		y = bodycount * 6.0f * hSize;				//3.0
+		y = bodycount * 3.0f * hSize;				//3.0
 		z = ((bodycount % 4) / 2) * 1.9f * hSize;	//1.9
 		glm::vec3 randPos = glm::vec3(x,y,z);
 		
 		/*
 		glm::vec3 randPos;
-		glm::vec3 randPos1 = glm::vec3(0.0, 6.0, 0.0);
-		glm::vec3 randPos2 = glm::vec3(1.0, 6.0, 0.0);
-		glm::vec3 randPos3 = glm::vec3(0.0, 6.0, 0.0);
+		glm::vec3 randPos1 = glm::vec3(6.0, 3.0, 0.0);
+		glm::vec3 randPos2 = glm::vec3(0.0, 7.0, 0.0);
+		glm::vec3 randPos3 = glm::vec3(0.0, 11.0, 0.0);
+		glm::vec3 randPos4 = glm::vec3(6.0, 18.0, 0.0);
 		//cout << "vopos: " << randPos.x << ", " << randPos.y << ", " << randPos.z << endl;	//zum debuggen
 		if (i == 0){
 			randPos = randPos1;
@@ -189,6 +190,9 @@ void Demo::initScene(){
 		}
 		if (i == 2){
 			randPos = randPos3;
+		}
+		if (i == 3){
+			randPos = randPos4;
 		}
 		*/
 

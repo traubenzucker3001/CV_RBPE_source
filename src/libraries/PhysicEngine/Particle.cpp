@@ -25,7 +25,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	velocity = glm::vec3(0,0,0);
 	force = glm::vec3(0,0,0);
 
-	gridIndex = glm::vec3(0,0,0);
+	gridIndex = glm::ivec3(0,0,0);
 	partIndex = 0;
 	//cout << "-mass: " << mass << endl; //zum debuggen
 }
@@ -63,8 +63,6 @@ glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel r
 			int neighborIndex = neighborParticleIndices[i];
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
 	
-				//Particle* neighbors = world->allParticles[neighborIndex];
-				//glm::vec3 jPos = neighbors->getPosition();
 				glm::vec3 jPos = world->allParticles[neighborIndex]->position;
 
 				/*
@@ -225,10 +223,10 @@ void Particle::updateGridIndex(){
 	float vS = UniformGrid::getInstance()->getVoxelSize();
 
 	//cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
-	gridIndex.x = ((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
-	gridIndex.y = ((position.y - vS)/vS);
+	gridIndex.x = (int)((position.x - gmp)/vS);		//<--- da liegt ein fehler !!! (cpu vers)
+	gridIndex.y = (int)((position.y - vS) / vS);
 	//gridIndex.y = ((position.y - gmp) / vS);
-	gridIndex.z = ((position.z - gmp)/vS);
+	gridIndex.z = (int)((position.z - gmp) / vS);
 	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
 }
 

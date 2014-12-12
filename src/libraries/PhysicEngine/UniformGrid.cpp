@@ -97,7 +97,8 @@ void UniformGrid::updateGrid(){		//!sollte korrekt sein! :debugging - cpu vers
 		glm::vec3 gridIndex = world->allParticles[i]->getGridIndex();
 		//cout << "" << gridIndex.x << 
 		if (isValidIndex(gridIndex) == true) {
-			int flatCountGridIndex = (int)(gridIndex.x*xSteps + gridIndex.y*ySteps + gridIndex.z);
+			//int flatCountGridIndex = (int)(gridIndex.x*xSteps + gridIndex.y*ySteps + gridIndex.z);
+			int flatCountGridIndex = (int)gridIndex.x*xSteps + (int)gridIndex.y*ySteps + (int)gridIndex.z;
 			int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 
 			gridCells[flatIndexGridIndex + gridCounters[flatCountGridIndex]] = i;
@@ -174,7 +175,22 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){		//<--da drin müs
 		gridIndex.z--;
 	}
 
-	glm::vec3 checkIndex = glm::vec3(gridIndex.x - 1, gridIndex.y - 1, gridIndex.z - 1);
+	/*
+	for (int i = 0; i < gridSize*4; i++){	//zum debuggen
+		cout << "gridCell " << i << ": " << gridCells[i] << endl;	//zum debuggen
+		if (gridCells[i] != -1){
+			cout << "!!HIER!!" << endl;
+		}
+	}	//zum debuggen
+	for (int i = 0; i < gridSize; i++){	//zum debuggen
+		cout << "gridCounter " << i << ": " << gridCounters[i] << endl;	//zum debuggen
+		if (gridCounters[i] != 0){
+			cout << "!!HIER!!" << endl;
+		}
+	}	//zum debuggen
+	*/
+
+	glm::vec3 checkIndex = glm::vec3(gridIndex.x - 1, gridIndex.y - 1, gridIndex.z - 1);	//vllt mit ivec (int vector) versuchen
 	//glm::vec3 checkIndex = glm::vec3(gridIndex.x, gridIndex.y, gridIndex.z );
 	//cout << "checki: " << checkIndex.x << ", " << checkIndex.y << ", " << checkIndex.z << endl;	//zum debuggen
 	int neighborCount = 0;
@@ -196,21 +212,33 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){		//<--da drin müs
 
 			for (int iz = 0; iz < 3; iz++) {
 				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
-			//	cout << "flatCountGridIndex: " << flatCountGridIndex << endl;	//zum debuggen
+				//int flatCountGridIndex = (int)(checkIndex.x*xSteps + checkIndex.y*ySteps + checkIndex.z);
+				//cout << "(int): " << (int)checkIndex.x*xSteps << endl;	//zum debuggen
+				//cout << "(int): " << (int)checkIndex.y*ySteps << endl;	//zum debuggen
+				//cout << "(int): " << (int)checkIndex.z << endl;	//zum debuggen
+				//cout << "flatCountGridIndex: " << flatCountGridIndex << endl;	//zum debuggen
 				int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
-			//	cout << "flatIndexGridIndex: " << flatIndexGridIndex << endl;	//zum debuggen
+				//cout << "flatIndexGridIndex: " << flatIndexGridIndex << endl;	//zum debuggen
 
 				//for (int i = 0; i < 27 * 4; i++){	//zum debuggen
 				//	cout << "nachbar " << i << ": " << indices[i] << endl;	//zum debuggen
 				//}	//zum debuggen
 
+				//cout << "neighborCount: " << neighborCount << endl;		//zum debuggen
 				indices[neighborCount] = gridCells[flatIndexGridIndex];
 				indices[neighborCount + 1] = gridCells[flatIndexGridIndex + 1];
 				indices[neighborCount + 2] = gridCells[flatIndexGridIndex + 2];
 				indices[neighborCount + 3] = gridCells[flatIndexGridIndex + 3];
 
+				//^^^^davor muss fehler liegen^^^^ , alle einträge sind -1
 				//for (int i = 0; i < 27 * 4; i++){	//zum debuggen
 				//	cout << "nachbar " << i << ": " << indices[i] << endl;	//zum debuggen
+				//	if (indices[i]==2){
+				//		cout << "!!HIER!!" << endl;
+				//	}
+				//	if (indices[i] == 27){
+				//		cout << "!!HIER!!" << endl;
+				//	}
 				//}	//zum debuggen
 
 				neighborCount = neighborCount + 4;
@@ -220,8 +248,13 @@ int* UniformGrid::getNeighborPartIndices(glm::vec3 gridIndex){		//<--da drin müs
 		}
 		checkIndex.x++;
 	}
-	//for (int i = 0; i < 27 * 4; i++){	//zum debuggen
-	//	cout << "nachbar " << i << ": " << indices[i] << endl;	//zum debuggen
-	//}	//zum debuggen
+	/*
+	for (int i = 0; i < 27 * 4; i++){	//zum debuggen
+		cout << "nachbar " << i << ": " << indices[i] << endl;	//zum debuggen
+		if (indices[i] != -1){
+			cout << "!!HIER!!" << endl;	//zum debuggen
+		}
+	}	//zum debuggen
+	*/
 	return indices;
 }

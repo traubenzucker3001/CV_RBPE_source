@@ -18,10 +18,10 @@ float termVeloc = 20.0f;
 float springCoeff = 100.0f;
 float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
 bool iGPU = false;			//false für cpu, true für gpu
-float worldSize = 3.0f;	//Half length of world	//15
+float worldSize = 15.0f;	//Half length of world	//15
 float partRadius = 0.20f;
 float boxHSize = partRadius * 3;
-int bodyNumber = 3;
+int bodyNumber = 50;
 
 int main() {
 

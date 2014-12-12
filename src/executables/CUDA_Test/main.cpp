@@ -1,4 +1,4 @@
-/*
+
 #include <iostream>
 //#include "PhysicEngine/EarlyOut.h"
 
@@ -35,4 +35,3 @@ int main() {
 
 	return 0;
 }
-*/

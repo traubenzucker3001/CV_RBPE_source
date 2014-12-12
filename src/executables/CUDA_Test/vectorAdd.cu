@@ -1,7 +1,5 @@
 //vectorAdd aus CUDA Samples
-#define GLM_FORCE_CUDA
-#include <glm\glm.hpp>
-
+/*
 #include <stdio.h>
 
 // For the CUDA runtime routines (prefixed with "cuda_")
@@ -9,6 +7,13 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#define GLM_FORCE_CUDA
+#include <glm\glm.hpp>
+
+
+__device__ __constant__ glm::vec3* d_A;
+__device__ __constant__ glm::vec3* d_B;
+__device__ __constant__ glm::vec3* d_C;
 
 /**
  * CUDA Kernel Device code
@@ -18,23 +23,24 @@
  */
 //__global__ void
 //vectorAdd(const float *A, const float *B, float *C, int numElements)
-__global__ void vectorAdd(glm::vec3 *A, glm::vec3 *B, glm::vec3 *C, int numElements)
+/*__global__ void vectorAdd(glm::vec3 A, glm::vec3 B, glm::vec3 C, int numElements)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
-
-    if (i < numElements)
-    {
-        C[i] = A[i] + B[i];
-    }
-	C.x = A[i] + B[i];
-	C.y = A[i] + B[i];
-	C.z = A[i] + B[i];
+	if (i < 3){
+		return;
+	}
+    //if (i < numElements){
+    //    C[i] = A[i] + B[i];
+    //}
+	C.x = A.x + B.x;
+	C.y = A.y + B.y;
+	C.z = A.z + B.z;
 }
 
 /**
  * Host main routine
  */
-int
+/*int
 main(void)
 {
     // Error code to check return values for CUDA calls
@@ -48,21 +54,19 @@ main(void)
 
     // Allocate the host input vector A
     //float *h_A = (float *)malloc(size);
-	glm::vec3 h_A;// =
-	h_A=glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 h_A = glm::vec3(0.0f, 0.0f, 0.0f);
     // Allocate the host input vector B
     //float *h_B = (float *)malloc(size);
-	glm::vec3 h_B = new glm::vec3(0.0, 0.0, 0.0);
+	glm::vec3 h_B = glm::vec3(0.0, 0.0, 0.0);
     // Allocate the host output vector C
     //float *h_C = (float *)malloc(size);
-	glm::vec3 h_C = new glm::vec3(0.0, 0.0, 0.0);
+	glm::vec3 h_C = glm::vec3(0.0, 0.0, 0.0);
 
     // Verify that allocations succeeded
-    if (h_A == NULL || h_B == NULL || h_C == NULL)
-    {
-        fprintf(stderr, "Failed to allocate host vectors!\n");
-        exit(EXIT_FAILURE);
-    }
+    //if (h_A == NULL || h_B == NULL || h_C == NULL){
+    //    fprintf(stderr, "Failed to allocate host vectors!\n");
+    //   exit(EXIT_FAILURE);
+    //}
 
     // Initialize the host input vectors
     //for (int i = 0; i < numElements; ++i){
@@ -77,32 +81,39 @@ main(void)
    // }
 
     // Allocate the device input vector A
-	glm::vec3 *d_A = NULL;
-    cudaMalloc((void **)&d_A, size);
+	//glm::vec3 *d_A = NULL;
+    //cudaMalloc((void **)&d_A, size);
+	//__device__ __constant__ glm::vec3 *d_A;
     // Allocate the device input vector B
-	glm::vec3 *d_B = NULL;
-    cudaMalloc((void **)&d_B, size);
+	//glm::vec3 *d_B = NULL;
+    //cudaMalloc((void **)&d_B, size);
+	//__device__ __constant__ glm::vec3 *d_B;
     // Allocate the device output vector C
-	glm::vec3 *d_C = NULL;
-    cudaMalloc((void **)&d_C, size);
+	//glm::vec3 *d_C = NULL;
+    //cudaMalloc((void **)&d_C, size);
+	//__device__ __constant__ glm::vec3 *d_C;
 
     // Copy the host input vectors A and B in host memory to the device input vectors in
     // device memory
     printf("Copy input data from the host memory to the CUDA device\n");
-    cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
+    //cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
+    //cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
+	cudaMemcpyToSymbol("d_A", &h_A, size); 
+	cudaMemcpyToSymbol("d_B", &h_B, size);
 
     // Launch the Vector Add CUDA Kernel
     int threadsPerBlock = 256;
     int blocksPerGrid =(numElements + threadsPerBlock - 1) / threadsPerBlock;
     printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-    vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, numElements);
+    //vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, numElements);
+	vectorAdd <<<blocksPerGrid, threadsPerBlock >>>(h_A, h_B, h_C, numElements);
 	cudaGetLastError();
 
     // Copy the device result vector in device memory to the host result vector
     // in host memory.
     printf("Copy output data from the CUDA device to the host memory\n");
-	cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
+	//cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
+	cudaMemcpyFromSymbol(&h_C, d_C, size);
 
     // Verify that the result vector is correct
     for (int i = 0; i < numElements; ++i)
@@ -128,17 +139,17 @@ main(void)
     printf("Test PASSED\n");
 
     // Free device global memory
-    cudaFree(d_A);
-    cudaFree(d_B);
-    cudaFree(d_C);
+    //cudaFree(d_A);
+	//cudaFree(d_B);
+    //cudaFree(d_C);
 
     // Free host memory
     //free(h_A);
     //free(h_B);
     //free(h_C);
-	delete h_A;
-	delete h_B;
-	delete h_C;
+	//delete h_A;
+	//delete h_B;
+	//delete h_C;
 
     // Reset the device and exit
     // cudaDeviceReset causes the driver to clean up all state. While
@@ -151,4 +162,4 @@ main(void)
     printf("Done\n");
     return 0;
 }
-
+*/

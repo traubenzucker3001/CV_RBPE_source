@@ -305,7 +305,7 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_pForce, h_pForce, bodyNum*sizeof(glm::vec3), cudaMemcpyHostToDevice);
 
 	cudaMemcpy(d_gridCounters, h_gridCounters, bodyNum*sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_gridCells, h_gridCells, bodyNum*sizeof(glm::vec4), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_gridCells, h_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyHostToDevice);
 
 	/*
 	cudaMemcpy(d_voxelS, h_voxelS, sizeof(float), cudaMemcpyHostToDevice);
@@ -334,11 +334,11 @@ void Cuda::initCUDAGrid(){
 	//cout << "cuda: initGrid called!" << endl; //zum test
 
 	//host arrays
-	h_pGridIndex = new glm::vec3[partNum];
+	h_pGridIndex = new glm::ivec3[partNum];
 
 	int gS = UniformGrid::getInstance()->getGridSize();
 	h_gridCounters = new int[gS];
-	h_gridCells = new glm::vec4[gS];	//int4?!
+	h_gridCells = new glm::ivec4[gS];	//int4?!
 
 	//
 	for (int i = 0; i<gS; i++) {
@@ -353,10 +353,10 @@ void Cuda::initCUDAGrid(){
 	}
 
 	//device arrays
-	cudaMalloc((void**)&d_pGridIndex, bodyNum*sizeof(glm::vec3));
+	cudaMalloc((void**)&d_pGridIndex, bodyNum*sizeof(glm::ivec3));
 
 	cudaMalloc((void**)&d_gridCounters, bodyNum*sizeof(int));
-	cudaMalloc((void**)&d_gridCells, bodyNum*sizeof(glm::vec4));	//int4?!
+	cudaMalloc((void**)&d_gridCells, bodyNum*sizeof(glm::ivec4));	//int4?!
 }
 
 void Cuda::stepCUDA(){

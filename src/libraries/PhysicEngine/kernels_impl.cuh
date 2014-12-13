@@ -1,8 +1,10 @@
 //neuer cuda file zum lösen der include/compiler fehler
+/*
 #define GLM_FORCE_CUDA
 #include <glm\glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+*/
 
 #include <stdio.h>
 
@@ -10,9 +12,13 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#define GLM_FORCE_CUDA
+#include <glm\glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
-__global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
+__global__ void resetGridC(int* gridCounters, glm::ivec4* indexGrid, int gs){
 	//printf(“var:%d\n”, var);
 
 	//cout bzw. printf() in kernel möglich?!
@@ -26,15 +32,15 @@ __global__ void resetGridC(int* countGrid, glm::vec4* indexGrid, int gs){
 		return;
 	}
 	if (i < gs){
-		countGrid[i] = 0;
-		//indexGrid[i].x = -1;	//als int
-		//indexGrid[i].y = -1;
-		//indexGrid[i].z = -1;
-		//indexGrid[i].w = -1;
+		gridCounters[i] = 0;
+		indexGrid[i].x = -1;	//als int
+		indexGrid[i].y = -1;
+		indexGrid[i].z = -1;
+		indexGrid[i].w = -1;
 	}
 }
 
-__global__ void updateGridC(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex, int nop){
+__global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::ivec3* pGridIndex, int nop){
 
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
@@ -65,21 +71,21 @@ __global__ void updateGridC(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPo
 			//int particlesInCell = atomic_inc(&countGrid[flatGridIndex]);	//?
 			//
 			int n = 4;
-			unsigned int* atom = (unsigned int*)(&countGrid[flatGridIndex]);		//potenzielle fehlerquelle
+			unsigned int* atom = (unsigned int*)(&gridCounters[flatGridIndex]);		//potenzielle fehlerquelle
 			int particlesInCell = atomicInc(atom, n);
 			//
 
 			if (particlesInCell == 3) {
-				indexGrid[flatGridIndex].w = (float)pi;
+				gridCells[flatGridIndex].w = (float)pi;
 			}
 			else if (particlesInCell == 2) {
-				indexGrid[flatGridIndex].z = (float)pi;
+				gridCells[flatGridIndex].z = (float)pi;
 			}
 			else if (particlesInCell == 1) {
-				indexGrid[flatGridIndex].y = (float)pi;
+				gridCells[flatGridIndex].y = (float)pi;
 			}
 			else if (particlesInCell == 0) {
-				indexGrid[flatGridIndex].x = (float)pi;
+				gridCells[flatGridIndex].x = (float)pi;
 			}
 		}
 	}
@@ -322,7 +328,7 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 
 
 //<<<<<<<<<< particle kernels >>>>>>>>>>
-__global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL, int nop){
+__global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int gridSL, int nop){
 
 	//TODO
 	//unsigned int particleIndex = get_global_id(0);
@@ -336,16 +342,17 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		pForce[pi].y = 0.0f;
 		pForce[pi].z = 0.0f;
 
-		glm::vec3 gridIndex = pGridIndex[pi];
+		glm::ivec3 gridIndex = pGridIndex[pi];
 
 		//Pretend border cell is 1 position inwards to avoid checking outside bounds for neighbors
 		//todo: zu cuda func
 		//gridIndex = clamp(gridIndex, 1, gridSL - 2);
-		gridIndex = glm::clamp(gridIndex, 1.0f, (float)gridSL - 2.0f);	//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
+		gridIndex = glm::clamp(gridIndex, 1, gridSL - 2);	//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
 		int xSteps = gridSL*gridSL;
 		int ySteps = gridSL;
 
-		int flatGridIndex = (int)gridIndex.x * xSteps + (int)gridIndex.y * ySteps + (int)gridIndex.z;
+		//int flatGridIndex = (int)gridIndex.x * xSteps + (int)gridIndex.y * ySteps + (int)gridIndex.z;
+		int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
 
 		//oder glm::vec4 besser??, dann auf umstellung bei zählweise achten!!
 		glm::vec4 neighborCells[27];	//int4??
@@ -363,7 +370,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 
 				for (int z = 0; z < 3; z++) {
 
-					neighborCells[cellIndexJ] = indexGrid[flatGridIndex];
+					neighborCells[cellIndexJ] = gridCells[flatGridIndex];
 					cellIndexJ++;
 					flatGridIndex++;
 				}

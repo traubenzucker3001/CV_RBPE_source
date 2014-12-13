@@ -17,7 +17,7 @@ int nearHighVal(int a, int b){
 
 //extern "C"{
 	//<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
-	void resetGrid(int* countGrid, glm::vec4* indexGrid){
+	void resetGrid(int* gridCounters, glm::ivec4* gridCells){
 
 		//blocks und threads berechn.
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
@@ -33,12 +33,12 @@ int nearHighVal(int a, int b){
 		//geht doch bestimmt auch noch "besser"!!?
 		//int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;	//aus vectorAdd
 
-		resetGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, g);
+		resetGridC <<< numBlocks, numThreads >>>(gridCounters, gridCells, g);
 		cudaThreadSynchronize();
 	}
 
 	//updateGRid
-	void updateGrid(int* countGrid, glm::vec4* indexGrid, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::vec3* pGridIndex){
+	void updateGrid(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::ivec3* pGridIndex){
 
 		//blocks und threads berechn.
 		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
@@ -52,7 +52,7 @@ int nearHighVal(int a, int b){
 		cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
 
-		updateGridC<<< numBlocks, numThreads >>>(countGrid, indexGrid, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex,p);
+		updateGridC <<< numBlocks, numThreads >>>(gridCounters, gridCells, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex, p);
 		cudaThreadSynchronize();
 	}
 
@@ -89,7 +89,7 @@ int nearHighVal(int a, int b){
 
 	//<<<<<<<<<< particles kernels >>>>>>>>>>
 	//collision detection
-	void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::vec3* pGridIndex, int* countGrid, glm::vec4* indexGrid, int gridSL){
+	void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int gridSL){
 
 		//blocks und threads berechn.
 		//thread pro part.
@@ -99,7 +99,7 @@ int nearHighVal(int a, int b){
 		int numBlocks = nearHighVal(p, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?
 
-		calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, countGrid, indexGrid, gridSL,p);
+		calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, gridCounters, gridCells, gridSL, p);
 		cudaThreadSynchronize();
 	}
 

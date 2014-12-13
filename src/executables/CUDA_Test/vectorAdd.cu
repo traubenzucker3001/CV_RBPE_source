@@ -1,6 +1,7 @@
 //vectorAdd aus CUDA Samples
 
 #include <stdio.h>
+#include <iostream>
 #include <cmath>
 
 // For the CUDA runtime routines (prefixed with "cuda_")
@@ -8,18 +9,26 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#define GLM_FORCE_CUDA
+#include <glm\glm.hpp>
+
+using namespace std;
 /**
 * CUDA Kernel Device code
 *
 * Computes the vector addition of A and B into C. The 3 vectors have the same
 * number of elements numElements.
 */
-__global__ void vectorAdd(const float *A, const float *B, float *C, int numElements){
+//__global__ void vectorAdd(const float *A, const float *B, float *C, int numElements){
+__global__ void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numElements){
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 	if (i < numElements)
 	{
-		C[i] = A[i] + B[i];
+		//C[i] = A[i] + B[i];
+		C[i].x = A[i].x + B[i].x;
+		C[i].y = A[i].y + B[i].y;
+		C[i].z = A[i].z + B[i].z;
 	}
 }
 
@@ -31,14 +40,18 @@ int main(void){
 	//cudaError_t err = cudaSuccess;
 
 	// Print the vector length to be used, and compute its size
-	int numElements = 50000;
-	size_t size = numElements * sizeof(float);
+	int numElements = 50;	//50000
+	//size_t size = numElements * sizeof(float);
+	size_t size = numElements * sizeof(glm::vec3);
 	printf("[Vector addition of %d elements]\n", numElements);
 
 	// Allocate the host input (A,B) and output (C) vector
-	float *h_A = (float *)malloc(size);
-	float *h_B = (float *)malloc(size);
-	float *h_C = (float *)malloc(size);
+	//float *h_A = (float *)malloc(size);
+	//float *h_B = (float *)malloc(size);
+	//float *h_C = (float *)malloc(size);
+	glm::vec3* h_A = (glm::vec3 *)malloc(size);
+	glm::vec3* h_B = (glm::vec3 *)malloc(size);
+	glm::vec3* h_C = (glm::vec3 *)malloc(size);
 
 	// Verify that allocations succeeded
 	if (h_A == NULL || h_B == NULL || h_C == NULL){
@@ -48,16 +61,31 @@ int main(void){
 
 	// Initialize the host input vectors
 	for (int i = 0; i < numElements; ++i){
-		h_A[i] = rand() / (float)RAND_MAX;
-		h_B[i] = rand() / (float)RAND_MAX;
+		//h_A[i] = rand() / (float)RAND_MAX;
+		h_A[i].x = rand() / (float)RAND_MAX;
+		cout << "Ax: " << h_A[i].x << endl;
+		h_A[i].y = rand() / (float)RAND_MAX;
+		cout << "Ay: " << h_A[i].y << endl;
+		h_A[i].z = rand() / (float)RAND_MAX;
+		cout << "Az: " << h_A[i].z << endl;
+		//h_B[i] = rand() / (float)RAND_MAX;
+		h_B[i].x = rand() / (float)RAND_MAX;
+		cout << "Bx: " << h_B[i].x << endl;
+		h_B[i].y = rand() / (float)RAND_MAX;
+		cout << "By: " << h_B[i].y << endl;
+		h_B[i].z = rand() / (float)RAND_MAX;
+		cout << "Bz: " << h_B[i].z << endl;
 	}
 
 	// Allocate the device vectors
-	float *d_A = NULL;
+	//float *d_A = NULL;
+	glm::vec3 *d_A = NULL;
 	cudaMalloc((void **)&d_A, size);
-	float *d_B = NULL;
+	//float *d_B = NULL;
+	glm::vec3 *d_B = NULL;
 	cudaMalloc((void **)&d_B, size);
-	float *d_C = NULL;
+	//float *d_C = NULL;
+	glm::vec3 *d_C = NULL;
 	cudaMalloc((void **)&d_C, size);
 
 	// Copy the host input vectors A and B in host memory to the device input vectors in
@@ -67,7 +95,7 @@ int main(void){
 	cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
 
 	// Launch the Vector Add CUDA Kernel
-	int threadsPerBlock = 256;
+	int threadsPerBlock = 64;	//256
 	int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;
 	printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
 	vectorAdd << <blocksPerGrid, threadsPerBlock >> >(d_A, d_B, d_C, numElements);
@@ -80,7 +108,22 @@ int main(void){
 
 	// Verify that the result vector is correct
 	for (int i = 0; i < numElements; ++i){
-		if (fabs(h_A[i] + h_B[i] - h_C[i]) > 1e-5){
+		//if (fabs(h_A[i] + h_B[i] - h_C[i]) > 1e-5){
+		//	fprintf(stderr, "Result verification failed at element %d!\n", i);
+		//	exit(EXIT_FAILURE);
+		//}
+		cout << "Cx: " << h_C[i].x << endl;
+		cout << "Cy: " << h_C[i].y << endl;
+		cout << "Cz: " << h_C[i].z << endl;
+		if (fabs(h_A[i].x + h_B[i].x - h_C[i].x) > 1e-5){
+			fprintf(stderr, "Result verification failed at element %d!\n", i);
+			exit(EXIT_FAILURE);
+		}
+		if (fabs(h_A[i].y + h_B[i].y - h_C[i].y) > 1e-5){
+			fprintf(stderr, "Result verification failed at element %d!\n", i);
+			exit(EXIT_FAILURE);
+		}
+		if (fabs(h_A[i].z + h_B[i].z - h_C[i].z) > 1e-5){
 			fprintf(stderr, "Result verification failed at element %d!\n", i);
 			exit(EXIT_FAILURE);
 		}

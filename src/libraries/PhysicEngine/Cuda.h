@@ -53,10 +53,10 @@ public:
 	glm::quat* h_uVOrot;		/**< ... */
 
 private:
-	glm::vec3 *h_pGridIndex;	/**< host array for particle grin indices */
+	glm::ivec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
-	int* h_gridCounters;			/**< host array for grid ... */
-	glm::vec4 *h_gridCells;	/**< host array for grid ... */
+	int* h_gridCounters;		/**< host array for grid ... */
+	glm::ivec4 *h_gridCells;	/**< host array for grid ... */
 
 
 	//benötigte arrays gpu (device)
@@ -79,10 +79,10 @@ private:
 	glm::vec3 *d_pVeloc;		/**< device array for particle velocities */
 	glm::vec3 *d_pForce;		/**< device array for particle forces */
 
-	glm::vec3 *d_pGridIndex;	/**< device array for particle grin indices */
+	glm::ivec3 *d_pGridIndex;	/**< device array for particle grin indices */
 
-	int* d_gridCounters;			/**< device array for grid ... */
-	glm::vec4 *d_gridCells;	/**< device array for grid ... */		//int4?!
+	int* d_gridCounters;		/**< device array for grid ... */
+	glm::ivec4 *d_gridCells;	/**< device array for grid ... */		//int4?!
 
 	/*
 	glm::vec3 d_gridMinPosVector;		//?!	//todo: auch auf gpu packen!!

@@ -43,7 +43,7 @@ glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel r
 	force = glm::vec3(0,0,0);
 	//cout << "1pFy: " << force.y << endl;	//zum debuggen
 	//-----part1-----
-	//calculateCollisionForces();		//siehe anhang (unten)
+	//calculateCollisionForces();		//siehe anhang (unten), ohne gitter
 
 	float partR = world->getPartRadius();
 	float worldS = world->getWorldSize();
@@ -53,17 +53,19 @@ glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel r
 	//-----part2-----
 	//calculateCollisionForcesWithGrid();
 	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
-	if (UniformGrid::getInstance()->isValidIndex(gridIndex) == true) {
+	if (UniformGrid::getInstance()->isValidGridIndex(gridIndex) == true) {
 		//cout << "collwithpart!" << endl;	//zum debuggen
-		int* neighborParticleIndices = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
+		int* neighborParticles = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
 		int ppv = UniformGrid::getInstance()->getPartPerVoxel();
 		
 		int target = ppv * 27;
 		for (int i=0; i<target; i++) {
-			int neighborIndex = neighborParticleIndices[i];
+			int neighborIndex = neighborParticles[i];
 			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
 	
-				glm::vec3 jPos = world->allParticles[neighborIndex]->position;
+				Particle* neighbor = world->allParticles[neighborIndex];
+				glm::vec3 jPos = neighbor->getPosition();
+				//glm::vec3 jPos = world->allParticles[neighborIndex]->position;
 
 				/*
 				cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
@@ -83,7 +85,8 @@ glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel r
 					force.z = force.z - springC*(2.0f*partR - absDistance)*(distance.z/absDistance);
 
 					//glm::vec3 jVel = neighbors->getVelocity();
-					glm::vec3 jVel = world->allParticles[neighborIndex]->velocity;
+					glm::vec3 jVel = neighbor->getVelocity();
+					//glm::vec3 jVel = world->allParticles[neighborIndex]->velocity;
 
 					glm::vec3 relativeVelocity;
 					relativeVelocity.x = jVel.x - velocity.x;
@@ -96,7 +99,7 @@ glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel r
 				}
 			}
 		}
-		delete neighborParticleIndices;
+		delete neighborParticles;
 		//cout << "2pFy: " << force.y << endl;	//zum debuggen
 	}
 
@@ -154,7 +157,7 @@ void Particle::updateVeloc(glm::vec3 bodyPosition, glm::vec3 bodyVelocity, glm::
 						bodyAngularVelocity.z*bodyAngularVelocity.z);
 
 	if (scalar > 0.0f) {
-		scalar *= scalar;
+		scalar = scalar * scalar;
 		glm::vec3 relativePosition = glm::vec3( position.x - bodyPosition.x,
 												position.y - bodyPosition.y,
 												position.z - bodyPosition.z );

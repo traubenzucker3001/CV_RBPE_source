@@ -171,7 +171,7 @@ void Demo::initScene(){
 		
 		float x, y, z;
 		x = (bodycount % 2) * 1.9f * hSize;			//1.9
-		y = bodycount * 3.0f * hSize;				//3.0
+		y = bodycount * 6.0f * hSize;				//3.0
 		z = ((bodycount % 4) / 2) * 1.9f * hSize;	//1.9
 		glm::vec3 randPos = glm::vec3(x,y,z);
 		

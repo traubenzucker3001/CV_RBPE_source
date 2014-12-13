@@ -65,7 +65,7 @@ public:
 	 * @param gridIndex ...
 	 * @return true if it is a valid index, false if not
 	 */
-	bool isValidIndex(glm::ivec3 gridIndex);
+	bool isValidGridIndex(glm::ivec3 gridIndex);
 
 	/** \brief get neighbor particle indices
 	 *

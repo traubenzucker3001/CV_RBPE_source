@@ -50,7 +50,7 @@ void UniformGrid::createGrid(){
 
 	std::cout << "Grid dimensions: " << gridLength << "*" << gridLength << "*" << gridLength << std::endl;
 
-	gridMinPos = (-worldS) - voxelSize;
+	gridMinPos = -worldS - voxelSize;
 	//std::cout << "Grid minimum position: " << gridMinPos << std::endl;
 	//std::cout << "Grid maximum position: " << gridMinPos + gridLength*voxelSize << std::endl;
 
@@ -96,9 +96,10 @@ void UniformGrid::updateGrid(){		//!sollte korrekt sein! :debugging - cpu vers
 
 		glm::ivec3 gridIndex = world->allParticles[i]->getGridIndex();
 		//cout << "" << gridIndex.x << 
-		if (isValidIndex(gridIndex) == true) {
+		if (isValidGridIndex(gridIndex) == true) {
 			//int flatCountGridIndex = (int)(gridIndex.x*xSteps + gridIndex.y*ySteps + gridIndex.z);
-			int flatCountGridIndex = (int)gridIndex.x*xSteps + (int)gridIndex.y*ySteps + (int)gridIndex.z;
+			//int flatCountGridIndex = (int)gridIndex.x*xSteps + (int)gridIndex.y*ySteps + (int)gridIndex.z;
+			int flatCountGridIndex = gridIndex.x*xSteps + gridIndex.y*ySteps + gridIndex.z;
 			int flatIndexGridIndex = flatCountGridIndex * partPerVoxel;
 
 			gridCells[flatIndexGridIndex + gridCounters[flatCountGridIndex]] = i;
@@ -123,6 +124,7 @@ void UniformGrid::updateGrid(){		//!sollte korrekt sein! :debugging - cpu vers
 		}
 	}
 	
+	/*
 	int temp = world->getAllPartNum();
 	for (int i = 0; i < temp; i++){
 		glm::vec3 pos = world->allParticles[i]->getPosition();
@@ -130,10 +132,10 @@ void UniformGrid::updateGrid(){		//!sollte korrekt sein! :debugging - cpu vers
 		//cout << "partpos " << i << ": " << pos.x << ", " << pos.y << ", " << pos.z << endl;	//zum debuggen
 		//cout << "partgrid " << i << ": " << grid.x << ", " << grid.y << ", " << grid.z << endl;	//zum debuggen
 	}
-	
+	*/
 }
 
-bool UniformGrid::isValidIndex(glm::ivec3 gridIndex){
+bool UniformGrid::isValidGridIndex(glm::ivec3 gridIndex){
 
 	//cout << "grid: valid grid index?!" << endl; //zum test
 
@@ -211,7 +213,8 @@ int* UniformGrid::getNeighborPartIndices(glm::ivec3 gridIndex){		//<--da drin mü
 			//cout << "checki: " << checkIndex.x << ", " << checkIndex.y << ", " << checkIndex.z << endl;	//zum debuggen
 
 			for (int iz = 0; iz < 3; iz++) {
-				int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
+				//int flatCountGridIndex = (int)checkIndex.x*xSteps + (int)checkIndex.y*ySteps + (int)checkIndex.z;
+				int flatCountGridIndex = checkIndex.x*xSteps + checkIndex.y*ySteps + checkIndex.z;
 				//int flatCountGridIndex = (int)(checkIndex.x*xSteps + checkIndex.y*ySteps + checkIndex.z);
 				//cout << "(int): " << (int)checkIndex.x*xSteps << endl;	//zum debuggen
 				//cout << "(int): " << (int)checkIndex.y*ySteps << endl;	//zum debuggen
@@ -250,7 +253,7 @@ int* UniformGrid::getNeighborPartIndices(glm::ivec3 gridIndex){		//<--da drin mü
 	}
 	/*
 	for (int i = 0; i < 27 * 4; i++){	//zum debuggen
-		cout << "nachbar " << i << ": " << indices[i] << endl;	//zum debuggen
+		//cout << "nachbar " << i << ": " << indices[i] << endl;	//zum debuggen
 		if (indices[i] != -1){
 			cout << "!!HIER!!" << endl;	//zum debuggen
 		}

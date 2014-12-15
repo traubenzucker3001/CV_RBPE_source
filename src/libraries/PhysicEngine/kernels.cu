@@ -3,9 +3,13 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#include "UniformGrid.h"
+#define GLM_FORCE_CUDA
+#include <glm\glm.hpp>
+
+//#include "UniformGrid.h"
 #include "World.h"
 
+#include "kernels.cuh"
 #include "kernels_impl.cuh"
 
 //link fix try 4
@@ -17,11 +21,11 @@ int nearHighVal(int a, int b){
 
 //extern "C"{
 	//<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
-	void resetGrid(int* gridCounters, glm::ivec4* gridCells){
+	void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g){
 
 		//blocks und threads berechn.
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
-		int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
+		//int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
 		cout << "gridsize: " << g << endl;	//zum debuggen
 		int blockSize = 1024;	//64, 256, 512, 1024
 		//int numThreads = (int)fmin(blockSize, g);

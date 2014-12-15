@@ -12,6 +12,9 @@
 #define GLM_FORCE_CUDA
 #include <glm\glm.hpp>
 
+#include "vectorAdd.cuh"
+#include "vectorAdd_impl.cuh"
+
 using namespace std;
 /**
 * CUDA Kernel Device code
@@ -20,7 +23,7 @@ using namespace std;
 * number of elements numElements.
 */
 //__global__ void vectorAdd(const float *A, const float *B, float *C, int numElements){
-__global__ void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numElements){
+/*__global__ void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numElements){
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 	if (i < numElements)
@@ -30,12 +33,12 @@ __global__ void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numEleme
 		C[i].y = A[i].y + B[i].y;
 		C[i].z = A[i].z + B[i].z;
 	}
-}
+}*/
 
 /**
 * Host main routine
 */
-int main(void){
+/*int main(void){
 	// Error code to check return values for CUDA calls
 	//cudaError_t err = cudaSuccess;
 
@@ -98,7 +101,8 @@ int main(void){
 	int threadsPerBlock = 64;	//256
 	int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;
 	printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-	vectorAdd << <blocksPerGrid, threadsPerBlock >> >(d_A, d_B, d_C, numElements);
+	//vectorAdd <<<blocksPerGrid, threadsPerBlock >>>(d_A, d_B, d_C, numElements);
+	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(d_A, d_B, d_C, numElements);
 	//cudaGetLastError();
 
 	// Copy the device result vector in device memory to the host result vector
@@ -151,5 +155,14 @@ int main(void){
 
 	printf("Done\n");
 	return 0;
-}
+}*/
 
+void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numEl){
+
+	// Launch the Vector Add CUDA Kernel
+	int threadsPerBlock = 64;	//256
+	int blocksPerGrid = (numEl + threadsPerBlock - 1) / threadsPerBlock;
+	printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
+	//vectorAdd <<<blocksPerGrid, threadsPerBlock >>>(d_A, d_B, d_C, numElements);
+	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(A, B, C, numEl);
+}

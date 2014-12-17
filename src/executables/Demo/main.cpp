@@ -17,7 +17,8 @@ float dur = 0.01f;
 float termVeloc = 20.0f;
 float springCoeff = 100.0f;
 float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
-bool iGPU = true;			//false für cpu, true für gpu
+bool iGPU = false;			//false für cpu, true für gpu
+bool iGrid = true;
 float worldSize = 15.0f;	//Half length of world	//15
 float partRadius = 0.20f;
 float boxHSize = partRadius * 3;
@@ -25,7 +26,7 @@ int bodyNumber = 4;
 
 int main() {
 
-	demo = new Demo(WIDTH, HEIGHT, dur, termVeloc, worldSize, partRadius, springCoeff, dampCoeff,bodyNumber, iGPU);
+	demo = new Demo(WIDTH, HEIGHT, dur, termVeloc, worldSize, partRadius, springCoeff, dampCoeff,bodyNumber, iGPU, iGrid);
 	demo->run();
 
 	//cout << "Hallo Test!" << endl;

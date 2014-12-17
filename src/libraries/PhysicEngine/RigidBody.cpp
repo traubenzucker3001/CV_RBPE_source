@@ -227,7 +227,8 @@ void RigidBody::updateMomenta(float duration){
 	int numP = shape->getNumOfPart();
 	for (int i=0; i<numP; i++) {
 
-		glm::vec3 particleForce = shape->bodyParticles[i]->calculateForces();
+		bool wg = demo->isWithGrid();
+		glm::vec3 particleForce = shape->bodyParticles[i]->calculateForces(wg);
 		force.x = force.x + particleForce.x;
 		force.y = force.y + particleForce.y;	//von + auf - gesetzt
 		force.z = force.z + particleForce.z;

@@ -23,7 +23,7 @@ void resizeCallback(GLFWwindow *window, int w, int h){
 }
 
 
-Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN){
+Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN){
 
 	//cout << "demo: demo constr called!" << endl; //zum test
 
@@ -41,6 +41,7 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	geometry = 0;
 	plane = 0;
 	isGPU = igIN;
+	withGrid = wgIN;
 	cubeMaterial = 0;
 }
 

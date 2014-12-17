@@ -50,6 +50,7 @@ private:
 	float terminalVeloc;						/**< terminal velocity */
 
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
+	bool withGrid;								/**< ... */
 
 	//?
 	/*int vertexCount;					/**< ... */
@@ -77,7 +78,7 @@ public:
 	* @param bnIN total number of bodies in the scene
 	* @param igIN true for executuin on gpu, false for cpu
 	*/
-	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN);
+	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN);
 
 	/** \brief default constructor
 	*
@@ -200,6 +201,14 @@ public:
 
 	void setIsGpu(bool isGpu) {
 		isGPU = isGpu;
+	}
+
+	bool isWithGrid() const {
+		return withGrid;
+	}
+
+	void setWithGrid(bool withGrid) {
+		this->withGrid = withGrid;
 	}
 };
 

@@ -4,10 +4,12 @@
 #include "UniformGrid.h"
 #include "World.h"
 #include "Cuda.h"
+#include "DemoApp\Demo.h"
 
 //link fix try 4
 extern World* world;
 extern Cuda* cuda;
+//extern Demo* demo;
 
 int Particle::indexCount = 0;
 
@@ -35,59 +37,45 @@ Particle::~Particle(){
 	//no pointers to clear!
 }
 
-glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel reagieren nicht aufeinander, nachbarfindung oder kraft berechnung nicht korrekt
+glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - partikel reagieren nicht aufeinander, nachbarfindung oder kraft berechnung nicht korrekt
 
 	//cout << "part: calcForces called!" << endl; //zum test
 
 	//mehrere schritte zusammenfassen
 	force = glm::vec3(0,0,0);
-	//cout << "1pFy: " << force.y << endl;	//zum debuggen
-	//-----part1-----
-	//calculateCollisionForces();		//siehe anhang (unten), ohne gitter
 
 	float partR = world->getPartRadius();
 	float worldS = world->getWorldSize();
 	float springC = world->getSpringCoeff();
 	float dampC = world->getDampCoeff();
 
-	//-----part2-----
-	//calculateCollisionForcesWithGrid();
-	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
-	if (UniformGrid::getInstance()->isValidGridIndex(gridIndex) == true) {
-		//cout << "collwithpart!" << endl;	//zum debuggen
-		int* neighborParticles = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
-		int ppv = UniformGrid::getInstance()->getPartPerVoxel();
-		
-		int target = ppv * 27;
-		for (int i=0; i<target; i++) {
-			int neighborIndex = neighborParticles[i];
-			if (neighborIndex != -1 && neighborIndex != this->partIndex) {
-	
-				Particle* neighbor = world->allParticles[neighborIndex];
-				glm::vec3 jPos = neighbor->getPosition();
-				//glm::vec3 jPos = world->allParticles[neighborIndex]->position;
+	//cout << "1pFy: " << force.y << endl;	//zum debuggen
+	//-----part1-----
+	//calculateCollisionForces();		//siehe anhang (unten), ohne gitter
+	//bool wg = world->isWithGrid();
+	if (wgIN == false){
+		cout << "part: calcForces without grid!" << endl; //zum test
+		int numP = world->getAllPartNum();
+		for (int j = 0; j<numP; j++) {
+			if (j != this->partIndex) {
 
-				/*
-				cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
-				cout << "jPos: " << jPos.x << ", " << jPos.y << ", " << jPos.z << endl;	//zum debuggen
-				*/
+				glm::vec3 jPos = world->allParticles[j]->getPosition();
 
 				glm::vec3 distance;
 				distance.x = jPos.x - position.x;
 				distance.y = jPos.y - position.y;
 				distance.z = jPos.z - position.z;
-	
-				float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
+
+				float absDistance = sqrt(distance[0] * distance[0] +
+										 distance[1] * distance[1] +
+										 distance[2] * distance[2]);
 
 				if (absDistance + 0.00001f < (2.0f * partR)) {
-					force.x = force.x - springC*(2.0f*partR - absDistance)*(distance.x/absDistance);
-					force.y = force.y - springC*(2.0f*partR - absDistance)*(distance.y/absDistance);
-					force.z = force.z - springC*(2.0f*partR - absDistance)*(distance.z/absDistance);
+					force.x = force.x - springC*(2.0f*partR - absDistance)*(distance.x / absDistance);
+					force.y = force.y - springC*(2.0f*partR - absDistance)*(distance.y / absDistance);
+					force.z = force.z - springC*(2.0f*partR - absDistance)*(distance.z / absDistance);
 
-					//glm::vec3 jVel = neighbors->getVelocity();
-					glm::vec3 jVel = neighbor->getVelocity();
-					//glm::vec3 jVel = world->allParticles[neighborIndex]->velocity;
-
+					glm::vec3 jVel = world->allParticles[j]->getVelocity();
 					glm::vec3 relativeVelocity;
 					relativeVelocity.x = jVel.x - velocity.x;
 					relativeVelocity.y = jVel.y - velocity.y;
@@ -99,8 +87,67 @@ glm::vec3 Particle::calculateForces(){		// TODO debugging: cpu vers - partikel r
 				}
 			}
 		}
-		delete neighborParticles;
-		//cout << "2pFy: " << force.y << endl;	//zum debuggen
+	}
+	/*
+	float partR = world->getPartRadius();
+	float worldS = world->getWorldSize();
+	float springC = world->getSpringCoeff();
+	float dampC = world->getDampCoeff();
+	*/
+	//-----part2-----
+	//calculateCollisionForcesWithGrid();
+	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
+	if (wgIN == true){
+		cout << "part: calcForces with grid!" << endl; //zum test
+		if (UniformGrid::getInstance()->isValidGridIndex(gridIndex) == true) {
+			//cout << "collwithpart!" << endl;	//zum debuggen
+			int* neighborParticles = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
+			int ppv = UniformGrid::getInstance()->getPartPerVoxel();
+		
+			int target = ppv * 27;
+			for (int i=0; i<target; i++) {
+				int neighborIndex = neighborParticles[i];
+				if (neighborIndex != -1 && neighborIndex != this->partIndex) {
+	
+					Particle* neighbor = world->allParticles[neighborIndex];
+					glm::vec3 jPos = neighbor->getPosition();
+					//glm::vec3 jPos = world->allParticles[neighborIndex]->position;
+
+					/*
+					cout << "position: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
+					cout << "jPos: " << jPos.x << ", " << jPos.y << ", " << jPos.z << endl;	//zum debuggen
+					*/
+
+					glm::vec3 distance;
+					distance.x = jPos.x - position.x;
+					distance.y = jPos.y - position.y;
+					distance.z = jPos.z - position.z;
+	
+					float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
+
+					if (absDistance + 0.00001f < (2.0f * partR)) {
+						force.x = force.x - springC*(2.0f*partR - absDistance)*(distance.x/absDistance);
+						force.y = force.y - springC*(2.0f*partR - absDistance)*(distance.y/absDistance);
+						force.z = force.z - springC*(2.0f*partR - absDistance)*(distance.z/absDistance);
+
+						//glm::vec3 jVel = neighbors->getVelocity();
+						glm::vec3 jVel = neighbor->getVelocity();
+						//glm::vec3 jVel = world->allParticles[neighborIndex]->velocity;
+
+						glm::vec3 relativeVelocity;
+						relativeVelocity.x = jVel.x - velocity.x;
+						relativeVelocity.y = jVel.y - velocity.y;
+						relativeVelocity.z = jVel.z - velocity.z;
+
+						force.x = force.x + dampC*relativeVelocity.x;
+						force.y = force.y + dampC*relativeVelocity.y;
+						force.z = force.z + dampC*relativeVelocity.z;
+					}
+				}
+			}
+			delete neighborParticles;
+			//cout << "2pFy: " << force.y << endl;	//zum debuggen
+		}
 	}
 
 	//-----part3-----

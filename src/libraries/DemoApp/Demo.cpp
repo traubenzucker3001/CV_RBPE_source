@@ -23,7 +23,7 @@ void resizeCallback(GLFWwindow *window, int w, int h){
 }
 
 
-Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN){
+Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN, bool rpIN){
 
 	//cout << "demo: demo constr called!" << endl; //zum test
 
@@ -36,13 +36,17 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	terminalVeloc = tvIN;
 	camera = new CVK::Trackball(wwIN,whIN);
 	sceneRoot = new CVK::Node("Root");
+	partRoot = new CVK::Node("ParticleRoot");
 
 	float temp = prIN * 6;
-	geometry = 0;
+	cubeGeometry = 0;
 	plane = 0;
 	isGPU = igIN;
 	withGrid = wgIN;
+	renderPart = rpIN;
 	cubeMaterial = 0;
+	partGeometry = 0;
+	partMaterial = 0;
 }
 
 Demo::~Demo(){
@@ -68,9 +72,11 @@ void Demo::run(){
 	//zum debuggen: aus konstruktor gepackt
 	float pr = world->getPartRadius();
 	float temp = pr * 6;
-	geometry = new CVK::Cube(temp);
+	cubeGeometry = new CVK::Cube(temp);
+	partGeometry = new CVK::Sphere(pr*2);
 	//material setzten, geht aber nur bei node, also in VO
 	cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+	partMaterial = new CVK::Material(blue, white, 100.0f);
 
 	//plane für boden
 	plane = new CVK::Plane();
@@ -81,6 +87,7 @@ void Demo::run(){
 	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
 	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.6, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
 	demo->sceneRoot->addChild(planeNode);
+	demo->partRoot->addChild(planeNode);
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
 	camera->setRadius( 30);
@@ -131,8 +138,15 @@ void Demo::run(){
 		//update shader and render
 		phongShader.update();
 
-		updateVOs();
-		sceneRoot->render();
+		if (renderPart == false){
+			//render würfel
+			updateVOs();
+			sceneRoot->render();
+		}
+		if (renderPart == true){
+			//render partikel
+			partRoot->render();
+		}
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

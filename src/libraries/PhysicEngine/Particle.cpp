@@ -9,7 +9,7 @@
 //link fix try 4
 extern World* world;
 extern Cuda* cuda;
-//extern Demo* demo;
+extern Demo* demo;
 
 int Particle::indexCount = 0;
 
@@ -29,12 +29,19 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 
 	gridIndex = glm::ivec3(0,0,0);
 	partIndex = 0;
+
+	partNode = new CVK::Node();
+	partNode->setGeometry(demo->partGeometry);
+	partNode->setMaterial((demo->partMaterial));
+	partNode->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
+	demo->partRoot->addChild(partNode);
 	//cout << "-mass: " << mass << endl; //zum debuggen
 }
 
 Particle::~Particle(){
 
 	//no pointers to clear!
+	delete partNode;
 }
 
 glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - partikel reagieren nicht aufeinander, nachbarfindung oder kraft berechnung nicht korrekt
@@ -248,6 +255,10 @@ void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bod
 	position.y = position.y + bodyPos.y;
 	position.z = position.z + bodyPos.z;
 	//cout << "partpos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
+
+	//modelmatrix von node aktualisieren, richtig an dieser stelle ??!
+	glm::mat4 modMat = glm::mat4();	//<--TODO-
+	partNode->setModelMatrix(modMat);
 }
 
 void Particle::populateArray(){

@@ -51,6 +51,7 @@ private:
 
 	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
 	bool withGrid;								/**< ... */
+	bool renderPart;							/**< ... */
 
 	//?
 	/*int vertexCount;					/**< ... */
@@ -59,10 +60,13 @@ public:
 
 	CVK::Trackball *camera;				/**< cvk camera objekt */	//bzw normale camera
 
-	CVK::Node *sceneRoot;				/**< ... */
-	CVK::Geometry *geometry;			/**< ... */
-	CVK::Plane *plane;					/**< ... */
+	CVK::Node* sceneRoot;				/**< ... */
+	CVK::Geometry* cubeGeometry;		/**< ... */
+	CVK::Plane* plane;					/**< ... */
 	CVK::Material* cubeMaterial;		/**< ... */
+	CVK::Node* partRoot;				/**< ... */
+	CVK::Geometry* partGeometry;		/**< ... */
+	CVK::Material* partMaterial;		/**< ... */
 
 	/** \brief constructor
 	*
@@ -78,7 +82,7 @@ public:
 	* @param bnIN total number of bodies in the scene
 	* @param igIN true for executuin on gpu, false for cpu
 	*/
-	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN);
+	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN, bool rpIN);
 
 	/** \brief default constructor
 	*

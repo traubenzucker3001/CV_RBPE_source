@@ -43,7 +43,7 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 	//todo: anderes material, logo wird irgwie nicht angezeigt. vllt auch auslagern dass nur es einmal vorliegt
 	//CVK::Material mat = demo->cubeMaterial;
 
-	graphicBody->setGeometry(demo->geometry);
+	graphicBody->setGeometry(demo->cubeGeometry);
 	graphicBody->setMaterial((demo->cubeMaterial));
 
 	//liegen alle aufeinander weil hier pos nicht berücksichtigt wird

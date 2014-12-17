@@ -4,6 +4,7 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <glm/glm.hpp>
+#include "CVK_Framework\CVK_Framework.h"
 
 /** \brief Particle
  *
@@ -22,6 +23,8 @@ private:
 	glm::vec3 force;		/**< particle force */
 
 	static int indexCount; 	/**< help variable to populate all particle array */	//used to populate global particle array
+
+	CVK::Node* partNode;	/**< particle force */
 
 public:
 

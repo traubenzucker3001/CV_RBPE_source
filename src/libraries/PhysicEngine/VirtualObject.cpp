@@ -31,7 +31,7 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 
 	id = idIN;
 	position = posIN;
-	cout << "posVO: " << position.y << endl;	//zum debuggen
+	//cout << "posVO: " << position.y << endl;	//zum debuggen
 	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN,sizeIN);
 
 	//schauen ob body/part world arrays richtig bzw. überhaupt befüllt werden!!!

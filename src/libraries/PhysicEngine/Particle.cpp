@@ -61,7 +61,7 @@ glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - p
 	//calculateCollisionForces();		//siehe anhang (unten), ohne gitter
 	//bool wg = world->isWithGrid();
 	if (wgIN == false){
-		cout << "part: calcForces without grid!" << endl; //zum test
+		//cout << "part: calcForces without grid!" << endl; //zum test
 		int numP = world->getAllPartNum();
 		for (int j = 0; j<numP; j++) {
 			if (j != this->partIndex) {
@@ -105,7 +105,7 @@ glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - p
 	//calculateCollisionForcesWithGrid();
 	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
 	if (wgIN == true){
-		cout << "part: calcForces with grid!" << endl; //zum test
+		//cout << "part: calcForces with grid!" << endl; //zum test
 		if (UniformGrid::getInstance()->isValidGridIndex(gridIndex) == true) {
 			//cout << "collwithpart!" << endl;	//zum debuggen
 			int* neighborParticles = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
@@ -257,7 +257,7 @@ void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bod
 	//cout << "partpos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 
 	//modelmatrix von node aktualisieren, richtig an dieser stelle ??!
-	glm::mat4 modMat = glm::mat4();	//<--TODO-
+	glm::mat4 modMat = glm::mat4(glm::translate(glm::mat4(1.0f), position));	//<--TODO-
 	partNode->setModelMatrix(modMat);
 }
 

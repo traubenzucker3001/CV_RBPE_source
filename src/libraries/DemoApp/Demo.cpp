@@ -71,9 +71,9 @@ void Demo::run(){
 
 	//zum debuggen: aus konstruktor gepackt
 	float pr = world->getPartRadius();
-	float temp = pr * 6;
+	float temp = pr * 3;
 	cubeGeometry = new CVK::Cube(temp);
-	partGeometry = new CVK::Sphere(pr*2);
+	partGeometry = new CVK::Sphere(pr);
 	//material setzten, geht aber nur bei node, also in VO
 	cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
 	partMaterial = new CVK::Material(blue, white, 100.0f);
@@ -85,7 +85,7 @@ void Demo::run(){
 	planeNode->setGeometry(plane);
 	planeNode->setMaterial(&mat_brick);
 	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
-	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.6, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
+	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
 	demo->sceneRoot->addChild(planeNode);
 	demo->partRoot->addChild(planeNode);
 

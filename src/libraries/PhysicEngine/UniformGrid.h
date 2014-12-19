@@ -16,9 +16,9 @@ class UniformGrid : public Singleton<UniformGrid> {
 	friend class Singleton<UniformGrid>;
 
 private:
-	int* gridCells;			/**< ... */	
+	int* gridCells;			/**< array for grid cells */	
 
-	int* gridCounters; 		/**< ... */
+	int* gridCounters; 		/**< array for grid counters */
 	float voxelSize;		/**< voxel size */
 
 	int partPerVoxel = 4;	/**< particles per voxel */		//4 nach gpu gems
@@ -27,8 +27,8 @@ private:
 	int gridLength;			/**< grid lenght */
 
 	int gridSize;			/**< grid size */
-	int xSteps;				/**< ... */
-	int ySteps;				/**< ... */
+	int xSteps;				/**< offset in x-axis direction, for next grid cell */
+	int ySteps;				/**< offset in y-axis direction, for next grid cell */
 
 public:
 
@@ -62,7 +62,7 @@ public:
 	/** \brief is valid grid index
 	 *
 	 * proof of given index is a valid one
-	 * @param gridIndex ...
+	 * @param gridIndex particle grid index
 	 * @return true if it is a valid index, false if not
 	 */
 	bool isValidGridIndex(glm::ivec3 gridIndex);
@@ -70,7 +70,7 @@ public:
 	/** \brief get neighbor particle indices
 	 *
 	 * get the neighbors of the particle with given grid index
-	 * @param gridIndex ...
+	 * @param gridIndex particle grid index
 	 * @return array of neighbor particles
 	 */
 	int* getNeighborPartIndices(glm::ivec3 gridIndex);

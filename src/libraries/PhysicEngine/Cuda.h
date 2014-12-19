@@ -21,6 +21,10 @@
 //class Cuda : public Singleton<Cuda> {
 	//friend class Singleton<Cuda>;
 
+/** \brief cuda data structure
+*
+* class with all necessary host and device arrays
+*/
 class Cuda{
 private:
 
@@ -49,14 +53,14 @@ public:
 	glm::vec3 *h_pForce;		/**< host array for particle forces */
 
 	//update VOs arrays
-	glm::vec3* h_uVOpos;		/**< ... */
-	glm::quat* h_uVOrot;		/**< ... */
+	glm::vec3* h_uVOpos;		/**< host array for virtual objekt positions */
+	glm::quat* h_uVOrot;		/**< host array for virtual objekt rotations */
 
 private:
 	glm::ivec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
-	int* h_gridCounters;		/**< host array for grid ... */
-	glm::ivec4 *h_gridCells;	/**< host array for grid ... */
+	int* h_gridCounters;		/**< host array for grid counters */
+	glm::ivec4 *h_gridCells;	/**< host array for grid cells */
 
 
 	//benötigte arrays gpu (device)
@@ -81,8 +85,8 @@ private:
 
 	glm::ivec3 *d_pGridIndex;	/**< device array for particle grin indices */
 
-	int* d_gridCounters;		/**< device array for grid ... */
-	glm::ivec4 *d_gridCells;	/**< device array for grid ... */		//int4?!
+	int* d_gridCounters;		/**< device array for grid counters */
+	glm::ivec4 *d_gridCells;	/**< device array for grid cells */		//int4?!
 
 	/*
 	glm::vec3 d_gridMinPosVector;		//?!	//todo: auch auf gpu packen!!
@@ -99,16 +103,16 @@ private:
 	__device__ float d_duration;
 	__device__ float d_termVeloc;*/
 
-	float h_voxelS;						/**< ... */
-	int h_gridS;						/**< ... */
-	float h_worldS;						/**< ... */
-	float h_springC;					/**< ... */
-	float h_dampC;						/**< ... */
-	float h_pRadius;					/**< ... */
-	float h_duration;					/**< ... */
-	float h_termVeloc;					/**< ... */
+	float h_voxelS;						/**< host variable for voxel size */
+	int h_gridS;						/**< host variable for grid size */
+	float h_worldS;						/**< host variable for world size */
+	float h_springC;					/**< host variable for spring coefficient */
+	float h_dampC;						/**< host variable for damping coefficient */
+	float h_pRadius;					/**< host variable for particle radius */
+	float h_duration;					/**< host variable for simulation step duration */
+	float h_termVeloc;					/**< host variable for body terminal velocity */
 
-	glm::vec3 h_gridMinPosVector;		/**< ... */
+	glm::vec3 h_gridMinPosVector;		/**< host vector for minimum grid position*/
 
 public:
 	/** \brief constructor

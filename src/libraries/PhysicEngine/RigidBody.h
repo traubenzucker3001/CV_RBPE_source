@@ -55,7 +55,7 @@ private:
 
 	glm::mat4 transformMatrix;				/**< transformation matrix */
 
-	//CollisionShape *shape;					/**< body shape */	//partikel erst in collshape	//zu public verschoben
+	//CollisionShape *shape;				/**< body shape */	//partikel erst in collshape	//zu public verschoben
 
 	static int count;						/**< help variable for all bodies array/vector */
 

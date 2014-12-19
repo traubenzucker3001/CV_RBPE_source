@@ -26,13 +26,14 @@
 */
 void resizeCallback(GLFWwindow *window, int w, int h);
 
-/** \brief Demo
- *
- * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
- */
+
 //class Demo : public Singleton<Demo> {
 	//friend class Singleton<Demo>;
 
+/** \brief Demo
+*
+* frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
+*/
 class Demo{
 
 private:
@@ -49,9 +50,9 @@ private:
 	float duration;								/**< step duration */
 	float terminalVeloc;						/**< terminal velocity */
 
-	bool isGPU;									/**< true if simulation should run on GPU, falso if simulation should run on CPU */
-	bool withGrid;								/**< ... */
-	bool renderPart;							/**< ... */
+	bool isGPU;									/**< true if simulation should run on GPU, false if simulation should run on CPU */
+	bool withGrid;								/**< true if simulation should run with uniform grid structure, false if not */
+	bool renderPart;							/**< true if particles should be rendered, false if boxes should be rendered */
 
 	//?
 	/*int vertexCount;					/**< ... */
@@ -60,13 +61,13 @@ public:
 
 	CVK::Trackball *camera;				/**< cvk camera objekt */	//bzw normale camera
 
-	CVK::Node* sceneRoot;				/**< ... */
-	CVK::Geometry* cubeGeometry;		/**< ... */
-	CVK::Plane* plane;					/**< ... */
-	CVK::Material* cubeMaterial;		/**< ... */
-	CVK::Node* partRoot;				/**< ... */
-	CVK::Geometry* partGeometry;		/**< ... */
-	CVK::Material* partMaterial;		/**< ... */
+	CVK::Node* sceneRoot;				/**< cvk scenegraph root node, for boxes */
+	CVK::Geometry* cubeGeometry;		/**< cvk cube geometry */
+	CVK::Plane* plane;					/**< cvk plane, to represent the floor */
+	CVK::Material* cubeMaterial;		/**< cvk cube material */
+	CVK::Node* partRoot;				/**< cvk scenegraph root node, for particles */
+	CVK::Geometry* partGeometry;		/**< cvk particle geometry (sphere) */
+	CVK::Material* partMaterial;		/**< cvk particle material */
 
 	/** \brief constructor
 	*
@@ -81,6 +82,8 @@ public:
 	* @param dcIN damping coefficient
 	* @param bnIN total number of bodies in the scene
 	* @param igIN true for executuin on gpu, false for cpu
+	* @param wgIN true forexecution with grid, false for without grid
+	* @param rpIN true for render particles, false for render cubes
 	*/
 	Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN, bool rpIN);
 

@@ -1,3 +1,5 @@
 #include <glm\glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
-void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numEl);
+void vectorAdd(glm::quat* A, glm::quat* B, glm::quat* C, int numEl);

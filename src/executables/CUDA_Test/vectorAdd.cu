@@ -11,6 +11,8 @@
 
 #define GLM_FORCE_CUDA
 #include <glm\glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "vectorAdd.cuh"
 #include "vectorAdd_impl.cuh"
@@ -157,7 +159,7 @@ using namespace std;
 	return 0;
 }*/
 
-void vectorAdd(glm::vec3* A, glm::vec3* B, glm::vec3* C, int numEl){
+void vectorAdd(glm::quat* A, glm::quat* B, glm::quat* C, int numEl){
 
 	// Launch the Vector Add CUDA Kernel
 	int threadsPerBlock = 64;	//256

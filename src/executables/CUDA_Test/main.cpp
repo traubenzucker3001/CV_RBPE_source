@@ -45,6 +45,8 @@ int main() {
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 //#include "vectorAdd.cu"
 #include "vectorAdd.cuh"
@@ -61,16 +63,16 @@ int main(void){
 	// Print the vector length to be used, and compute its size
 	int numElements = 50;	//50000
 	//size_t size = numElements * sizeof(float);
-	size_t size = numElements * sizeof(glm::vec3);
+	size_t size = numElements * sizeof(glm::quat);
 	printf("[Vector addition of %d elements]\n", numElements);
 
 	// Allocate the host input (A,B) and output (C) vector
 	//float *h_A = (float *)malloc(size);
 	//float *h_B = (float *)malloc(size);
 	//float *h_C = (float *)malloc(size);
-	glm::vec3* h_A = (glm::vec3 *)malloc(size);
-	glm::vec3* h_B = (glm::vec3 *)malloc(size);
-	glm::vec3* h_C = (glm::vec3 *)malloc(size);
+	glm::quat* h_A = (glm::quat *)malloc(size);
+	glm::quat* h_B = (glm::quat *)malloc(size);
+	glm::quat* h_C = (glm::quat *)malloc(size);
 
 	// Verify that allocations succeeded
 	if (h_A == NULL || h_B == NULL || h_C == NULL){
@@ -81,30 +83,38 @@ int main(void){
 	// Initialize the host input vectors
 	for (int i = 0; i < numElements; ++i){
 		//h_A[i] = rand() / (float)RAND_MAX;
+		h_A[i].w = rand() / (float)RAND_MAX;
+		cout << "Aw: " << h_A[i].z << endl;
 		h_A[i].x = rand() / (float)RAND_MAX;
 		cout << "Ax: " << h_A[i].x << endl;
 		h_A[i].y = rand() / (float)RAND_MAX;
 		cout << "Ay: " << h_A[i].y << endl;
 		h_A[i].z = rand() / (float)RAND_MAX;
 		cout << "Az: " << h_A[i].z << endl;
+		//h_A[i].w = rand() / (float)RAND_MAX;
+		//cout << "Aw: " << h_A[i].z << endl;
 		//h_B[i] = rand() / (float)RAND_MAX;
+		h_B[i].w = rand() / (float)RAND_MAX;
+		cout << "Bw: " << h_B[i].z << endl;
 		h_B[i].x = rand() / (float)RAND_MAX;
 		cout << "Bx: " << h_B[i].x << endl;
 		h_B[i].y = rand() / (float)RAND_MAX;
 		cout << "By: " << h_B[i].y << endl;
 		h_B[i].z = rand() / (float)RAND_MAX;
 		cout << "Bz: " << h_B[i].z << endl;
+		//h_B[i].w = rand() / (float)RAND_MAX;
+		//cout << "Bw: " << h_B[i].z << endl;
 	}
 
 	// Allocate the device vectors
 	//float *d_A = NULL;
-	glm::vec3 *d_A = NULL;
+	glm::quat *d_A = NULL;
 	cudaMalloc((void **)&d_A, size);
 	//float *d_B = NULL;
-	glm::vec3 *d_B = NULL;
+	glm::quat *d_B = NULL;
 	cudaMalloc((void **)&d_B, size);
 	//float *d_C = NULL;
-	glm::vec3 *d_C = NULL;
+	glm::quat *d_C = NULL;
 	cudaMalloc((void **)&d_C, size);
 
 	// Copy the host input vectors A and B in host memory to the device input vectors in
@@ -173,3 +183,11 @@ int main(void){
 	printf("Done\n");
 	return 0;
 }
+
+//GLM:
+//-vec3 --> ok
+//-vec4 --> ok
+//-quat --> ok
+//-mat3
+//-mat4
+//...

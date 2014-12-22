@@ -16,9 +16,9 @@ Demo *demo;
 float dur = 0.01f;
 float termVeloc = 20.0f;
 float springCoeff = 100.0f;
-float dampCoeff = 0.5f;		//welt oder jeder body einzeln?!
+float dampCoeff = 0.5f;		
 bool iGPU = false;			//false für cpu, true für gpu
-bool iGrid = true;
+bool iGrid = false;
 bool renderP = false;		//momentan nur bei cpu vers möglich
 float worldSize = 15.0f;	//Half length of world	//15
 float partRadius = 0.40f;

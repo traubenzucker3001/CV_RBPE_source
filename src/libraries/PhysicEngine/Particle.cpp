@@ -35,6 +35,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	partNode->setMaterial((demo->partMaterial));
 	partNode->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
 	demo->partRoot->addChild(partNode);
+	demo->sceneRoot->addChild(partNode);	//!for transparency!
 	//cout << "-mass: " << mass << endl; //zum debuggen
 }
 
@@ -44,7 +45,7 @@ Particle::~Particle(){
 	delete partNode;
 }
 
-glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - partikel reagieren nicht aufeinander, nachbarfindung oder kraft berechnung nicht korrekt
+glm::vec3 Particle::calculateForces(bool wgIN){
 
 	//cout << "part: calcForces called!" << endl; //zum test
 
@@ -58,7 +59,7 @@ glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - p
 
 	//cout << "1pFy: " << force.y << endl;	//zum debuggen
 	//-----part1-----
-	//calculateCollisionForces();		//siehe anhang (unten), ohne gitter
+	//calculateCollisionForces();		//ohne gitter
 	//bool wg = world->isWithGrid();
 	if (wgIN == false){
 		//cout << "part: calcForces without grid!" << endl; //zum test
@@ -102,7 +103,7 @@ glm::vec3 Particle::calculateForces(bool wgIN){		// TODO debugging: cpu vers - p
 	float dampC = world->getDampCoeff();
 	*/
 	//-----part2-----
-	//calculateCollisionForcesWithGrid();
+	//calculateCollisionForcesWithGrid();	//mit gitter
 	//cout << "gridIndex: " << gridIndex.x << ", " << gridIndex.y << ", " << gridIndex.z << endl;	//zum debuggen
 	if (wgIN == true){
 		//cout << "part: calcForces with grid!" << endl; //zum test
@@ -302,39 +303,3 @@ void Particle::updateCUDArray(int particleIndex){
 	cuda->h_pForce[i] = force;
 }
 
-//-----"anhang"-----
-
-//calculateCollisionForces();	//ohne gitter
-/*
-for (int j=0; j<totalNumberOfParticles; j++) {
-	if (j != this->particleIndex) {
-
-		float* jPos = particles[j]->getPosition();
-
-		float distance[3];
-		distance[0] = jPos[0] - position[0];
-		distance[1] = jPos[1] - position[1];
-		distance[2] = jPos[2] - position[2];
-
-		float absDistance = sqrt(distance[0]*distance[0] +
-					distance[1]*distance[1] +
-					distance[2]*distance[2]);
-
-		if (absDistance + 0.00001f < (2.0f * particleRadius)) {
-			force[0] = force[0] - springCoefficient*(2.0f*particleRadius - absDistance)*(distance[0]/absDistance);
-			force[1] = force[1] - springCoefficient*(2.0f*particleRadius - absDistance)*(distance[1]/absDistance);
-			force[2] = force[2] - springCoefficient*(2.0f*particleRadius - absDistance)*(distance[2]/absDistance);
-
-			float* jVel = particles[j]->getVelocity();
-			float relativeVelocity[3];
-			relativeVelocity[0] = jVel[0] - velocity[0];
-			relativeVelocity[1] = jVel[1] - velocity[1];
-			relativeVelocity[2] = jVel[2] - velocity[2];
-
-			force[0] += dampingCoefficient*relativeVelocity[0];
-			force[1] += dampingCoefficient*relativeVelocity[1];
-			force[2] += dampingCoefficient*relativeVelocity[2];
-		}
-	}
-}
-*/

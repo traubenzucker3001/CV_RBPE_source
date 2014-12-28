@@ -159,12 +159,12 @@ using namespace std;
 	return 0;
 }*/
 
-void vectorAdd(glm::quat* A, glm::quat* B, glm::quat* C, int numEl){
+void vectorAdd(int* A, glm::ivec4* B, int numEl){
 
 	// Launch the Vector Add CUDA Kernel
 	int threadsPerBlock = 64;	//256
 	int blocksPerGrid = (numEl + threadsPerBlock - 1) / threadsPerBlock;
 	printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
 	//vectorAdd <<<blocksPerGrid, threadsPerBlock >>>(d_A, d_B, d_C, numElements);
-	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(A, B, C, numEl);
+	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(A, B, numEl);
 }

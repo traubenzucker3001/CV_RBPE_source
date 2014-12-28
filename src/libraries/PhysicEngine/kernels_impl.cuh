@@ -19,21 +19,15 @@
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
 __global__ void resetGridC(int* gridCounters, glm::ivec4* indexGrid, int gs){
-	//printf(“var:%d\n”, var);
 
-	//cout bzw. printf() in kernel möglich?!
-	//ja, siehe --> cuda samples - 0_simple - simpleprintf
-
-	//...
-	//unsigned int flatGridIndex = get_global_id(0);
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
-	//printf("tid:%d\n", i);
-	if (i >= gs){
+
+	/*if (i >= gs){
 		return;
-	}
+	}*/
 	if (i < gs){
 		gridCounters[i] = 0;
-		indexGrid[i].x = -1;	//als int
+		indexGrid[i].x = -1;
 		indexGrid[i].y = -1;
 		indexGrid[i].z = -1;
 		indexGrid[i].w = -1;

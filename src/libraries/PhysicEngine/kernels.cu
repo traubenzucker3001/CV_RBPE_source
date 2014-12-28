@@ -27,7 +27,7 @@ int nearHighVal(int a, int b){
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
 		//int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
 		cout << "gridsize: " << g << endl;	//zum debuggen
-		int blockSize = 1024;	//64, 256, 512, 1024
+		int blockSize = 512;	//64, 256, 512, 1024
 		//int numThreads = (int)fmin(blockSize, g);
 		int numThreads = blockSize;
 		int numBlocks = nearHighVal(g, numThreads);	

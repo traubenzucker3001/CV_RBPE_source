@@ -35,7 +35,7 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	partNode->setMaterial((demo->partMaterial));
 	partNode->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
 	demo->partRoot->addChild(partNode);
-	demo->sceneRoot->addChild(partNode);	//!for transparency!
+	//demo->sceneRoot->addChild(partNode);	//!for transparency!
 	//cout << "-mass: " << mass << endl; //zum debuggen
 }
 

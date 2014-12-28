@@ -367,7 +367,7 @@ void Cuda::stepCUDA(){
 	cout << "-test stepCUDA 1-" << endl; //zum debuggen
 	int g = UniformGrid::getInstance()->getGridSize();
 	resetGrid(d_gridCounters, d_gridCells,g);		//versuch: g hier nicht erst in.cu
-	cout << "-test stepCUDA 2-" << endl; //zum debuggen
+	/*cout << "-test stepCUDA 2-" << endl; //zum debuggen
 	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
 	cout << "-test stepCUDA 3-" << endl; //zum debuggen
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gridCounters, d_gridCells, d_gridS);
@@ -379,7 +379,7 @@ void Cuda::stepCUDA(){
 	cout << "pos: " << h_rbPos[2].y << endl;	//zum debuggen
 	cout << "-test stepCUDA 6-" << endl; //zum debuggen
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc, d_pRadius);
-	cout << "-test stepCUDA 7-" << endl; //zum debuggen
+	cout << "-test stepCUDA 7-" << endl; //zum debuggen	*/
 	//VOs updaten
 	//TODO
 

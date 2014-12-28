@@ -75,9 +75,9 @@ void Demo::run(){
 	cubeGeometry = new CVK::Cube(temp);
 	partGeometry = new CVK::Sphere(pr);
 	//material setzten, geht aber nur bei node, also in VO
-	//cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
-	cubeMaterial = new CVK::Material(red, white, 100.0f);	//!for transparency!
-	cubeMaterial->setAlpha(0.5);							//!for transparency!
+	cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+	//cubeMaterial = new CVK::Material(red, white, 100.0f);	//!for transparency!
+	//cubeMaterial->setAlpha(0.5);							//!for transparency!
 	partMaterial = new CVK::Material(blue, white, 100.0f);
 
 	//plane für boden

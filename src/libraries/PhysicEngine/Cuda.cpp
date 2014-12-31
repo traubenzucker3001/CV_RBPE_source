@@ -364,18 +364,18 @@ void Cuda::stepCUDA(){
 	//cout << "cuda: stepCUDA!" << endl; //zum test
 
 	//schritte nacheinander aufrufen
-	cout << "-test stepCUDA 1-" << endl; //zum debuggen
-	int g = UniformGrid::getInstance()->getGridSize();
-	resetGrid(d_gridCounters, d_gridCells,g);		//versuch: g hier nicht erst in.cu
-	/*cout << "-test stepCUDA 2-" << endl; //zum debuggen
-	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
+//	cout << "-test stepCUDA 1-" << endl; //zum debuggen
+//	int g = UniformGrid::getInstance()->getGridSize();
+//	resetGrid(d_gridCounters, d_gridCells,g);		//versuch: g hier nicht erst in.cu
+//	cout << "-test stepCUDA 2-" << endl; //zum debuggen
+//	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_gridMinPosVector, d_voxelS, d_gridS, d_pGridIndex);
 	cout << "-test stepCUDA 3-" << endl; //zum debuggen
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pRadius, d_worldS, d_springC, d_dampC, d_pGridIndex, d_gridCounters, d_gridCells, d_gridS);
-	cout << "-test stepCUDA 4-" << endl; //zum debuggen
-	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
-	cout << "-test stepCUDA 5-" << endl; //zum debuggen
-	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens, d_duration, d_pRadius);
-	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+//	cout << "-test stepCUDA 4-" << endl; //zum debuggen
+//	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
+//	cout << "-test stepCUDA 5-" << endl; //zum debuggen
+//	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens, d_duration, d_pRadius);
+	/*cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	cout << "pos: " << h_rbPos[2].y << endl;	//zum debuggen
 	cout << "-test stepCUDA 6-" << endl; //zum debuggen
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc, d_pRadius);

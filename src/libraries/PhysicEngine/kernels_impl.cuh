@@ -328,9 +328,9 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 
-	if (pi >= nop){
+	/*if (pi >= nop){
 		return;
-	}
+	}*/
 	if (pi < nop){
 		pForce[pi].x = 0.0f;
 		pForce[pi].y = 0.0f;
@@ -388,18 +388,14 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 					float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
 
 					if ((absDistance + 0.000001f) < (2.0f * pRadius)) {
-						pForce[pi].x -= springC*
-							(pRadius + pRadius - absDistance)*(distance.x / absDistance);
-						pForce[pi].y -= springC*
-							(pRadius + pRadius - absDistance)*(distance.y / absDistance);
-						pForce[pi].z -= springC*
-							(pRadius + pRadius - absDistance)*(distance.z / absDistance);
+						pForce[pi].x -= springC*(pRadius + pRadius - absDistance)*(distance.x / absDistance);
+						pForce[pi].y -= springC*(pRadius + pRadius - absDistance)*(distance.y / absDistance);
+						pForce[pi].z -= springC*(pRadius + pRadius - absDistance)*(distance.z / absDistance);
 
 						//glm::vec3
-						float3 relativeVelocity = {
-							pVeloc[otherParticle].x - pVeloc[pi].x,
-							pVeloc[otherParticle].y - pVeloc[pi].y,
-							pVeloc[otherParticle].z - pVeloc[pi].z };
+						float3 relativeVelocity = { pVeloc[otherParticle].x - pVeloc[pi].x,
+													pVeloc[otherParticle].y - pVeloc[pi].y,
+													pVeloc[otherParticle].z - pVeloc[pi].z };
 
 						pForce[pi].x += dampC*relativeVelocity.x;
 						pForce[pi].y += dampC*relativeVelocity.y;
@@ -416,34 +412,29 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		// Ground collision
 		if (pPos[pi].y - pRadius < 0.0f) {
 			collisionOccured = true;
-			pForce[pi].y += springC*
-				(pRadius - pPos[pi].y);
+			pForce[pi].y += springC*(pRadius - pPos[pi].y);
 		}
 
 		// X-axis Wall Collision
 		if (pPos[pi].x - pRadius < -worldS) {
 			collisionOccured = true;
-			pForce[pi].x += springC*
-				(-worldS - pPos[pi].x + pRadius);
+			pForce[pi].x += springC*(-worldS - pPos[pi].x + pRadius);
 
 		}
 		else if (pPos[pi].x + pRadius > worldS) {
 			collisionOccured = true;
-			pForce[pi].x += springC*
-				(worldS - pPos[pi].x - pRadius);
+			pForce[pi].x += springC*(worldS - pPos[pi].x - pRadius);
 		}
 
 		// Z-axis Wall Collision
 		if (pPos[pi].z - pRadius < -worldS) {
 			collisionOccured = true;
-			pForce[pi].z += springC*
-				(-worldS - pPos[pi].z + pRadius);
+			pForce[pi].z += springC*(-worldS - pPos[pi].z + pRadius);
 
 		}
 		else if (pPos[pi].z + pRadius > worldS) {
 			collisionOccured = true;
-			pForce[pi].z += springC*
-				(worldS - pPos[pi].z - pRadius);
+			pForce[pi].z += springC*(worldS - pPos[pi].z - pRadius);
 		}
 
 		// Damping

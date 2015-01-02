@@ -98,7 +98,7 @@ int nearHighVal(int a, int b){
 		//blocks und threads berechn.
 		//thread pro part.
 		int p = world->getAllPartNum();
-		int blockSize = 64;
+		int blockSize = 512;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?

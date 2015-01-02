@@ -388,18 +388,18 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 					float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
 
 					if ((absDistance + 0.000001f) < (2.0f * pRadius)) {
-						pForce[pi].x -= springC*(pRadius + pRadius - absDistance)*(distance.x / absDistance);
-						pForce[pi].y -= springC*(pRadius + pRadius - absDistance)*(distance.y / absDistance);
-						pForce[pi].z -= springC*(pRadius + pRadius - absDistance)*(distance.z / absDistance);
+						pForce[pi].x = pForce[pi].x - springC*(pRadius + pRadius - absDistance)*(distance.x / absDistance);
+						pForce[pi].y = pForce[pi].y - springC*(pRadius + pRadius - absDistance)*(distance.y / absDistance);
+						pForce[pi].z = pForce[pi].z - springC*(pRadius + pRadius - absDistance)*(distance.z / absDistance);
 
 						//glm::vec3
 						float3 relativeVelocity = { pVeloc[otherParticle].x - pVeloc[pi].x,
 													pVeloc[otherParticle].y - pVeloc[pi].y,
 													pVeloc[otherParticle].z - pVeloc[pi].z };
 
-						pForce[pi].x += dampC*relativeVelocity.x;
-						pForce[pi].y += dampC*relativeVelocity.y;
-						pForce[pi].z += dampC*relativeVelocity.z;
+						pForce[pi].x = pForce[pi].x + dampC*relativeVelocity.x;
+						pForce[pi].y = pForce[pi].y + dampC*relativeVelocity.y;
+						pForce[pi].z = pForce[pi].z + dampC*relativeVelocity.z;
 
 					}
 				}

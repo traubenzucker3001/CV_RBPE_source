@@ -168,3 +168,11 @@ void vectorAdd(int* A, glm::ivec4* B, int numEl){
 	//vectorAdd <<<blocksPerGrid, threadsPerBlock >>>(d_A, d_B, d_C, numElements);
 	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(A, B, numEl);
 }
+
+void vectorAdd2(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int gridSL, int numEl){
+	int threadsPerBlock = 64;	//256
+	int blocksPerGrid = (numEl + threadsPerBlock - 1) / threadsPerBlock;
+	printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
+
+	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, gridCounters, gridCells, gridSL, numEl);
+}

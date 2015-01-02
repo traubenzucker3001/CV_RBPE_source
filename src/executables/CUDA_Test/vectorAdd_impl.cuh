@@ -25,3 +25,10 @@ __global__ void vectorAddC(int* A, glm::ivec4* B, int numElements){
 		B[i].w = -1;
 	}
 }
+
+__global__ void vectorAddC(..., int numElements){
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
+
+
+}
+pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, gridCounters, gridCells, gridSL, p

@@ -65,6 +65,10 @@ int main(void){
 	//size_t size = numElements * sizeof(float);
 	size_t size1 = numElements * sizeof(int);
 	size_t size2 = numElements * sizeof(glm::ivec4);
+
+	size_t size3 = numElements * sizeof(float);
+	size_t size4 = numElements * sizeof(glm::vec3);
+
 	printf("[Vector addition of %d elements]\n", numElements);
 
 	// Allocate the host input (A,B) and output (C) vector
@@ -74,6 +78,24 @@ int main(void){
 	int* h_A = (int *)malloc(size1);
 	glm::ivec4* h_B = (glm::ivec4 *)malloc(size2);
 	//glm::quat* h_C = (glm::quat *)malloc(size);
+
+	float* pMass = (float*)malloc(size3);
+	glm::vec3* pPos = (glm::vec3 *)malloc(size4);
+	glm::vec3* pVeloc = (glm::vec3 *)malloc(size4);
+	glm::vec3* pForce = (glm::vec3 *)malloc(size4);
+
+	pRadius, 
+	worldS, 
+	springC, 
+	dampC, 
+	
+	pGridIndex, 
+	gridCounters, 
+	gridCells, 
+	
+	gridSL, 
+	
+	//p = numEL
 
 	// Verify that allocations succeeded
 	if (h_A == NULL || h_B == NULL){

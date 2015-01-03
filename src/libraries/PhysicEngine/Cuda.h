@@ -104,7 +104,8 @@ private:
 	__device__ float d_termVeloc;*/
 
 	float h_voxelS;						/**< host variable for voxel size */
-	int h_gridS;						/**< host variable for grid size */
+	//int h_gridS;						/**< host variable for grid size */
+	int h_gridSL;						/**< host variable for grid side lenght */
 	float h_worldS;						/**< host variable for world size */
 	float h_springC;					/**< host variable for spring coefficient */
 	float h_dampC;						/**< host variable for damping coefficient */

@@ -174,5 +174,5 @@ void vectorAdd2(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pFo
 	int blocksPerGrid = (numEl + threadsPerBlock - 1) / threadsPerBlock;
 	printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
 
-	vectorAddC <<<blocksPerGrid, threadsPerBlock >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, gridCounters, gridCells, gridSL, numEl);
+	vectorAddCU <<<blocksPerGrid, threadsPerBlock >>>(pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, gridCounters, gridCells, gridSL, numEl);
 }

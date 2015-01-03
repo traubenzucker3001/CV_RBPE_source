@@ -107,6 +107,14 @@ public:
 	void setGridSize(int gridSize) {
 		this->gridSize = gridSize;
 	}
+
+	int getGridLength() const {
+		return gridLength;
+	}
+
+	void setGridLength(int gridLength) {
+		this->gridLength = gridLength;
+	}
 };
 
 #endif /* UNIFORMGRID_H_ */

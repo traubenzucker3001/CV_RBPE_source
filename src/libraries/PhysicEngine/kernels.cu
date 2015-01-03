@@ -26,14 +26,14 @@ int nearHighVal(int a, int b){
 		//blocks und threads berechn.
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
 		//int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
-		cout << "gridsize: " << g << endl;	//zum debuggen
+		//cout << "gridsize: " << g << endl;	//zum debuggen
 		int blockSize = 512;	//64, 256, 512, 1024
 		//int numThreads = (int)fmin(blockSize, g);
 		int numThreads = blockSize;
 		int numBlocks = nearHighVal(g, numThreads);	
 		//int numBlocks = ((g + 1024 -1) / 1024);
-		cout << "threads: " << numThreads << endl;	//zum debuggen
-		cout << "blocks: " << numBlocks << endl;	//zum debuggen
+		//cout << "threads: " << numThreads << endl;	//zum debuggen
+		//cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
 		//int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;	//aus vectorAdd
 
@@ -48,12 +48,12 @@ int nearHighVal(int a, int b){
 		//int b = World::getInstance()->getAllBodyNum();	//wird bodies oder particle benötigt, oder gitter abhängiges
 		//thread pro part.
 		int p = world->getAllPartNum();
-		cout << "gridsize: " << p << endl;	//zum debuggen
+		//cout << "gridsize: " << p << endl;	//zum debuggen
 		int blockSize = 64;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);
-		cout << "threads: " << numThreads << endl;	//zum debuggen
-		cout << "blocks: " << numBlocks << endl;	//zum debuggen
+		//cout << "threads: " << numThreads << endl;	//zum debuggen
+		//cout << "blocks: " << numBlocks << endl;	//zum debuggen
 		//geht doch bestimmt auch noch "besser"!!?
 
 		updateGridC <<< numBlocks, numThreads >>>(gridCounters, gridCells, pPos, gridMinPosVec, voxelSL, gridSL, pGridIndex, p);

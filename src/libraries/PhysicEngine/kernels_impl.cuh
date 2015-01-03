@@ -200,9 +200,9 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 		rbVeloc[bi].y = rbLinMom[bi].y / rbMass[bi];
 		rbVeloc[bi].z = rbLinMom[bi].z / rbMass[bi];
 
-		rbPos[bi].x += rbVeloc[bi].x * duration;
-		rbPos[bi].y += rbVeloc[bi].y * duration;
-		rbPos[bi].z += rbVeloc[bi].z * duration;
+		rbPos[bi].x = rbPos[bi].x + rbVeloc[bi].x * duration;
+		rbPos[bi].y = rbPos[bi].y + rbVeloc[bi].y * duration;
+		rbPos[bi].z = rbPos[bi].z + rbVeloc[bi].z * duration;
 		}
 
 		//Perform angular step

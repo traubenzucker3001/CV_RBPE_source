@@ -289,7 +289,7 @@ void Cuda::hostToDevice(){
 
 	//cout << "cuda: hostTOdevice called!" << endl; //zum test
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (vor host to device): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 
 	//cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
@@ -336,7 +336,7 @@ void Cuda::hostToDevice(){
 
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (nach host to device): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 
 }
@@ -377,7 +377,7 @@ void Cuda::stepCUDA(){
 
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (vor kernel starts): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 
 	//schritte nacheinander aufrufen
@@ -387,7 +387,7 @@ void Cuda::stepCUDA(){
 	
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (nach resetGrid): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 	
 //	cout << "-test stepCUDA 2-" << endl; //zum debuggen
@@ -395,7 +395,7 @@ void Cuda::stepCUDA(){
 
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (nach updateGrid): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 	
 //	cout << "-test stepCUDA 3-" << endl; //zum debuggen
@@ -403,17 +403,23 @@ void Cuda::stepCUDA(){
 
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (nach calcForces): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 
 //	cout << "-test stepCUDA 4-" << endl; //zum debuggen
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce, d_duration, d_termVeloc);
+
+	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+	for (int i = 0; i < 5; i++){
+		cout << "pos (nach updateMom): " << h_rbPos[i].y << endl;	//zum debuggen
+	}
+	
 //	cout << "-test stepCUDA 5-" << endl; //zum debuggen
 	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens, d_duration, d_pRadius);
 	
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
-		cout << "pos: " << h_rbPos[i].y << endl;	//zum debuggen
+		cout << "pos (nach iterate): " << h_rbPos[i].y << endl;	//zum debuggen
 	}
 
 //	cout << "-test stepCUDA 6-" << endl; //zum debuggen

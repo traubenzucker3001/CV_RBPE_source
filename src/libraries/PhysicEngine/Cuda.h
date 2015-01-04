@@ -9,7 +9,6 @@
 
 #include "DesignPatterns\Singleton.h"
 
-
 //link fix try 4
 
 
@@ -30,6 +29,7 @@ private:
 
 	int bodyNum;	/**< total number of rigid bodies */
 	int partNum;	/**< total number of particles */
+	int gridSize;	/**< total number of grid cells */
 
 public:
 	//benötigten arrays cpu (host)
@@ -60,7 +60,7 @@ private:
 	glm::ivec3 *h_pGridIndex;	/**< host array for particle grin indices */
 
 	int* h_gridCounters;		/**< host array for grid counters */
-	glm::ivec4 *h_gridCells;	/**< host array for grid cells */
+	glm::ivec4* h_gridCells;	/**< host array for grid cells */
 
 
 	//benötigte arrays gpu (device)
@@ -83,7 +83,7 @@ private:
 	glm::vec3 *d_pVeloc;		/**< device array for particle velocities */
 	glm::vec3 *d_pForce;		/**< device array for particle forces */
 
-	glm::ivec3 *d_pGridIndex;	/**< device array for particle grin indices */
+	glm::ivec3 *d_pGridIndex;	/**< device array for particle grid indices */
 
 	int* d_gridCounters;		/**< device array for grid counters */
 	glm::ivec4 *d_gridCells;	/**< device array for grid cells */		//int4?!

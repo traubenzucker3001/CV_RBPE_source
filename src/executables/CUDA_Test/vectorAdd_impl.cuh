@@ -27,7 +27,7 @@ __global__ void vectorAddC(int* A, glm::ivec4* B, int numElements){
 }
 
 __global__ void vectorAddCU(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int gridSL, int numEl){
-	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	//int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 
 }

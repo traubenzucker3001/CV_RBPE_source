@@ -17,24 +17,39 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+__device__ __constant__ float d_voxelS;
+//__device__ __constant__ int d_gridS;
+__device__ __constant__ int d_gridSL;
+__device__ __constant__ float d_worldS;
+__device__ __constant__ float d_springC;
+__device__ __constant__ float d_dampC;
+__device__ __constant__ float d_pRadius;
+__device__ __constant__ float d_duration;
+__device__ __constant__ float d_termVeloc;
+
+//__device__ __constant__ glm::vec3 d_gridMinPosVector;
+__device__ __constant__ float d_gridMinPosVecX;
+__device__ __constant__ float d_gridMinPosVecY;
+__device__ __constant__ float d_gridMinPosVecZ;
+
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
-__global__ void resetGridC(int* gridCounters, glm::ivec4* indexGrid, int gs){
+__global__ void resetGridC(int* gridCounters, glm::ivec4* gridCells, int gs){
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
-	/*if (i >= gs){
+	if (i >= gs){
 		return;
-	}*/
+	}
 	if (i < gs){
 		gridCounters[i] = 0;
-		indexGrid[i].x = -1;
-		indexGrid[i].y = -1;
-		indexGrid[i].z = -1;
-		indexGrid[i].w = -1;
+		gridCells[i].x = -1;
+		gridCells[i].y = -1;
+		gridCells[i].z = -1;
+		gridCells[i].w = -1;
 	}
 }
 
-__global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::vec3 gridMinPosVec, float voxelSL, int gridSL, glm::ivec3* pGridIndex, int nop){
+__global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::ivec3* pGridIndex, int nop){	//, float voxelSL, int gridSL , glm::vec3 gridMinPosVec
 
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
@@ -43,20 +58,20 @@ __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3*
 		return;
 	}
 	if (pi < nop){
-		pGridIndex[pi].x = (pPos[pi].x - gridMinPosVec.x) / voxelSL;
-		pGridIndex[pi].y = (pPos[pi].y - gridMinPosVec.y) / voxelSL;
-		pGridIndex[pi].z = (pPos[pi].z - gridMinPosVec.z) / voxelSL;
+		pGridIndex[pi].x = (pPos[pi].x - d_gridMinPosVecX) / d_voxelS;
+		pGridIndex[pi].y = (pPos[pi].y - d_gridMinPosVecY) / d_voxelS;
+		pGridIndex[pi].z = (pPos[pi].z - d_gridMinPosVecZ) / d_voxelS;
 
 		bool validIndex = (pGridIndex[pi].x > 0) &&
-			(pGridIndex[pi].x < gridSL - 1) &&
+			(pGridIndex[pi].x < d_gridSL - 1) &&
 			(pGridIndex[pi].y > 0) &&
-			(pGridIndex[pi].y < gridSL - 1) &&
+			(pGridIndex[pi].y < d_gridSL - 1) &&
 			(pGridIndex[pi].z > 0) &&
-			(pGridIndex[pi].z < gridSL - 1);
+			(pGridIndex[pi].z < d_gridSL - 1);
 
 		if (validIndex) {
-			int xStride = gridSL * gridSL;
-			int yStride = gridSL;
+			int xStride = d_gridSL * d_gridSL;
+			int yStride = d_gridSL;
 			int flatGridIndex = (int)pGridIndex[pi].x*xStride +
 				(int)pGridIndex[pi].y * yStride +
 				(int)pGridIndex[pi].z;
@@ -87,7 +102,7 @@ __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3*
 
 
 //<<<<<<<<<< rigidbody kernels >>>>>>>>>>
-__global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, float duration, float termVeloc, int nob){
+__global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, int nob){	// float duration, float termVeloc,
 
 	//TODO
 	//unsigned int bodyIndex = get_global_id(0);
@@ -116,24 +131,24 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 			torque = torque + glm::cross(relativePos, pForce[particleIndex + i]);
 		}
 
-		float termMom = termVeloc * rbMass[bi];
+		float termMom = d_termVeloc * rbMass[bi];
 
-		rbLinMom[bi].x = rbLinMom[bi].x + rbForce[bi].x * duration;
-		rbLinMom[bi].y = rbLinMom[bi].y + rbForce[bi].y * duration;
-		rbLinMom[bi].z = rbLinMom[bi].z + rbForce[bi].z * duration;
+		rbLinMom[bi].x = rbLinMom[bi].x + rbForce[bi].x * d_duration;
+		rbLinMom[bi].y = rbLinMom[bi].y + rbForce[bi].y * d_duration;
+		rbLinMom[bi].z = rbLinMom[bi].z + rbForce[bi].z * d_duration;
 
 		//Limit momentum by terminal momentum
 		//todo: zu cuda func
 		//rbLinMom[bi] = clamp(rbLinMom[bi], -termMom, termMom);
 		rbLinMom[bi] = glm::clamp(rbLinMom[bi], -termMom, termMom);
 
-		rbAngMom[bi].x = rbAngMom[bi].x + torque.x * duration;
-		rbAngMom[bi].y = rbAngMom[bi].y + torque.y * duration;
-		rbAngMom[bi].z = rbAngMom[bi].z + torque.z * duration;
+		rbAngMom[bi].x = rbAngMom[bi].x + torque.x * d_duration;
+		rbAngMom[bi].y = rbAngMom[bi].y + torque.y * d_duration;
+		rbAngMom[bi].z = rbAngMom[bi].z + torque.z * d_duration;
 	}
 }
 
-__global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, float duration, float pRadius, int nob){
+__global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, int nob){	//float duration, float pRadius
 
 	//weitere input param
 	/*__global float* bodyVBO,
@@ -200,9 +215,9 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 		rbVeloc[bi].y = rbLinMom[bi].y / rbMass[bi];
 		rbVeloc[bi].z = rbLinMom[bi].z / rbMass[bi];
 
-		rbPos[bi].x = rbPos[bi].x + rbVeloc[bi].x * duration;
-		rbPos[bi].y = rbPos[bi].y + rbVeloc[bi].y * duration;
-		rbPos[bi].z = rbPos[bi].z + rbVeloc[bi].z * duration;
+		rbPos[bi].x = rbPos[bi].x + rbVeloc[bi].x * d_duration;
+		rbPos[bi].y = rbPos[bi].y + rbVeloc[bi].y * d_duration;
+		rbPos[bi].z = rbPos[bi].z + rbVeloc[bi].z * d_duration;
 		}
 
 		//Perform angular step
@@ -240,7 +255,7 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 				rbAngVeloc[bi].y / angularVelocitySize,
 				rbAngVeloc[bi].z / angularVelocitySize };
 
-			float rotationAngle = angularVelocitySize*duration;
+			float rotationAngle = angularVelocitySize*d_duration;
 
 			float ds = cos(rotationAngle / 2.0f);
 			float dvx = rotationAxis.x*sin(rotationAngle / 2.0f);
@@ -322,15 +337,15 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 
 
 //<<<<<<<<<< particle kernels >>>>>>>>>>
-__global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, float pRadius, float worldS, float springC, float dampC, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int gridSL, int nop){
+__global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int nop){	//, int gridSL , float pRadius, float worldS, float springC, float dampC
 
 	//TODO
 	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 
-	/*if (pi >= nop){
+	if (pi >= nop){
 		return;
-	}*/
+	}
 	if (pi < nop){
 		pForce[pi].x = 0.0f;
 		pForce[pi].y = 0.0f;
@@ -341,9 +356,9 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		//Pretend border cell is 1 position inwards to avoid checking outside bounds for neighbors
 		//todo: zu cuda func
 		//gridIndex = clamp(gridIndex, 1, gridSL - 2);
-		gridIndex = glm::clamp(gridIndex, 1, gridSL - 2);	//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
-		int xSteps = gridSL*gridSL;
-		int ySteps = gridSL;
+		gridIndex = glm::clamp(gridIndex, 1, d_gridSL - 2);	//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
+		int xSteps = d_gridSL*d_gridSL;
+		int ySteps = d_gridSL;
 
 		//int flatGridIndex = (int)gridIndex.x * xSteps + (int)gridIndex.y * ySteps + (int)gridIndex.z;
 		int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
@@ -387,19 +402,19 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 
 					float absDistance = sqrt(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z);
 
-					if ((absDistance + 0.000001f) < (2.0f * pRadius)) {
-						pForce[pi].x = pForce[pi].x - springC*(pRadius + pRadius - absDistance)*(distance.x / absDistance);
-						pForce[pi].y = pForce[pi].y - springC*(pRadius + pRadius - absDistance)*(distance.y / absDistance);
-						pForce[pi].z = pForce[pi].z - springC*(pRadius + pRadius - absDistance)*(distance.z / absDistance);
+					if ((absDistance + 0.000001f) < (2.0f * d_pRadius)) {
+						pForce[pi].x = pForce[pi].x - d_springC*(d_pRadius + d_pRadius - absDistance)*(distance.x / absDistance);
+						pForce[pi].y = pForce[pi].y - d_springC*(d_pRadius + d_pRadius - absDistance)*(distance.y / absDistance);
+						pForce[pi].z = pForce[pi].z - d_springC*(d_pRadius + d_pRadius - absDistance)*(distance.z / absDistance);
 
 						//glm::vec3
 						float3 relativeVelocity = { pVeloc[otherParticle].x - pVeloc[pi].x,
 													pVeloc[otherParticle].y - pVeloc[pi].y,
 													pVeloc[otherParticle].z - pVeloc[pi].z };
 
-						pForce[pi].x = pForce[pi].x + dampC*relativeVelocity.x;
-						pForce[pi].y = pForce[pi].y + dampC*relativeVelocity.y;
-						pForce[pi].z = pForce[pi].z + dampC*relativeVelocity.z;
+						pForce[pi].x = pForce[pi].x + d_dampC*relativeVelocity.x;
+						pForce[pi].y = pForce[pi].y + d_dampC*relativeVelocity.y;
+						pForce[pi].z = pForce[pi].z + d_dampC*relativeVelocity.z;
 
 					}
 				}
@@ -410,44 +425,44 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		{
 		bool collisionOccured = false;
 		// Ground collision
-		if (pPos[pi].y - pRadius < 0.0f) {
+		if (pPos[pi].y - d_pRadius < 0.0f) {
 			collisionOccured = true;
-			pForce[pi].y += springC*(pRadius - pPos[pi].y);
+			pForce[pi].y = pForce[pi].y + d_springC*(d_pRadius - pPos[pi].y);
 		}
 
 		// X-axis Wall Collision
-		if (pPos[pi].x - pRadius < -worldS) {
+		if (pPos[pi].x - d_pRadius < -d_worldS) {
 			collisionOccured = true;
-			pForce[pi].x += springC*(-worldS - pPos[pi].x + pRadius);
+			pForce[pi].x = pForce[pi].x + d_springC*(-d_worldS - pPos[pi].x + d_pRadius);
 
 		}
-		else if (pPos[pi].x + pRadius > worldS) {
+		else if (pPos[pi].x + d_pRadius > d_worldS) {
 			collisionOccured = true;
-			pForce[pi].x += springC*(worldS - pPos[pi].x - pRadius);
+			pForce[pi].x = pForce[pi].x + d_springC*(d_worldS - pPos[pi].x - d_pRadius);
 		}
 
 		// Z-axis Wall Collision
-		if (pPos[pi].z - pRadius < -worldS) {
+		if (pPos[pi].z - d_pRadius < -d_worldS) {
 			collisionOccured = true;
-			pForce[pi].z += springC*(-worldS - pPos[pi].z + pRadius);
+			pForce[pi].z = pForce[pi].z + d_springC*(-d_worldS - pPos[pi].z + d_pRadius);
 
 		}
-		else if (pPos[pi].z + pRadius > worldS) {
+		else if (pPos[pi].z + d_pRadius > d_worldS) {
 			collisionOccured = true;
-			pForce[pi].z += springC*(worldS - pPos[pi].z - pRadius);
+			pForce[pi].z = pForce[pi].z + d_springC*(d_worldS - pPos[pi].z - d_pRadius);
 		}
 
 		// Damping
 		if (collisionOccured) {
-			pForce[pi].x = pForce[pi].x - dampC*pVeloc[pi].x;
-			pForce[pi].y = pForce[pi].y - dampC*pVeloc[pi].y;
-			pForce[pi].z = pForce[pi].z - dampC*pVeloc[pi].z;
+			pForce[pi].x = pForce[pi].x - d_dampC*pVeloc[pi].x;
+			pForce[pi].y = pForce[pi].y - d_dampC*pVeloc[pi].y;
+			pForce[pi].z = pForce[pi].z - d_dampC*pVeloc[pi].z;
 		}
 		}
 	}
 }
 
-__global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, float pRadius, int nop){
+__global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, int nop){	// float pRadius,
 
 	//weitere input param
 	/*__global float* particleVBO,*/
@@ -467,14 +482,14 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 		int relativeIndex = pi % 27;
 
 		int xIndex = relativeIndex / 9;
-		relativeIndex -= xIndex * 9;
+		relativeIndex = relativeIndex - xIndex * 9;
 
 		int yIndex = relativeIndex / 3;
-		relativeIndex -= yIndex * 3;
+		relativeIndex = relativeIndex - yIndex * 3;
 
 		int zIndex = relativeIndex;
 
-		float space = 2.0f*pRadius;
+		float space = 2.0f*d_pRadius;
 
 		xIndex--;
 		yIndex--;

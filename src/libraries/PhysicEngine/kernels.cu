@@ -15,26 +15,83 @@
 //link fix try 4
 extern World* world;
 
+cudaError_t err = cudaSuccess;	//zum debuggen
+
 int nearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
 }
 
-void fillDeviceSymbols(float h_voxelS, int h_gridSL, float h_worldS, float h_springC, float h_dampC, float h_pRadius, float h_duration, float h_termVeloc, glm::vec3 h_gridMinPosVector){
+void fillDeviceSymbols(float voxelS, int gridSL, float worldS, float springC, float dampC, float pRadius, float duration, float termVeloc, glm::vec3 gridMinPosVector){
 	//siehe cuda programming guide. sollte eig ohne "" gehen
-	cudaMemcpyToSymbol((const void*)&d_voxelS, &h_voxelS, sizeof(float));
+	err = cudaMemcpyToSymbol((const void*)&d_voxelS, &voxelS, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
 	//cudaMemcpyToSymbol("d_gridS", &h_gridS, sizeof(int));
-	cudaMemcpyToSymbol((const void*)&d_gridSL, &h_gridSL, sizeof(int));
-	cudaMemcpyToSymbol((const void*)&d_worldS, &h_worldS, sizeof(float));
-	cudaMemcpyToSymbol((const void*)&d_springC, &h_springC, sizeof(float));
-	cudaMemcpyToSymbol((const void*)&d_dampC, &h_dampC, sizeof(float));
-	cudaMemcpyToSymbol((const void*)&d_pRadius, &h_pRadius, sizeof(float));
-	cudaMemcpyToSymbol((const void*)&d_duration, &h_duration, sizeof(float));
-	cudaMemcpyToSymbol((const void*)&d_termVeloc, &h_termVeloc, sizeof(float));
+	err = cudaMemcpyToSymbol((const void*)&d_gridSL, &gridSL, sizeof(int));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_worldS, &worldS, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_springC, &springC, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_dampC, &dampC, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_pRadius, &pRadius, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_duration, &duration, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_termVeloc, &termVeloc, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
 
 	//cudaMemcpyToSymbol("d_gridMinPosVector", &h_gridMinPosVector, sizeof(glm::vec3));
-	cudaMemcpyToSymbol((const void*)&d_gridMinPosVecX, &h_gridMinPosVector.x, sizeof(glm::vec3));
-	cudaMemcpyToSymbol((const void*)&d_gridMinPosVecY, &h_gridMinPosVector.y, sizeof(glm::vec3));
-	cudaMemcpyToSymbol((const void*)&d_gridMinPosVecZ, &h_gridMinPosVector.z, sizeof(glm::vec3));
+	err = cudaMemcpyToSymbol((const void*)&d_gridMinPosVecX, &gridMinPosVector.x, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_gridMinPosVecY, &gridMinPosVector.y, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
+	err = cudaMemcpyToSymbol((const void*)&d_gridMinPosVecZ, &gridMinPosVector.z, sizeof(float));
+	if (err != cudaSuccess){																				//zum debuggen
+		fprintf(stderr, "Failed to allocate device vector A (error code %s)!\n", cudaGetErrorString(err));	//zum debuggen
+		//exit(EXIT_FAILURE);
+	}																										//zum debuggen
+	err = cudaSuccess;																						//zum debuggen
 }
 
 //extern "C"{

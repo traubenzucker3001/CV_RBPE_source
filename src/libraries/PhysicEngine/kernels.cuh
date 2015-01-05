@@ -5,7 +5,7 @@
 
 
 //extern "C"{
-void fillDeviceSymbols(float h_voxelS, int h_gridSL, float h_worldS, float h_springC, float h_dampC, float h_pRadius, float h_duration, float h_termVeloc, glm::vec3 h_gridMinPosVector);
+void fillDeviceSymbols(float voxelS, int gridSL, float worldS, float springC, float dampC, float pRadius, float duration, float termVeloc, glm::vec3 gridMinPosVector);
 
 	void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g);
 	void updateGrid(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::ivec3* pGridIndex);	//, float voxelSL, int gridSL  glm::vec3 gridMinPosVec,

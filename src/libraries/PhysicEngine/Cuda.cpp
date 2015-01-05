@@ -324,28 +324,8 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_gridCounters, h_gridCounters, gridSize*sizeof(int), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_gridCells, h_gridCells, gridSize*sizeof(glm::ivec4), cudaMemcpyHostToDevice);
 
-	/*
-	cudaMemcpy(d_voxelS, h_voxelS, sizeof(float), cudaMemcpyHostToDevice);
-	d_gridS = 0;
-	d_worldS = 0;
-	...
-	*/
-	 //siehe cuda programming guide. sollte eig ohne "" gehen
-	/*cudaMemcpyToSymbol("d_voxelS", &h_voxelS, sizeof(float));
-	//cudaMemcpyToSymbol("d_gridS", &h_gridS, sizeof(int));
-	cudaMemcpyToSymbol("d_gridSL", &h_gridSL, sizeof(int));
-	cudaMemcpyToSymbol("d_worldS", &h_worldS, sizeof(float));
-	cudaMemcpyToSymbol("d_springC", &h_springC, sizeof(float));
-	cudaMemcpyToSymbol("d_dampC", &h_dampC, sizeof(float));
-	cudaMemcpyToSymbol("d_pRadius", &h_pRadius, sizeof(float));
-	cudaMemcpyToSymbol("d_duration", &h_duration, sizeof(float));
-	cudaMemcpyToSymbol("d_termVeloc", &h_termVeloc, sizeof(float));
-
-	cudaMemcpyToSymbol("d_gridMinPosVector", &h_gridMinPosVector, sizeof(glm::vec3));*/
-
 	cout << "dur: " << h_duration << endl;	//zum debuggen
 	fillDeviceSymbols(h_voxelS, h_gridSL, h_worldS, h_springC, h_dampC, h_pRadius, h_duration, h_termVeloc, h_gridMinPosVector);
-	//vbo data
 
 	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
@@ -396,7 +376,7 @@ void Cuda::stepCUDA(){
 	//schritte nacheinander aufrufen
 //	cout << "-test stepCUDA 1-" << endl; //zum debuggen
 //	int g = UniformGrid::getInstance()->getGridSize();
-	resetGrid(d_gridCounters, d_gridCells, gridSize);		//versuch: g hier nicht erst in.cu
+//	resetGrid(d_gridCounters, d_gridCells, gridSize);		//versuch: g hier nicht erst in.cu
 	
 	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){
@@ -412,7 +392,7 @@ void Cuda::stepCUDA(){
 	}
 	
 //	cout << "-test stepCUDA 3-" << endl; //zum debuggen
-//	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pGridIndex, d_gridCounters, d_gridCells);	//, d_gridSL , d_pRadius, d_worldS, d_springC, d_dampC
+	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pGridIndex, d_gridCounters, d_gridCells);	//, d_gridSL , d_pRadius, d_worldS, d_springC, d_dampC
 
 	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	for (int i = 0; i < 5; i++){

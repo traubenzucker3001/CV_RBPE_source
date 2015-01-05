@@ -33,19 +33,20 @@ __device__ __constant__ float d_gridMinPosVecY;
 __device__ __constant__ float d_gridMinPosVecZ;
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
-__global__ void resetGridC(int* gridCounters, glm::ivec4* gridCells, int gs){
+__global__ void resetGridC(int* A, glm::ivec4* B, int numElements){
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
-	if (i >= gs){
+	/*if (i >= gs){
 		return;
-	}
-	if (i < gs){
-		gridCounters[i] = 0;
-		gridCells[i].x = -1;
-		gridCells[i].y = -1;
-		gridCells[i].z = -1;
-		gridCells[i].w = -1;
+	}*/
+	if (i < numElements){
+
+		A[i] = 0;
+		B[i].x = -1;
+		B[i].y = -1;
+		B[i].z = -1;
+		B[i].w = -1;
 	}
 }
 

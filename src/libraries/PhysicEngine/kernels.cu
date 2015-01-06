@@ -101,14 +101,13 @@ void fillDeviceSymbols(float voxelS, int gridSL, float worldS, float springC, fl
 		//blocks und threads berechn.
 		//thread pro gitterzelle	//wie komm ich an diese zahl?!
 		//int g = UniformGrid::getInstance()->getGridSize();	//gridsize=0, why?!
-		cout << "gridsize: " << g << endl;	//zum debuggen
+		
 		int blockSize = 64;	//64, 256, 512, 1024
 		//int numThreads = (int)fmin(blockSize, g);
 		int numThreads = blockSize;
 		int numBlocks = nearHighVal(g, numThreads);	
 		//int numBlocks = ((g + 1024 -1) / 1024);
-		cout << "threads: " << numThreads << endl;	//zum debuggen
-		cout << "blocks: " << numBlocks << endl;	//zum debuggen
+	
 		//geht doch bestimmt auch noch "besser"!!?
 		//int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;	//aus vectorAdd
 
@@ -173,13 +172,12 @@ void fillDeviceSymbols(float voxelS, int gridSL, float worldS, float springC, fl
 		//blocks und threads berechn.
 		//thread pro part.
 		int p = world->getAllPartNum();
-		cout << "partnum: " << p << endl;	//zum debuggen
+		
 		int blockSize = 512;
 		int numThreads = (int)fmin(blockSize, p);
 		int numBlocks = nearHighVal(p, numThreads);
 		//geht doch bestimmt auch noch "besser"!!?
-		cout << "threads: " << numThreads << endl;	//zum debuggen
-		cout << "blocks: " << numBlocks << endl;	//zum debuggen
+	
 
 		calcCollForcesC <<< numBlocks, numThreads >>>(pMass, pPos, pVeloc, pForce, pGridIndex, gridCounters, gridCells, p);	// gridSL, , pRadius, worldS, springC, dampC
 		cudaThreadSynchronize();

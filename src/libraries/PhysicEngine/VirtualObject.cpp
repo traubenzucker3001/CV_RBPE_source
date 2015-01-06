@@ -89,7 +89,7 @@ void VirtualObject::updateGPU(){
 
 	//werte von gpu beschaffen
 	glm::vec3 tempP = cuda->h_uVOpos[id];
-	cout << cuda->h_uVOpos[id].y << endl;	//zum debuggen
+	//cout << cuda->h_uVOpos[id].y << endl;	//zum debuggen
 	//glm::mat3 tempO;
 	glm::quat tempQ = cuda->h_uVOrot[id];
 
@@ -101,7 +101,7 @@ void VirtualObject::updateGPU(){
 	glm::mat4 r = glm::toMat4(tempQ);			//mal schaun ob so funktioniert!!?
 
 	modelMatrix = t * r;
-	cout << "test" << endl; //zum debuggen
+	//cout << "test" << endl; //zum debuggen
 	//set new modelmatrix from node
 	graphicBody->setModelMatrix(modelMatrix);
 }

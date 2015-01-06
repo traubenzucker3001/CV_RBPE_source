@@ -296,10 +296,6 @@ void Cuda::updateHostArrays(){
 
 void Cuda::hostToDevice(){
 
-	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "grid (vor host to device): " << h_gridCells[i].x << endl;	//zum debuggen
-	}
 
 	//cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbMass, h_rbMass, bodyNum*sizeof(float), cudaMemcpyHostToDevice);
@@ -324,13 +320,8 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_gridCounters, h_gridCounters, gridSize*sizeof(int), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_gridCells, h_gridCells, gridSize*sizeof(glm::ivec4), cudaMemcpyHostToDevice);
 
-	cout << "dur: " << h_duration << endl;	//zum debuggen
 	fillDeviceSymbols(h_voxelS, h_gridSL, h_worldS, h_springC, h_dampC, h_pRadius, h_duration, h_termVeloc, h_gridMinPosVector);
 
-	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "grid (nach host to device): " << h_gridCells[i].x << endl;	//zum debuggen
-	}
 
 }
 
@@ -368,52 +359,22 @@ void Cuda::stepCUDA(){
 
 	//cout << "cuda: stepCUDA!" << endl; //zum test
 
-	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "grid (vor kernels): " << h_gridCells[i].x << endl;	//zum debuggen
-	}
-
 	//schritte nacheinander aufrufen
 //	cout << "-test stepCUDA 1-" << endl; //zum debuggen
 //	int g = UniformGrid::getInstance()->getGridSize();
 	resetGrid(d_gridCounters, d_gridCells, gridSize);		//versuch: g hier nicht erst in.cu
 	
-	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "grid (nach resetGrid): " << h_gridCells[i].x << endl;	//zum debuggen
-	}
-	
 //	cout << "-test stepCUDA 2-" << endl; //zum debuggen
 	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_pGridIndex);	//, d_voxelS, d_gridSL , d_gridMinPosVector
-
-	cudaMemcpy(h_gridCells, d_gridCells, bodyNum*sizeof(glm::ivec4), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "grid (nach updategrid): " << h_gridCells[i].x << endl;	//zum debuggen
-	}
 	
 //	cout << "-test stepCUDA 3-" << endl; //zum debuggen
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pGridIndex, d_gridCounters, d_gridCells);	//, d_gridSL , d_pRadius, d_worldS, d_springC, d_dampC
 
-	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "pos (nach calcForces): " << h_rbPos[i].y << endl;	//zum debuggen
-	}
-
 //	cout << "-test stepCUDA 4-" << endl; //zum debuggen
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce);	//, d_duration, d_termVeloc
-
-	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "pos (nach updateMom): " << h_rbPos[i].y << endl;	//zum debuggen
-	}
 	
 //	cout << "-test stepCUDA 5-" << endl; //zum debuggen
 	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens);	// d_duration, d_pRadius
-	
-	cudaMemcpy(h_rbPos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
-	for (int i = 0; i < 5; i++){
-		cout << "pos (nach iterate): " << h_rbPos[i].y << endl;	//zum debuggen
-	}
 
 //	cout << "-test stepCUDA 6-" << endl; //zum debuggen
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc);	//, d_pRadius
@@ -445,8 +406,6 @@ void Cuda::stepCUDA(){
 }
 
 void Cuda::updateVOarrays(){
-
-	cout << "update vo arrays!" << endl;	//zum debuggen
 
 	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);

@@ -47,6 +47,8 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	cubeMaterial = 0;
 	partGeometry = 0;
 	partMaterial = 0;
+
+	cout << "isGPU: " << isGPU << endl;
 }
 
 Demo::~Demo(){
@@ -155,7 +157,7 @@ void Demo::run(){
 
 		time->endFrame();
 
-		float fps = (float)time->updateFPS();
+		float fps = (float)time->updateFPS();	//TODO korrigieren
 		char title[64];
 		sprintf_s(title, "Rigid Body | %d fps", (int)fps);
 		glfwSetWindowTitle(window, title);

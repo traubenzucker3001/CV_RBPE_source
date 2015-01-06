@@ -48,7 +48,7 @@ void UniformGrid::createGrid(){
 	xSteps = gridLength*gridLength;
 	ySteps = gridLength;
 
-	std::cout << "Grid dimensions: " << gridLength << "*" << gridLength << "*" << gridLength << std::endl;
+	//std::cout << "Grid dimensions: " << gridLength << "*" << gridLength << "*" << gridLength << std::endl;
 
 	gridMinPos = -worldS - voxelSize;
 	//std::cout << "Grid minimum position: " << gridMinPos << std::endl;

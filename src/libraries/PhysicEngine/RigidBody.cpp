@@ -16,7 +16,7 @@ extern Cuda* cuda;
 
 int bodycount = 0;
 
-RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN, float sizeIN){
+RigidBody::RigidBody(float massIN, bool staticIN, glm::vec3 posIN, float sizeIN){
 
 	mass = massIN;
 	inverseMass = ((float)1.0)/mass;
@@ -24,22 +24,16 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN,
 	position = posIN;
 
 	isStatic = staticIN;
-	if(shapeIN == true){	//TODO entfernen
 
-		//shape = new Sphere();
-		cout << "sphere shape not possible!!" << endl;
-	}
-	else{
-		glm::vec3 pOrigIN = posIN;
-		float pMassIN = massIN; 
-		int numPartIN = 27;
-		float halfsizeIN = sizeIN;
+	glm::vec3 pOrigIN = posIN;
+	float pMassIN = massIN; 
+	int numPartIN = 27;
+	float halfsizeIN = sizeIN;
 
-		// inertiatensor diagonale berechnen
-		initInverseInertTensDiagon.x = initInverseInertTensDiagon.y = initInverseInertTensDiagon.z = 6.0f / (mass * 4 * sizeIN*sizeIN);
+	// inertiatensor diagonale berechnen
+	initInverseInertTensDiagon.x = initInverseInertTensDiagon.y = initInverseInertTensDiagon.z = 6.0f / (mass * 4 * sizeIN*sizeIN);
 
-		shape = new Box(pOrigIN,pMassIN,numPartIN,halfsizeIN);
-	}
+	shape = new Box(pOrigIN,pMassIN,numPartIN,halfsizeIN);
 
 	float temp1 = demo->getTerminalVeloc();
 	terminalMom = temp1 * mass;

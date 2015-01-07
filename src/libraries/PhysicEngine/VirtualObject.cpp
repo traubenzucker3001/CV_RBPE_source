@@ -23,11 +23,11 @@ extern World* world;
 extern Demo* demo;
 extern Cuda* cuda;
 
-VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN, int idIN){
+VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, float sizeIN, int idIN){
 
 	id = idIN;
 	position = posIN;
-	physicBody = new RigidBody(massIN, staticIN, shapeIN, posIN,sizeIN);
+	physicBody = new RigidBody(massIN, staticIN, posIN,sizeIN);
 
 	world->allBodies[bodyCount] = physicBody;
 

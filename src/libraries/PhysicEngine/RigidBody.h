@@ -65,7 +65,7 @@ public:
 	 * @param posIN position
 	 * @param sizeIN box half size or sphere radius
 	 */
-	RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN, float sizeIN);
+	RigidBody(float massIN, bool staticIN, glm::vec3 posIN, float sizeIN);
 
 	/** \brief standard constructor
 	*

@@ -40,7 +40,7 @@ public:
 	 * @param sizeIN box half size or sphere radius
 	 * @param idIN ...
 	 */
-	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, bool shapeIN, float sizeIN, int idIN);
+	VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool staticIN, float sizeIN, int idIN);
 
 	/** \brief destructor
 	 *

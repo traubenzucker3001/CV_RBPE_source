@@ -31,7 +31,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	bodyNum = bnIN;
 	partNum = pnIN;
-	gridSize = 64000;	// UniformGrid::getInstance()->getGridSize();	//wy 0?
+	gridSize = 0;	// UniformGrid::getInstance()->getGridSize();	//wy 0?
 
 	h_rbMass = 0;
 	h_rbForce = 0;
@@ -175,9 +175,9 @@ void Cuda::initCUDA(){
 
 	//init gitter
 	UniformGrid::getInstance()->createGrid();
+	gridSize = UniformGrid::getInstance()->getGridSize();
 	initCUDAGrid();
 
-	//gridSize = ;
 	float tempVS = UniformGrid::getInstance()->getVoxelSize();
 	h_voxelS = tempVS;
 	h_gridSL = UniformGrid::getInstance()->getGridLength();

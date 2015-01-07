@@ -140,6 +140,11 @@ void Demo::run(){
 		}
 		if (renderPart == true){
 			//render partikel
+			/*if (isGPU == true){
+				for (int i = 0; i < world->getAllPartNum(); i++){
+					world->allParticles[i]->updateNode(i);
+				}
+			}*/
 			partRoot->render();
 		}
 

@@ -67,6 +67,8 @@ void VirtualObject::updateCPU(){
 
 void VirtualObject::updateGPU(){
 
+	//TODO h_uVOpPos, wie unterbekommen?!
+
 	//werte von gpu beschaffen
 	glm::vec3 tempP = cuda->h_uVOpos[id];
 	

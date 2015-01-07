@@ -109,6 +109,7 @@ public:
 	 */
 	void updateCUDArray(int particleIndex);
 
+	//void updateNode(int i);
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 	const glm::vec3& getPosition() const {

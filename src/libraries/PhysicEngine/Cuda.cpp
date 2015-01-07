@@ -52,6 +52,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	h_uVOpos = 0;
 	h_uVOrot = 0;
+	//h_uVOpPos = 0;
 
 	h_pGridIndex = 0;
 
@@ -115,6 +116,7 @@ Cuda::~Cuda(){
 
 	delete h_uVOpos;
 	delete h_uVOrot;
+	//delete h_uVOpPos;
 
 	cudaFree(d_rbMass);
 	cudaFree(d_rbForce);
@@ -163,6 +165,8 @@ void Cuda::initCUDA(){
 	//update VOs
 	h_uVOpos = new glm::vec3[bodyNum];
 	h_uVOrot = new glm::quat[bodyNum];
+	//h_uVOpPos = new glm::vec3[partNum];
+
 
 	//konstante vars direkt füllen
 	float tempWS = world->getWorldSize();
@@ -312,5 +316,6 @@ void Cuda::updateVOarrays(){
 
 	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);
+	//cudaMemcpy(h_uVOpPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 }
 

@@ -262,3 +262,8 @@ void Particle::updateCUDArray(int particleIndex){
 	cuda->h_pForce[i] = force;
 }
 
+/*void Particle::updateNode(int i){
+	glm::vec3 temP = cuda->h_uVOpPos[i];
+	glm::mat4 modMat = glm::mat4(glm::translate(glm::mat4(1.0f), temP));
+	partNode->setModelMatrix(modMat);
+}*/

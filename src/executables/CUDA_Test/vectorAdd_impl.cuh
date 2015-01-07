@@ -31,4 +31,3 @@ __global__ void vectorAddCU(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, gl
 
 
 }
-//pMass, pPos, pVeloc, pForce, pRadius, worldS, springC, dampC, pGridIndex, gridCounters, gridCells, gridSL, p

@@ -27,9 +27,6 @@
 void resizeCallback(GLFWwindow *window, int w, int h);
 
 
-//class Demo : public Singleton<Demo> {
-	//friend class Singleton<Demo>;
-
 /** \brief Demo
 *
 * frame for a demo application, contains all important init-/simulation-/callback- functions and parameters.
@@ -40,9 +37,6 @@ private:
 	int windowWidth;							/**< demo window width */
 	int windowHeight;							/**< demo window height */
 
-	//World *physicsWorld;						/**< physics world that contains all rigid bodies */
-
-	//oder auch array?!
 	std::vector <VirtualObject*> virtualObjs;	/**< list of virtual objects */
 	int virtObjNum;								/**< number of virtual objects in the list */
 
@@ -53,9 +47,6 @@ private:
 	bool isGPU;									/**< true if simulation should run on GPU, false if simulation should run on CPU */
 	bool withGrid;								/**< true if simulation should run with uniform grid structure, false if not */
 	bool renderPart;							/**< true if particles should be rendered, false if boxes should be rendered */
-
-	//?
-	/*int vertexCount;					/**< ... */
 
 public:
 
@@ -100,19 +91,12 @@ public:
 	*/
 	~Demo();
 
-
-	/** \brief init physics
-	*
-	* ...
-	*/
-	//void initPhysics();	//eig schon im konstruktor von demo gemacht
-
 	/** \brief init graphics
 	*
 	* run the demo initialization and main loop
 	* @return void
 	*/
-	void run();	//für cvk stuff		//vorher initGraphics()
+	void run();
 
 	/** \brief init scene
 	*
@@ -136,12 +120,6 @@ public:
 	* @return void
 	*/
 	void resetScene();
-
-	/** \brief display function
-	*
-	* ...
-	*/
-	//void display();	//nicht nötig
 
 	/** \brief update virtual objects
 	*
@@ -181,8 +159,6 @@ public:
 	* @return void
 	*/
 	void keyCallback(unsigned char key, int x, int y);
-
-	//void resizeCallback(GLFWwindow *window, int w, int h);		//außerhalb klasse gelegt!
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //

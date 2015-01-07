@@ -1,10 +1,3 @@
-//neuer cuda file zum lösen der include/compiler fehler
-/*
-#define GLM_FORCE_CUDA
-#include <glm\glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
-*/
 
 #include <stdio.h>
 
@@ -18,7 +11,6 @@
 #include <glm/gtx/quaternion.hpp>
 
 __device__ __constant__ float d_voxelS;
-//__device__ __constant__ int d_gridS;
 __device__ __constant__ int d_gridSL;
 __device__ __constant__ float d_worldS;
 __device__ __constant__ float d_springC;
@@ -52,7 +44,6 @@ __global__ void resetGridC(int* A, glm::ivec4* B, int numElements){
 
 __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::ivec3* pGridIndex, int nop){	//, float voxelSL, int gridSL , glm::vec3 gridMinPosVec
 
-	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 
 	if (pi >= nop){
@@ -77,11 +68,8 @@ __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3*
 				(int)pGridIndex[pi].y * yStride +
 				(int)pGridIndex[pi].z;
 
-			//todo: zu cuda func
-			//int particlesInCell = atomic_inc(&countGrid[flatGridIndex]);	//?
-			//
 			int n = 4;
-			unsigned int* atom = (unsigned int*)(&gridCounters[flatGridIndex]);		//potenzielle fehlerquelle
+			unsigned int* atom = (unsigned int*)(&gridCounters[flatGridIndex]);	
 			int particlesInCell = atomicInc(atom, n);
 			//
 
@@ -105,12 +93,7 @@ __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3*
 //<<<<<<<<<< rigidbody kernels >>>>>>>>>>
 __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, int nob){	// float duration, float termVeloc,
 
-	//TODO
-	//unsigned int bodyIndex = get_global_id(0);
 	int bi = blockDim.x * blockIdx.x + threadIdx.x;
-
-	//unsigned int totalNumberOfParticles = get_global_size(0) * 27;
-	//int tnop = (blockDim.x * blockIdx.x + threadIdx.x) * 27;
 
 	int particleIndex = bi * 27;
 	if (bi >= nob){
@@ -128,7 +111,7 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 		for (int i = 0; i < 27; i++) {
 			rbForce[bi] = rbForce[bi] + pForce[particleIndex + i];
 			glm::vec3 relativePos = pPos[particleIndex + i] - rbPos[bi];
-			//torque += cross(relativePos, pForce[particleIndex + i]);
+		
 			torque = torque + glm::cross(relativePos, pForce[particleIndex + i]);
 		}
 
@@ -139,8 +122,6 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 		rbLinMom[bi].z = rbLinMom[bi].z + rbForce[bi].z * d_duration;
 
 		//Limit momentum by terminal momentum
-		//todo: zu cuda func
-		//rbLinMom[bi] = clamp(rbLinMom[bi], -termMom, termMom);
 		rbLinMom[bi] = glm::clamp(rbLinMom[bi], -termMom, termMom);
 
 		rbAngMom[bi].x = rbAngMom[bi].x + torque.x * d_duration;
@@ -151,17 +132,7 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 
 __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, int nob){	//float duration, float pRadius
 
-	//weitere input param
-	/*__global float* bodyVBO,
-	int bodyVBOStride
-	*/
-
-	//unsigned int bodyIndex = get_global_id(0);
 	int bi = blockDim.x * blockIdx.x + threadIdx.x;
-
-	//unsigned int bodyVBOIndex = bodyIndex * 24 * 3;
-
-	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 	
 	if (bi >= nob){
 		return;
@@ -171,7 +142,6 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 		//Update inverse inertia tensor
 			{
 				glm::mat3 tempRotMat1 = rbRotMat[bi];
-				//glm::mat3 tempIIT1 = inverInertTens[bi];
 
 				float a = tempRotMat1[0].x;
 				float b = tempRotMat1[0].y;
@@ -187,18 +157,6 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 				float v = initIITDiago[bi].y;
 				float w = initIITDiago[bi].z;
 
-				//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
-				/*
-				tempIIT1[0].x = u*a*a + b*b*v + c*c*w;
-				tempIIT1[0].y = a*d*u + b*e*v + c*f*w;
-				tempIIT1[0].z = a*g*u + b*h*v + c*i*w;
-				tempIIT1[1].x = a*d*u + b*e*v + c*f*w;
-				tempIIT1[1].y = u*d*d + e*e*v + f*f*w;
-				tempIIT1[1].z = d*g*u + e*h*v + f*i*w;
-				tempIIT1[2].x = a*g*u + b*h*v + c*i*w;
-				tempIIT1[2].y = d*g*u + e*h*v + f*i*w;
-				tempIIT1[2].z = u*g*g + h*h*v + i*i*w;
-				*/
 				inverInertTens[bi][0].x = u*a*a + b*b*v + c*c*w;
 				inverInertTens[bi][0].y = a*d*u + b*e*v + c*f*w;
 				inverInertTens[bi][0].z = a*g*u + b*h*v + c*i*w;
@@ -307,20 +265,6 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 		float wy = w * y;
 		float wz = w * z;
 
-		//glm::mat3 tempRotMat2 = rbRotMat[bi];
-		//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
-		/*
-		tempRotMat2[0].x = 1.0f - 2.0f*(yy + zz);
-		tempRotMat2[0].y = 2.0f*(xy - wz);
-		tempRotMat2[0].z = 2.0f*(xz + wy);
-		tempRotMat2[1].x = 2.0f*(xy + wz);
-		tempRotMat2[1].y = 1.0f - 2.0f*(xx + zz);
-		tempRotMat2[1].z = 2.0f*(yz - wx);
-		tempRotMat2[2].x = 2.0f*(xz - wy);
-		tempRotMat2[2].y = 2.0f*(yz + wx);
-		tempRotMat2[2].z = 1.0f - 2.0f*(xx + yy);
-		*/
-
 		rbRotMat[bi][0].x = 1.0f - 2.0f*(yy + zz);
 		rbRotMat[bi][0].y = 2.0f*(xy - wz);
 		rbRotMat[bi][0].z = 2.0f*(xz + wy);
@@ -332,16 +276,12 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 		rbRotMat[bi][2].z = 1.0f - 2.0f*(xx + yy);
 		}
 	}
-	//Update body VBO
-	//siehe anhang
 }
 
 
 //<<<<<<<<<< particle kernels >>>>>>>>>>
 __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int nop){	//, int gridSL , float pRadius, float worldS, float springC, float dampC
 
-	//TODO
-	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 
 	if (pi >= nop){
@@ -355,16 +295,12 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		glm::ivec3 gridIndex = pGridIndex[pi];
 
 		//Pretend border cell is 1 position inwards to avoid checking outside bounds for neighbors
-		//todo: zu cuda func
-		//gridIndex = clamp(gridIndex, 1, gridSL - 2);
-		gridIndex = glm::clamp(gridIndex, 1, d_gridSL - 2);	//WICHTIG!! --> wird auch richtiger wert beschrieben?!?! wert wird genommen und beschrieben aber eig wert in array wird ja nicht verändert
+		gridIndex = glm::clamp(gridIndex, 1, d_gridSL - 2);
 		int xSteps = d_gridSL*d_gridSL;
 		int ySteps = d_gridSL;
 
-		//int flatGridIndex = (int)gridIndex.x * xSteps + (int)gridIndex.y * ySteps + (int)gridIndex.z;
 		int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
 
-		//oder glm::vec4 besser??, dann auf umstellung bei zählweise achten!!
 		glm::vec4 neighborCells[27];	//int4??
 		int cellIndexJ = 0;
 
@@ -372,7 +308,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 		flatGridIndex = flatGridIndex + 2 * ySteps;
 		flatGridIndex = flatGridIndex + 2; //zStride
 
-		for (int x = 0; x < 3; x++) {	//braucht man den *3 schritt überhaupt, da ja vec3 benutzt?!
+		for (int x = 0; x < 3; x++) {
 			flatGridIndex = flatGridIndex - 3 * ySteps;
 
 			for (int y = 0; y < 3; y++) {
@@ -465,13 +401,8 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, int nop){	// float pRadius,
 
-	//weitere input param
-	/*__global float* particleVBO,*/
-
-	//unsigned int particleIndex = get_global_id(0);
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
 	int bi = pi / 27;
-	//int mi = bi * 9;	//*9 nicht nötig wenn glm::mat3!? also mi eig nit nötig
 
 	if (pi >= nop){
 		return;
@@ -504,7 +435,7 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 		//Update particle position
 		{
 		glm::mat3 tempRotMat = rbRotMat[bi];
-		pPos[pi].x = originalRelativePos.x * tempRotMat[0].x +				//oder doch mi+1 +2 +3 +4 +5 +... ?!	//.xyz wollt er nit
+		pPos[pi].x = originalRelativePos.x * tempRotMat[0].x +
 					 originalRelativePos.y * tempRotMat[0].y +
 					 originalRelativePos.z * tempRotMat[0].z;
 
@@ -550,6 +481,4 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 			pVeloc[pi].z += (rbAngVeloc[bi].x*term.y - rbAngVeloc[bi].y*term.x);
 		}
 	}
-	//Update particle VBO
-	//siehe anhang
 }

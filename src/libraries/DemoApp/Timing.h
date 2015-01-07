@@ -14,12 +14,12 @@ class Timing : public Singleton<Timing> {
 
 private:
 
-	int frameNum;		/**< frame number */			//framecount
+	int frameNum;		/**< frame number */
 	float fps;			/**< frames per second */
 
 	float afd;			/**< average frame duration */
 
-	int totalTime;		/**< total running time */		//gesamtzeit
+	int totalTime;		/**< total running time */
 
 	int startTime;		/**< frame start time */
 	int endTime;		/**< frame end time */

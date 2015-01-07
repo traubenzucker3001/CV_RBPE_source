@@ -14,12 +14,9 @@ extern Demo* demo;
 extern World* world;
 extern Cuda* cuda;
 
-//int RigidBody::count = 0;
 int bodycount = 0;
 
 RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN, float sizeIN){
-
-	//cout << "body: rb constr called!" << endl; //zum test
 
 	mass = massIN;
 	inverseMass = ((float)1.0)/mass;
@@ -27,7 +24,7 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN,
 	position = posIN;
 
 	isStatic = staticIN;
-	if(shapeIN == true){
+	if(shapeIN == true){	//TODO entfernen
 
 		//shape = new Sphere();
 		cout << "sphere shape not possible!!" << endl;
@@ -35,7 +32,6 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN,
 	else{
 		glm::vec3 pOrigIN = posIN;
 		float pMassIN = massIN; 
-		//Particle** bPartIN = new Particle*[27];
 		int numPartIN = 27;
 		float halfsizeIN = sizeIN;
 
@@ -48,7 +44,6 @@ RigidBody::RigidBody(float massIN, bool staticIN, bool shapeIN, glm::vec3 posIN,
 	float temp1 = demo->getTerminalVeloc();
 	terminalMom = temp1 * mass;
 
-	//count++;
 	bodycount++;
 }
 
@@ -59,12 +54,9 @@ RigidBody::~RigidBody(){
 
 void RigidBody::iterate(float duration){
 
-	//cout << "body: iterate!" << endl; //zum test
-
 	updateInverseInertiaTensor();
 
 	//performLinearStep(delta);
-	//for(int i=0; i<3; i++) {
 	velocity.x = linearMomentum.x / mass;
 	position.x = position.x + velocity.x*duration;
 
@@ -120,14 +112,10 @@ void RigidBody::iterate(float duration){
 		rotationQuat.x = ds*vx + s*dvx + dvy*vz - dvz*vy;
 		rotationQuat.y = ds*vy + s*dvy + dvz*vx - dvx*vz;
 		rotationQuat.z = ds*vz + s*dvz + dvx*vy - dvy*vx;
-		//cout << "3bodypos: " << position.x << ", " << position.x << ", " << position.x << endl;	//zum debuggen
 	}
-	//cout << "3bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 }
 
 void RigidBody::updateRotMatrix(){
-
-	//cout << "body: updateRotMat called!" << endl; //zum test
 
 	//normalizeQuaternion();
 	glm::normalize(rotationQuat);
@@ -166,8 +154,6 @@ void RigidBody::updateRotMatrix(){
 
 void RigidBody::updateInverseInertiaTensor(){
 
-	//cout << "body: update inverse inertia tensor!!" << endl; //zum test
-
 	float a = rotationMat[0].x;
 	float b = rotationMat[0].y;
 	float c = rotationMat[0].z;
@@ -195,11 +181,9 @@ void RigidBody::updateInverseInertiaTensor(){
 
 void RigidBody::updatePartValues(){
 
-	//cout << "body: update part values!" << endl; //zum test
-	//cout << "bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 	shape->setOrigin(position);		//origin von shape durch neue rbpos aktualisieren
 	updateRotMatrix();
-	//runter in collshape greifen
+	
 	shape->applyRotToPart(rotationMat);
 
 	//Update particle velocity	//collshape bodypart.
@@ -213,12 +197,8 @@ void RigidBody::updatePartValues(){
 
 void RigidBody::updateMomenta(float duration){
 
-	//cout << "body: updateMom called!" << endl; //zum test
+	force = glm::vec3 (0.0f, 0.0f, 0.0f);
 
-	//runter in collshape greifen
-	force = glm::vec3 (0.0f, 0.0f, 0.0f); //reset forces
-
-	//gravity klasse nicht nötig
 	float gravity = world->getGravity();
 	force.y = force.y + mass * -gravity; //force of gravity
 
@@ -230,9 +210,9 @@ void RigidBody::updateMomenta(float duration){
 		bool wg = demo->isWithGrid();
 		glm::vec3 particleForce = shape->bodyParticles[i]->calculateForces(wg);
 		force.x = force.x + particleForce.x;
-		force.y = force.y + particleForce.y;	//von + auf - gesetzt
+		force.y = force.y + particleForce.y;
 		force.z = force.z + particleForce.z;
-		//cout << "4rbFy: " << force.y << endl;	//zum debuggen
+		
 		glm::vec3 particlePos = shape->bodyParticles[i]->getPosition();
 		glm::vec3 relativePos;
 		relativePos.x = particlePos.x - position.x;
@@ -243,10 +223,7 @@ void RigidBody::updateMomenta(float duration){
 		torque.y = torque.y + relativePos.z * particleForce.x - relativePos.x * particleForce.z;
 		torque.z = torque.z + relativePos.x * particleForce.y - relativePos.y * particleForce.x;
 	}
-	//cout << "RBforceX: " << force.x << endl;	//zum debuggen
-	//cout << "RBforceY: " << force.y << endl;	//zum debuggen
-	//cout << "RBforceZ: " << force.z << endl;	//zum debuggen
-	//for (int i=0; i<3; i++) {
+	
 	linearMomentum.x = linearMomentum.x + force.x * duration;
 	if (linearMomentum.x > 0.0f) {
 		linearMomentum.x = std::min(linearMomentum.x,terminalMom);
@@ -274,7 +251,6 @@ void RigidBody::updateMomenta(float duration){
 	}
 
 	angularMomentum.z = angularMomentum.z + torque.z * duration;
-	//cout << "2bodypos: " << position.x << ", " << position.y << ", " << position.z << endl;	//zum debuggen
 }
 
 void RigidBody::reset(float newPosition){
@@ -283,8 +259,6 @@ void RigidBody::reset(float newPosition){
 }
 
 void RigidBody::updateCUDArray(int bodyIndex){
-
-	//cout << "body: updateCudArr called!" << endl; //zum test
 
 	int i = bodyIndex;
 	cuda->h_rbMass[i] = mass;

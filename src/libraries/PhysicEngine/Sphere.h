@@ -58,7 +58,7 @@ public:
 	 * fill the world particle array
 	 * @return void
 	 */
-	void populatePartArray();	//virtual?!
+	void populatePartArray();
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //
 };

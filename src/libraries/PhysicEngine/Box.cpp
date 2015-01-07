@@ -18,8 +18,6 @@ Box::~Box(){
 
 void Box::calcParticles(){
 
-	//cout << "box: calcParticles called!" << endl; //zum test
-
 	bodyParticles = new Particle*[numOfPart];
 	int i=0;
 	float partR = world->getPartRadius();
@@ -40,8 +38,6 @@ void Box::calcParticles(){
 
 void Box::applyRotToPart(glm::mat3 rotMatrix){
 
-	//cout << "box: applyRoToPart called!" << endl; //zum test
-
 	int i=0;
 	float partR = world->getPartRadius();
 	float space = partR * 2.0f;
@@ -60,8 +56,6 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 }
 
 void Box::populatePartArray(){
-
-	//cout << "box: populPartAr called!" << endl; //zum test
 
 	for (int i=0; i<numOfPart; i++) {
 		bodyParticles[i]->populateArray();

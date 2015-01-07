@@ -16,9 +16,6 @@
  *
  * class for the physics simulation world representation
  */
-//class World : public Singleton<World> {
-	//friend class Singleton<World>;
-
 class World{
 
 private:
@@ -27,22 +24,17 @@ private:
 
 	float springCoeff;					/**< spring coefficient */
 
-	float dampCoeff;					/**< damping coefficient */		//welt oder jeder body einzeln?!
+	float dampCoeff;					/**< damping coefficient */
 	float gravity;						/**< gravity force value */
 
-	//RigidBody** allBodies;			/**< list of all bodies in the world */
 	int allBodyNum;						/**< number of bodies in the world */
 	
-	//Particle** allParticles;			/**< list of all particles in the world */
 	int allPartNum;						/**< number of particles in the world */
 
 	UniformGrid *grid;					/**< uniform grid */
-
-	//Cuda *cudaStruct;					/**< cuda data structure */
 	
 public:
 
-	//private or public?!
 	RigidBody **allBodies;				/**< list of all bodies in the world */
 	Particle **allParticles;			/**< list of all particles in the world */
 

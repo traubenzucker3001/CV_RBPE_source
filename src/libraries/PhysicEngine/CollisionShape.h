@@ -18,7 +18,6 @@ protected:
 	glm::vec3 origin;			/**< origin of the shape = position of RigidBody */
 	float mass;					/**< mass of the shape = mass of RigidBody */
 
-	//Particle** bodyParticles;	/**< array with body representing particles */
 	int numOfPart;				/**< number of body representing particles */
 
 public:
@@ -53,7 +52,7 @@ public:
 	 * @param rotMatrix rotation matrix
 	 * @return void
 	 */
-	virtual void applyRotToPart(glm::mat3 rotMatrix) = 0;	//von wo aufgerufen vorher updateRotationMatrix();
+	virtual void applyRotToPart(glm::mat3 rotMatrix) = 0;
 
 	/** \brief fill particle array
 	 *

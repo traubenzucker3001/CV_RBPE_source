@@ -25,8 +25,6 @@ void resizeCallback(GLFWwindow *window, int w, int h){
 
 Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN, bool rpIN){
 
-	//cout << "demo: demo constr called!" << endl; //zum test
-
 	world = new World(wsIN, prIN, scIN, dcIN, bnIN);
 	virtObjNum = 0;
 	time = new Timing();
@@ -54,13 +52,10 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 Demo::~Demo(){
 
 	delete time;
-	//delete physicsWorld;
 	delete camera;
 }
 
 void Demo::run(){
-
-	//cout << "demo: run!" << endl; //zum test
 
 	// Init GLFW and GLEW
 	glfwInit();
@@ -71,7 +66,6 @@ void Demo::run(){
 
 	glewInit();
 
-	//zum debuggen: aus konstruktor gepackt
 	float pr = world->getPartRadius();
 	float temp = pr * 3;
 	cubeGeometry = new CVK::Cube(temp);
@@ -88,7 +82,6 @@ void Demo::run(){
 	CVK::Material mat_brick((char*)RESOURCES_PATH "/brick.bmp", black, darkgrey, 100.0f);
 	planeNode->setGeometry(plane);
 	planeNode->setMaterial(&mat_brick);
-	//planeNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.72, 0)));
 	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
 	demo->sceneRoot->addChild(planeNode);
 	demo->partRoot->addChild(planeNode);
@@ -120,8 +113,6 @@ void Demo::run(){
 	//define Scene uniforms (ambient and fog)
 	CVK::State::getInstance()->updateSceneSettings( darkgrey, 0, white, 1, 10, 1);
 	CVK::State::getInstance()->setShader(&phongShader);
-
-	//...
 
 	//init cuda
 	if(isGPU == true){
@@ -170,14 +161,10 @@ void Demo::run(){
 
 void Demo::initScene(){
 
-	//cout << "demo: initScene called!" << endl; //zum test
-
 	//gpu benutzt andere create grid
 	if(isGPU == false){
 		UniformGrid::getInstance()->createGrid();
 	}
-
-	//cout << "demo: initObjs called!" << endl; //zum test
 
 	int numberRB = world->getAllBodyNum();
 	int numberP = world->getAllPartNum();
@@ -224,21 +211,9 @@ void Demo::initScene(){
 	for (int i = 0; i<numberRB; i++) {
 		world->allBodies[i]->shape->populatePartArray();
 	}
-	//TODO alle part pos ausgeben lassen
-	/*
-	int temp = world->getAllPartNum();
-	for (int i = 0; i < temp; i++){
-		glm::vec3 pos = world->allParticles[i]->getPosition();
-		//glm::vec3 grid = world->allParticles[i]->getGridIndex();
-		cout << "partpos " << i << ": " << pos.x << ", " << pos.y << ", " << pos.z << endl;	//zum debuggen
-		//cout << "partgrid " << i << ": " << grid.x << ", " << grid.y << ", " << grid.z << endl;	//zum debuggen
-	}
-	*/
 }
 
 void Demo::stepSimulation(float duration){
-
-	//cout << "demo: step simulation!" << endl; //zum test
 
 	world->stepPhysics(duration, isGPU);
 

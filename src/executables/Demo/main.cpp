@@ -19,7 +19,7 @@ float springCoeff = 100.0f;
 float dampCoeff = 0.5f;		
 bool iGPU = false;			//false für cpu, true für gpu
 bool iGrid = true;
-bool renderP = true;		//momentan nur bei cpu vers möglich
+bool renderP = false;		//momentan nur bei cpu vers möglich
 float worldSize = 15.0f;	//Half length of world	//15
 float partRadius = 0.40f;
 float boxHSize = partRadius * 3;
@@ -30,46 +30,6 @@ int main() {
 	demo = new Demo(WIDTH, HEIGHT, dur, termVeloc, worldSize, partRadius, springCoeff, dampCoeff,bodyNumber, iGPU, iGrid, renderP);
 	demo->run();
 
-	//cout << "Hallo Test!" << endl;
-
 	cudaDeviceReset();
 	return 0;
 }
-
-//oder demo in einzelnes neues projekt??!
-//nein, so lassen
-
-
-//----- example1 -----
-
-//sehen ob in main oder demo.cpp
-/*
-void resizeCallback(GLFWwindow *window, int w, int h)
-{
-	camera.setWidthHeight(w, h);
-	glViewport(0, 0, w, h);
-}
-*/
-
-/*
-int main()
-{
-	//opengl parameter
-
-	//Main node in hierarchy
-	CVK::Node* earthNode = new CVK::Node("Earth");
-	earthNode->setGeometry(teapot);
-	earthNode->setMaterial(&mat_cvlogo);
-
-	//Node in relation to earthNode
-	CVK::Node* moonNode = new CVK::Node("Moon");
-	moonNode->setGeometry(sphere);
-	moonNode->setMaterial(&mat_brick);
-	moonNode->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(3, 0, 0)));
-
-	earthNode->addChild(moonNode);
-
-	//set camera
-
-}
-*/

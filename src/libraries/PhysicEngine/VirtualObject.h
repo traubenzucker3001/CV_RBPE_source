@@ -85,21 +85,5 @@ public:
 	*/
 	void iterateVO(float duration);	//bodies[i]->iterateVO(duration);
 
-	/** \brief translate
-	 *
-	 * ...
-	 * -not yet implemented-
-	 * @return void
-	 */
-	void translate();
-
-	/** \brief scale
-	 *
-	 * ...
-	 * -not yet implemented-
-	 * @return void
-	 */
-	void scale();
-
 };
 #endif

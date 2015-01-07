@@ -15,14 +15,6 @@
 /** \brief cuda data structure
 *
 * class with all necessary host and device arrays
-* singleton because it must be sure that every array should only exist once
-*/
-//class Cuda : public Singleton<Cuda> {
-	//friend class Singleton<Cuda>;
-
-/** \brief cuda data structure
-*
-* class with all necessary host and device arrays
 */
 class Cuda{
 private:
@@ -88,23 +80,7 @@ private:
 	int* d_gridCounters;		/**< device array for grid counters */
 	glm::ivec4 *d_gridCells;	/**< device array for grid cells */		//int4?!
 
-	/*
-	glm::vec3 d_gridMinPosVector;		//?!	//todo: auch auf gpu packen!!
-	glm::vec3 h_gridMinPosVector;
-	*/
-
-	//weitere auf gpu benötigte werte //todo: auf gpu allokieren und von cpu auf gpu übertagen
-	/*__constant__ float d_voxelS;
-	__device__ int d_gridS;
-	__device__ float d_worldS;
-	__device__ float d_springC;
-	__device__ float d_dampC;
-	__device__ float d_pRadius;
-	__device__ float d_duration;
-	__device__ float d_termVeloc;*/
-
 	float h_voxelS;						/**< host variable for voxel size */
-	//int h_gridS;						/**< host variable for grid size */
 	int h_gridSL;						/**< host variable for grid side lenght */
 	float h_worldS;						/**< host variable for world size */
 	float h_springC;					/**< host variable for spring coefficient */

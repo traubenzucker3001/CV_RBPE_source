@@ -1,6 +1,6 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
-#ifdef WIN32			//für behebung der gl.h errors
+#ifdef WIN32
 #include <windows.h>
 #endif
 
@@ -15,10 +15,8 @@
 #include "Particle.h"
 #include "UniformGrid.h"
 
-//#include "UniformGrid_kernels.cu"	//!!!diese hier verursachen wahrscheinlich die syntax- u. atomic-fehler!!!
-//#include "RigidBody_kernels.cu"		//durch andere struktur (.cuh,...) oder compiler lösen
-//#include "Particle_kernels.cu"
 #include "kernels.cuh"
+//#include "kernels_impl.cuh"
 
 #include <cuda_gl_interop.h>
 
@@ -27,24 +25,9 @@ using namespace std;
 //link fix try 4
 extern Demo* demo;
 extern World* world;
-//#include "kernels_impl.cuh"
 
-//wollten innerhalb der klasse nicht
-/*__device__ __constant__ float d_voxelS;
-//__device__ __constant__ int d_gridS;
-__device__ __constant__ int d_gridSL;
-__device__ __constant__ float d_worldS;
-__device__ __constant__ float d_springC;
-__device__ __constant__ float d_dampC;
-__device__ __constant__ float d_pRadius;
-__device__ __constant__ float d_duration;
-__device__ __constant__ float d_termVeloc;
-
-__device__ __constant__ glm::vec3 d_gridMinPosVector;*/
 
 Cuda::Cuda(int bnIN, int pnIN){
-
-	//cout << "cuda: cuda constr called!" << endl; //zum test
 
 	bodyNum = bnIN;
 	partNum = pnIN;
@@ -98,7 +81,6 @@ Cuda::Cuda(int bnIN, int pnIN){
 	d_gridCells = NULL;
 
 	h_voxelS = 0;
-	//h_gridS = 0;
 	h_gridSL = 0;
 	h_worldS = 0;
 	h_springC = 0;
@@ -108,19 +90,6 @@ Cuda::Cuda(int bnIN, int pnIN){
 	h_termVeloc = 0;
 
 	h_gridMinPosVector = glm::vec3(0,0,0);
-
-	/*
-	d_voxelS = 0;
-	d_gridS = 0;
-	d_worldS = 0;
-	d_springC = 0;
-	d_dampC = 0;
-	d_pRadius = 0;
-	d_duration = 0;
-	d_termVeloc = 0;
-
-	d_gridMinPosVector = 0;
-	*/
 }
 
 Cuda::~Cuda(){
@@ -170,11 +139,6 @@ Cuda::~Cuda(){
 
 void Cuda::initCUDA(){
 
-	//cout << "cuda: initCuda called!" << endl; //zum test
-
-	//...
-
-
 	//initializeHostDataArrays();
 	//init host arrays
 	//body arrays
@@ -196,18 +160,11 @@ void Cuda::initCUDA(){
 	h_pVeloc = new glm::vec3[partNum];
 	h_pForce = new glm::vec3[partNum];
 
-	//grid arrays
-	//in initCUDAGrid
-
 	//update VOs
 	h_uVOpos = new glm::vec3[bodyNum];
 	h_uVOrot = new glm::quat[bodyNum];
 
 	//konstante vars direkt füllen
-	/*float tempVS = UniformGrid::getInstance()->getVoxelSize();
-	h_voxelS = tempVS;*/
-	//h_gridS = UniformGrid::getInstance()->getGridSize();
-	//h_gridSL = UniformGrid::getInstance()->getGridLength();
 	float tempWS = world->getWorldSize();
 	h_worldS = tempWS;
 	h_springC = world->getSpringCoeff();
@@ -216,15 +173,11 @@ void Cuda::initCUDA(){
 	h_duration = demo->getDuration();
 	h_termVeloc = demo->getTerminalVeloc();
 
-	/*h_gridMinPosVector.x = -tempWS - tempVS;
-	h_gridMinPosVector.y = -tempVS;
-	h_gridMinPosVector.z = -tempWS - tempVS;*/
-
-	//initOpenCLGrid();
 	//init gitter
 	UniformGrid::getInstance()->createGrid();
 	initCUDAGrid();
 
+	//gridSize = ;
 	float tempVS = UniformGrid::getInstance()->getVoxelSize();
 	h_voxelS = tempVS;
 	h_gridSL = UniformGrid::getInstance()->getGridLength();
@@ -235,7 +188,6 @@ void Cuda::initCUDA(){
 	//initializeDeviceBuffers();
 	//init device arrays
 	//speicher für arrays alokieren
-	//checkCudaErrors(cudaMalloc(devPtr, size));
 	cudaMalloc((void**)&d_rbMass, bodyNum*sizeof(float));
 	cudaMalloc((void**)&d_rbForce, bodyNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_rbPos, bodyNum*sizeof(glm::vec3));
@@ -254,48 +206,26 @@ void Cuda::initCUDA(){
 	cudaMalloc((void**)&d_pVeloc, partNum*sizeof(glm::vec3));
 	cudaMalloc((void**)&d_pForce, partNum*sizeof(glm::vec3));
 
-	/*
-	cudaMalloc((void**)d_voxelS, sizeof(float));	//todo: für diese vars speicher alloc
-	cudaMalloc((void**)&d_gridS, sizeof(int));
-	cudaMalloc((void**)&d_worldS, sizeof(float));
-	cudaMalloc((void**)&d_springC, sizeof(float));
-	cudaMalloc((void**)&d_dampC, sizeof(float));
-	cudaMalloc((void**)&d_pRadius, sizeof(float));
-	cudaMalloc((void**)&d_duration, sizeof(float));
-	cudaMalloc((void**)&d_termVeloc, sizeof(float));
-
-	cudaMalloc((void**)&d_gridMinPosVector, sizeof(glm::vec3));
-	*/
-
-	//cudaMemcpyToSymbol(d_voxelS,&h_voxelS,1 * sizeof(int));
-
-	//updateHostDataArrays();
 	//fülle host arrays
 	updateHostArrays();
 
-	//writeHostDataToDevice();
 	//kopiere auf gpu
 	hostToDevice();
 }
 
 void Cuda::updateHostArrays(){
 
-	//cout << "cuda: updateHostArr called!" << endl; //zum test
-
-	//RigidBody** allB = World::getInstance()->getAllBodies();
-	//Particle** allP = World::getInstance()->getAllParticles();
 	for (int i = 0; i < bodyNum; i++) {
-		//allB[i]->updateCUDArray(i);
+		
 		world->allBodies[i]->updateCUDArray(i);
 	}
 	for (int i=0; i<partNum; i++) {
-		//allP[i]->updateCUDArray(i);
+		
 		world->allParticles[i]->updateCUDArray(i);
 	}
 }
 
 void Cuda::hostToDevice(){
-
 
 	//cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_rbMass, h_rbMass, bodyNum*sizeof(float), cudaMemcpyHostToDevice);
@@ -321,18 +251,13 @@ void Cuda::hostToDevice(){
 	cudaMemcpy(d_gridCells, h_gridCells, gridSize*sizeof(glm::ivec4), cudaMemcpyHostToDevice);
 
 	fillDeviceSymbols(h_voxelS, h_gridSL, h_worldS, h_springC, h_dampC, h_pRadius, h_duration, h_termVeloc, h_gridMinPosVector);
-
-
 }
 
 void Cuda::initCUDAGrid(){
 
-	//cout << "cuda: initGrid called!" << endl; //zum test
-
 	//host arrays
 	h_pGridIndex = new glm::ivec3[partNum];
 
-	//int gS = UniformGrid::getInstance()->getGridSize();
 	h_gridCounters = new int[gridSize];
 	h_gridCells = new glm::ivec4[gridSize];	//int4?!
 
@@ -357,52 +282,30 @@ void Cuda::initCUDAGrid(){
 
 void Cuda::stepCUDA(){
 
-	//cout << "cuda: stepCUDA!" << endl; //zum test
-
 	//schritte nacheinander aufrufen
-//	cout << "-test stepCUDA 1-" << endl; //zum debuggen
-//	int g = UniformGrid::getInstance()->getGridSize();
-	resetGrid(d_gridCounters, d_gridCells, gridSize);		//versuch: g hier nicht erst in.cu
+
+	resetGrid(d_gridCounters, d_gridCells, gridSize);
 	
-//	cout << "-test stepCUDA 2-" << endl; //zum debuggen
 	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_pGridIndex);	//, d_voxelS, d_gridSL , d_gridMinPosVector
 	
-//	cout << "-test stepCUDA 3-" << endl; //zum debuggen
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pGridIndex, d_gridCounters, d_gridCells);	//, d_gridSL , d_pRadius, d_worldS, d_springC, d_dampC
 
-//	cout << "-test stepCUDA 4-" << endl; //zum debuggen
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce);	//, d_duration, d_termVeloc
 	
-//	cout << "-test stepCUDA 5-" << endl; //zum debuggen
 	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens);	// d_duration, d_pRadius
 
-//	cout << "-test stepCUDA 6-" << endl; //zum debuggen
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc);	//, d_pRadius
-//	cout << "-test stepCUDA 7-" << endl; //zum debuggen	
-	//VOs updaten
-	//TODO
 
-	//rendern!?
+	//VOs updaten
 	//bzw. cuda opengl austausch
 	// siehe --> cuda samples - 2_graphics - simpleGL
-	
-	//v1 über cvk cpu
-	//TODO
-
-	//v2 über cuda opengl (instancing)
-	//irgwo vorher noch vbo mit cuda daten initial füllen, hier dann immer updaten!!
-	/*
-	cudaGLRegisterBufferObject(bufferObj);
+	/*cudaGLRegisterBufferObject(bufferObj);
 	cudaGLMapBufferObject((void**)&devPtr,bufferObj);
-
 	//kernel aufrufen
-
 	cudaGraphicsUnmapResources(1, &cuda_vbo_resource1, 0);	// give access authority of vbo1 back to openGL  
 	cudaGraphicsUnregisterResource(cuda_vbo_resource1);		// unregiste the resource   
 	*/
-
 	//mit opengl rendern
-
 }
 
 void Cuda::updateVOarrays(){

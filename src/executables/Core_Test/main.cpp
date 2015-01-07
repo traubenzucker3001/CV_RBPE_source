@@ -18,7 +18,6 @@ int main() {
 	//test->calcParticles();
 	//Sphere *test2 = new Sphere(vec,2);
 	//test->getOrigin();
-	//test->
 	float testArr[9] = {0,1,2,3,4,5,6,7,8};
 	glm::mat3 testMat = glm::make_mat3(testArr);
 	glm::mat3 testMat2 = glm::mat3(1,2,3,4,5,6,7,8,9);

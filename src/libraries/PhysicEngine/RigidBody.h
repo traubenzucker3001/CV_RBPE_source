@@ -45,17 +45,9 @@ private:
 
 	glm::vec3 force;						/**< body force */
 
-	//glm::vec3 torgueToBeApplied;	//ka ob nötig
-	//glm::vec3 lastFrameVeloc;	//ka ob nötig
-
 	bool isStatic;							/**< true if object is static, false if object is dynamic */
 
-	//float linearDamp;		//welt oder jeder body einzeln?!. im mom allgemeiner welt param
-	//float angularDamp;
-
 	glm::mat4 transformMatrix;				/**< transformation matrix */
-
-	//CollisionShape *shape;				/**< body shape */	//partikel erst in collshape	//zu public verschoben
 
 	static int count;						/**< help variable for all bodies array/vector */
 
@@ -93,7 +85,7 @@ public:
 	 * @param duration time length of a simulation step
 	 * @return void
 	 */
-	void iterate(float duration);		//performStep
+	void iterate(float duration);
 
 	/** \brief update rotations matrix
 	 *
@@ -114,7 +106,7 @@ public:
 	 * update particle positions
 	 * @return void
 	 */
-	void updatePartValues();	//runter in collshape greifen
+	void updatePartValues();
 
 	/** \brief update momenta
 	 *
@@ -122,7 +114,7 @@ public:
 	 * @param duration time length of a simulation step
 	 * @return void
 	 */
-	void updateMomenta(float duration); //runter in collshape greifen
+	void updateMomenta(float duration);
 
 	/** \brief reset body
 	 *

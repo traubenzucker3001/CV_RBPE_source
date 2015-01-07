@@ -22,7 +22,7 @@ private:
 	float mass;				/**< particle mass */
 	glm::vec3 force;		/**< particle force */
 
-	static int indexCount; 	/**< help variable to populate all particle array */	//used to populate global particle array
+	static int indexCount; 	/**< help variable to populate all global particle array */
 
 	CVK::Node* partNode;	/**< particle force */
 

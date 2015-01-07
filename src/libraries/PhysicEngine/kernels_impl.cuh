@@ -345,9 +345,9 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 						pForce[pi].z = pForce[pi].z - d_springC*(d_pRadius + d_pRadius - absDistance)*(distance.z / absDistance);
 
 						//glm::vec3
-						float3 relativeVelocity = { pVeloc[otherParticle].x - pVeloc[pi].x,
-													pVeloc[otherParticle].y - pVeloc[pi].y,
-													pVeloc[otherParticle].z - pVeloc[pi].z };
+						glm::vec3 relativeVelocity = { pVeloc[otherParticle].x - pVeloc[pi].x,
+													   pVeloc[otherParticle].y - pVeloc[pi].y,
+													   pVeloc[otherParticle].z - pVeloc[pi].z };
 
 						pForce[pi].x = pForce[pi].x + d_dampC*relativeVelocity.x;
 						pForce[pi].y = pForce[pi].y + d_dampC*relativeVelocity.y;

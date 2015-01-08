@@ -121,9 +121,9 @@ void Demo::run(){
 
 	while( !glfwWindowShouldClose(window)){
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert
 
-		time->startFrame();
+		//time->startFrame();
 
 		stepSimulation(duration);
 
@@ -151,11 +151,11 @@ void Demo::run(){
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		time->endFrame();
+		//time->endFrame();
 
-		float fps = (float)time->updateFPS();	//TODO korrigieren
+		int fps = time->updateFPS();	//TODO korrigieren
 		char title[64];
-		sprintf_s(title, "Rigid Body | %d fps", (int)fps);
+		sprintf_s(title, "Rigid Body | %d fps", fps);
 		glfwSetWindowTitle(window, title);
 	}
 	cuda->~Cuda();	//free cuda stuff

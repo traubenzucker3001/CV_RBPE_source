@@ -24,6 +24,9 @@ private:
 	int startTime;		/**< frame start time */
 	int endTime;		/**< frame end time */
 
+	int currentTime;
+	int previousTime;
+
 public:
 
 	/** \brief constructor

@@ -135,8 +135,8 @@ void Demo::run(){
 
 		if (renderPart == false){
 			//render würfel
-			updateVOs();
-			sceneRoot->render();
+			//updateVOs();			//zum performanz-test auskommentiert
+			//sceneRoot->render();	//zum performanz-test auskommentiert
 		}
 		if (renderPart == true){
 			//render partikel

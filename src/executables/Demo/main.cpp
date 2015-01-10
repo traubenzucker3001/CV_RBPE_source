@@ -33,3 +33,5 @@ int main() {
 	cudaDeviceReset();
 	return 0;
 }
+
+//test234

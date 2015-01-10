@@ -60,28 +60,28 @@ void Demo::run(){
 	// Init GLFW and GLEW
 	glfwInit();
 	CVK::useOpenGL33CoreProfile();
-	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
-	glfwSetWindowPos( window, 100, 50);
-	glfwMakeContextCurrent(window);
+	//GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
+	//glfwSetWindowPos( window, 100, 50);
+	//glfwMakeContextCurrent(window);
 
 	glewInit();
 
 	float pr = world->getPartRadius();
 	float temp = pr * 3;
-	cubeGeometry = new CVK::Cube(temp);
-	partGeometry = new CVK::Sphere(pr);
+	//cubeGeometry = new CVK::Cube(temp);
+	//partGeometry = new CVK::Sphere(pr);
 	//material setzten, geht aber nur bei node, also in VO
-	cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
+//	cubeMaterial = new CVK::Material((char*)RESOURCES_PATH "/cv_logo.bmp", black, grey, 100.0f);
 	//cubeMaterial = new CVK::Material(red, white, 100.0f);	//!for transparency!
 	//cubeMaterial->setAlpha(0.5);							//!for transparency!
-	partMaterial = new CVK::Material(blue, white, 100.0f);
+//	partMaterial = new CVK::Material(blue, white, 100.0f);
 
 	//plane für boden
-	plane = new CVK::Plane();
+//	plane = new CVK::Plane();
 	CVK::Node* planeNode = new CVK::Node("Plane");
-	CVK::Material mat_brick((char*)RESOURCES_PATH "/brick.bmp", black, darkgrey, 100.0f);
+//	CVK::Material mat_brick((char*)RESOURCES_PATH "/brick.bmp", black, darkgrey, 100.0f);
 	planeNode->setGeometry(plane);
-	planeNode->setMaterial(&mat_brick);
+//	planeNode->setMaterial(&mat_brick);
 	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
 	demo->sceneRoot->addChild(planeNode);
 	demo->partRoot->addChild(planeNode);
@@ -90,13 +90,13 @@ void Demo::run(){
 	camera->setRadius( 30);
 	camera->setNearFar( 1.0f, 100.0f);
 
-	glfwSetWindowSizeCallback( window, resizeCallback);
+	//glfwSetWindowSizeCallback( window, resizeCallback);
 
 	initScene();
 
 	//load, compile and link Shader
-	const char *shadernames[2] = {SHADERS_PATH "/Phong.vert", SHADERS_PATH "/Phong.frag"};
-	CVK::ShaderPhong phongShader( VERTEX_SHADER_BIT|FRAGMENT_SHADER_BIT, shadernames);
+	//const char *shadernames[2] = {SHADERS_PATH "/Phong.vert", SHADERS_PATH "/Phong.frag"};
+	//CVK::ShaderPhong phongShader( VERTEX_SHADER_BIT|FRAGMENT_SHADER_BIT, shadernames);
 
 	//OpenGL parameters
 	glClearColor(1.0, 1.0, 1.0, 0.0);
@@ -112,14 +112,15 @@ void Demo::run(){
 
 	//define Scene uniforms (ambient and fog)
 	CVK::State::getInstance()->updateSceneSettings( darkgrey, 0, white, 1, 10, 1);
-	CVK::State::getInstance()->setShader(&phongShader);
+	//CVK::State::getInstance()->setShader(&phongShader);
 
 	//init cuda
 	if(isGPU == true){
 		cuda->initCUDA();
 	}
 
-	while( !glfwWindowShouldClose(window)){
+	bool test = true;
+	while( test == true){
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert
 
@@ -128,41 +129,43 @@ void Demo::run(){
 		stepSimulation(duration);
 
 		//Update Camera
-		camera->update(window);
+		//camera->update(window);
 
 		//update shader and render
-		phongShader.update();
+		//phongShader.update();
 
 		if (renderPart == false){
 			//render würfel
-			updateVOs();			//zum performanz-test auskommentiert
-			sceneRoot->render();	//zum performanz-test auskommentiert
+			//updateVOs();			//zum performanz-test auskommentiert
+			//sceneRoot->render();	//zum performanz-test auskommentiert
 		}
 		if (renderPart == true){
 			//render partikel
 			if (isGPU == true){
-				updateVOs();
-				planeNode->render();
-				renderPartGPU();
+				//updateVOs();
+				//planeNode->render();
+				//renderPartGPU();
 			}
 			else{
-				partRoot->render();
+				//partRoot->render();
 			}
 		}
 
-		glfwSwapBuffers(window);
+		//glfwSwapBuffers(window);
 		glfwPollEvents();
 
 		//time->endFrame();
 
 		int fps = time->updateFPS();	//TODO korrigieren
-		char title[64];
+		/*char title[64];
 		sprintf_s(title, "Rigid Body | %d fps", fps);
-		glfwSetWindowTitle(window, title);
+		glfwSetWindowTitle(window, title);*/
+
+		cout << "fps: " << fps << endl;
 	}
 	cuda->~Cuda();	//free cuda stuff
 
-	glfwDestroyWindow( window);
+	//glfwDestroyWindow( window);
 	glfwTerminate();
 }
 

@@ -52,7 +52,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	h_uVOpos = 0;
 	h_uVOrot = 0;
-	//h_uVOpPos = 0;
+	h_uVOpPos = 0;
 
 	h_pGridIndex = 0;
 
@@ -116,7 +116,7 @@ Cuda::~Cuda(){
 
 	delete h_uVOpos;
 	delete h_uVOrot;
-	//delete h_uVOpPos;
+	delete h_uVOpPos;
 
 	cudaFree(d_rbMass);
 	cudaFree(d_rbForce);
@@ -165,7 +165,7 @@ void Cuda::initCUDA(){
 	//update VOs
 	h_uVOpos = new glm::vec3[bodyNum];
 	h_uVOrot = new glm::quat[bodyNum];
-	//h_uVOpPos = new glm::vec3[partNum];
+	h_uVOpPos = new glm::vec3[partNum];
 
 
 	//konstante vars direkt füllen
@@ -289,16 +289,21 @@ void Cuda::stepCUDA(){
 	//schritte nacheinander aufrufen
 
 	resetGrid(d_gridCounters, d_gridCells, gridSize);
-	
+
 	updateGrid(d_gridCounters, d_gridCells, d_pPos, d_pGridIndex);	//, d_voxelS, d_gridSL , d_gridMinPosVector
-	
+
 	calcCollForces(d_pMass, d_pPos, d_pVeloc, d_pForce, d_pGridIndex, d_gridCounters, d_gridCells);	//, d_gridSL , d_pRadius, d_worldS, d_springC, d_dampC
 
 	updateMom(d_rbMass, d_rbForce, d_rbPos, d_rbLinMom, d_rbAngMom, d_pPos, d_pForce);	//, d_duration, d_termVeloc
-	
+
 	iterate(d_rbMass, d_rbPos, d_rbVeloc, d_rbLinMom, d_rbRotQuat, d_rbRotMat, d_rbAngVeloc, d_rbAngMom, d_rbInitInversInertTensDiago, d_rbInverseInertTens);	// d_duration, d_pRadius
 
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc);	//, d_pRadius
+
+	/*cudaMemcpy(h_pPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);	//zum debuggen
+	for (int i = 0; i < world->getAllPartNum(); i++){								//zum debuggen
+		cout << "Pos " << h_pPos[i].y << endl;												//zum debuggen
+	}	*/																			//zum debuggen
 
 	//VOs updaten
 	//bzw. cuda opengl austausch
@@ -314,8 +319,12 @@ void Cuda::stepCUDA(){
 
 void Cuda::updateVOarrays(){
 
-	//cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);		//zum performanz-test auskommentiert
-	//cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);	//zum performanz-test auskommentiert
-	//cudaMemcpy(h_uVOpPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);		//zum performanz-test auskommentiert
+	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);	//zum performanz-test auskommentiert
+	cudaMemcpy(h_uVOpPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+
+	/*for (int i = 0; i < world->getAllPartNum(); i++){								//zum debuggen
+		cout << "voPos " << h_uVOpPos[i].y << endl;									//zum debuggen
+	}	*/																			//zum debuggen
 }
 

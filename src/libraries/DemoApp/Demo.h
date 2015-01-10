@@ -60,6 +60,8 @@ public:
 	CVK::Geometry* partGeometry;		/**< cvk particle geometry (sphere) */
 	CVK::Material* partMaterial;		/**< cvk particle material */
 
+	//CVK::Node* partGPURoot;				/**< cvk scenegraph root node, for particles */
+
 	/** \brief constructor
 	*
 	* creates the demo instance
@@ -127,6 +129,11 @@ public:
 	*/
 	void updateVOs();
 
+	/** \brief render particles in gpu version
+	*
+	* ...
+	*/
+	void renderPartGPU();
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
 	//schauen wie das mit cvk läuft

@@ -209,7 +209,7 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 			rbAngVeloc[bi].z*rbAngVeloc[bi].z);
 
 		if (angularVelocitySize > 0.0f) {
-			float3 rotationAxis = {
+			glm::vec3 rotationAxis = {
 				rbAngVeloc[bi].x / angularVelocitySize,
 				rbAngVeloc[bi].y / angularVelocitySize,
 				rbAngVeloc[bi].z / angularVelocitySize };

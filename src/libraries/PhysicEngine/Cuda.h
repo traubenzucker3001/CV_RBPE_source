@@ -47,7 +47,7 @@ public:
 	//update VOs arrays
 	glm::vec3* h_uVOpos;		/**< host array for virtual objekt positions */
 	glm::quat* h_uVOrot;		/**< host array for virtual objekt rotations */
-	//glm::vec3* h_uVOpPos;		/**< host array for virtual objekt particle positions */
+	glm::vec3* h_uVOpPos;		/**< host array for virtual objekt particle positions */
 
 private:
 	glm::ivec3 *h_pGridIndex;	/**< host array for particle grin indices */

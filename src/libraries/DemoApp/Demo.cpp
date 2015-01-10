@@ -135,17 +135,19 @@ void Demo::run(){
 
 		if (renderPart == false){
 			//render würfel
-			//updateVOs();			//zum performanz-test auskommentiert
-			//sceneRoot->render();	//zum performanz-test auskommentiert
+			updateVOs();			//zum performanz-test auskommentiert
+			sceneRoot->render();	//zum performanz-test auskommentiert
 		}
 		if (renderPart == true){
 			//render partikel
-			/*if (isGPU == true){
-				for (int i = 0; i < world->getAllPartNum(); i++){
-					world->allParticles[i]->updateNode(i);
-				}
-			}*/
-			partRoot->render();
+			if (isGPU == true){
+				updateVOs();
+				planeNode->render();
+				renderPartGPU();
+			}
+			else{
+				partRoot->render();
+			}
 		}
 
 		glfwSwapBuffers(window);
@@ -244,5 +246,20 @@ void Demo::updateVOs(){
 		for (std::vector<VirtualObject*>::iterator it = virtualObjs.begin(); it != virtualObjs.end(); ++it){
 			(*it)->updateGPU();
 		}
+	}
+}
+
+void Demo::renderPartGPU(){
+	
+	//TODO
+	CVK::Node* partGPUNode = new CVK::Node("partGPU");
+	partGPUNode->setGeometry(partGeometry);
+	partGPUNode->setMaterial(partMaterial);
+
+	for (int j = 0; j < world->getAllPartNum(); j++){
+		glm::vec3 temP = cuda->h_uVOpPos[j];	//h_uVOpPos
+		//cout << temP.y << endl;
+		partGPUNode->setModelMatrix(glm::translate(glm::mat4(1.0f), temP));
+		partGPUNode->render();
 	}
 }

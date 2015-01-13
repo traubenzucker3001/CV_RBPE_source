@@ -1,6 +1,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <fstream>
 
 #include "PhysicEngine/CollisionShape.h"
 #include "PhysicEngine/Sphere.h"
@@ -25,6 +26,11 @@ int main() {
 	cout << testMat[1][0] << endl;
 	cout << "stelle8: " << testMat2[2].y << endl;
 	//cout << testMat2[0].y << endl;
+
+	/*ofstream file;
+	file.open("test.txt");
+	file << "test" << endl;
+	file.close();*/
 
 	return 0;
 }

@@ -62,6 +62,8 @@ public:
 
 	//CVK::Node* partGPURoot;				/**< cvk scenegraph root node, for particles */
 
+	bool test;
+
 	/** \brief constructor
 	*
 	* creates the demo instance
@@ -165,7 +167,7 @@ public:
 	* @param y mouse y coordinates
 	* @return void
 	*/
-	void keyCallback(unsigned char key, int x, int y);
+	//void keyCallback(unsigned char key, int x, int y);
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //

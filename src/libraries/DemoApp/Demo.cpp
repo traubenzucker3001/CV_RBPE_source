@@ -1,6 +1,7 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
+#include <fstream>
 
 #include "Demo.h"
 #include "PhysicEngine\UniformGrid.h"
@@ -22,6 +23,22 @@ void resizeCallback(GLFWwindow *window, int w, int h){
 	glViewport(0, 0, w, h);
 }
 
+void wait(){
+
+	cin.clear();
+
+	cin.ignore(cin.rdbuf()->in_avail());
+
+	cin.get();
+}
+
+void keyCallback(GLFWwindow *window, unsigned int key){
+	switch (key){
+	case 'e':
+		demo->test = false;
+		break;
+	}
+}
 
 Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, float scIN, float dcIN, int bnIN, bool igIN, bool wgIN, bool rpIN){
 
@@ -46,6 +63,8 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 //	partGeometry = 0;
 //	partMaterial = 0;
 
+	test = true;
+
 	cout << "isGPU: " << isGPU << endl;
 }
 
@@ -60,7 +79,7 @@ void Demo::run(){
 	// Init GLFW and GLEW
 	glfwInit();
 //	CVK::useOpenGL33CoreProfile();
-	//GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
+//	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
 	//glfwSetWindowPos( window, 100, 50);
 	//glfwMakeContextCurrent(window);
 
@@ -91,6 +110,7 @@ void Demo::run(){
 	camera->setNearFar( 1.0f, 100.0f);*/
 
 	//glfwSetWindowSizeCallback( window, resizeCallback);
+	//glfwSetCharCallback(window, keyCallback);
 
 	initScene();
 
@@ -119,8 +139,13 @@ void Demo::run(){
 		cuda->initCUDA();
 	}
 
-	bool test = true;
-	while( test == true){
+	ofstream file;
+	file.open("test.txt");
+
+	//bool test = true;
+	while(test == true){
+
+		//wait();
 
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert
 
@@ -162,7 +187,12 @@ void Demo::run(){
 		glfwSetWindowTitle(window, title);*/
 
 		cout << "fps: " << fps << endl;
+
+		int tempT = time->getTime();
+		file << "fps: " << fps << " at time: " << tempT << endl;
 	}
+	file.close();
+
 	cuda->~Cuda();	//free cuda stuff
 
 	//glfwDestroyWindow( window);

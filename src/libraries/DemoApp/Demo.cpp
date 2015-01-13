@@ -1,6 +1,7 @@
 
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
+#include <fstream>
 
 #include "Demo.h"
 #include "PhysicEngine\UniformGrid.h"
@@ -87,7 +88,7 @@ void Demo::run(){
 	demo->partRoot->addChild(planeNode);
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
-	camera->setRadius( 30);
+	camera->setRadius(30);
 	camera->setNearFar( 1.0f, 100.0f);
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
@@ -118,6 +119,9 @@ void Demo::run(){
 	if(isGPU == true){
 		cuda->initCUDA();
 	}
+
+	ofstream file;
+	file.open("testMR.txt");
 
 	while( !glfwWindowShouldClose(window)){
 
@@ -159,7 +163,12 @@ void Demo::run(){
 		char title[64];
 		sprintf_s(title, "Rigid Body | %d fps", fps);
 		glfwSetWindowTitle(window, title);
+
+		int tempT = time->getTime();
+		file << "fps: " << fps << " at time: " << tempT << endl;
 	}
+	file.close();
+
 	cuda->~Cuda();	//free cuda stuff
 
 	glfwDestroyWindow( window);

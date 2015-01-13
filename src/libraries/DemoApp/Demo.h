@@ -50,15 +50,15 @@ private:
 
 public:
 
-	CVK::Trackball *camera;				/**< cvk camera objekt */	//bzw normale camera
+//	CVK::Trackball *camera;				/**< cvk camera objekt */	//bzw normale camera
 
-	CVK::Node* sceneRoot;				/**< cvk scenegraph root node, for boxes */
-	CVK::Geometry* cubeGeometry;		/**< cvk cube geometry */
-	CVK::Plane* plane;					/**< cvk plane, to represent the floor */
-	CVK::Material* cubeMaterial;		/**< cvk cube material */
-	CVK::Node* partRoot;				/**< cvk scenegraph root node, for particles */
-	CVK::Geometry* partGeometry;		/**< cvk particle geometry (sphere) */
-	CVK::Material* partMaterial;		/**< cvk particle material */
+//	CVK::Node* sceneRoot;				/**< cvk scenegraph root node, for boxes */
+//	CVK::Geometry* cubeGeometry;		/**< cvk cube geometry */
+//	CVK::Plane* plane;					/**< cvk plane, to represent the floor */
+//	CVK::Material* cubeMaterial;		/**< cvk cube material */
+//	CVK::Node* partRoot;				/**< cvk scenegraph root node, for particles */
+//	CVK::Geometry* partGeometry;		/**< cvk particle geometry (sphere) */
+//	CVK::Material* partMaterial;		/**< cvk particle material */
 
 	//CVK::Node* partGPURoot;				/**< cvk scenegraph root node, for particles */
 

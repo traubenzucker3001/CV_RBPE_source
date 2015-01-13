@@ -18,7 +18,7 @@ extern int bodycount;
 
 void resizeCallback(GLFWwindow *window, int w, int h){
 
-	demo->camera->setWidthHeight(w, h);
+//	demo->camera->setWidthHeight(w, h);
 	glViewport(0, 0, w, h);
 }
 
@@ -32,19 +32,19 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 	windowHeight = whIN;
 	duration = durIN;
 	terminalVeloc = tvIN;
-	camera = new CVK::Trackball(wwIN,whIN);
-	sceneRoot = new CVK::Node("Root");
-	partRoot = new CVK::Node("ParticleRoot");
+	//camera = new CVK::Trackball(wwIN,whIN);
+	//sceneRoot = new CVK::Node("Root");
+	//partRoot = new CVK::Node("ParticleRoot");
 
 	float temp = prIN * 6;
-	cubeGeometry = 0;
-	plane = 0;
+//	cubeGeometry = 0;
+//	plane = 0;
 	isGPU = igIN;
 	withGrid = wgIN;
 	renderPart = rpIN;
-	cubeMaterial = 0;
-	partGeometry = 0;
-	partMaterial = 0;
+//	cubeMaterial = 0;
+//	partGeometry = 0;
+//	partMaterial = 0;
 
 	cout << "isGPU: " << isGPU << endl;
 }
@@ -52,14 +52,14 @@ Demo::Demo(int wwIN, int whIN, float durIN, float tvIN, float wsIN, float prIN, 
 Demo::~Demo(){
 
 	delete time;
-	delete camera;
+//	delete camera;
 }
 
 void Demo::run(){
 
 	// Init GLFW and GLEW
 	glfwInit();
-	CVK::useOpenGL33CoreProfile();
+//	CVK::useOpenGL33CoreProfile();
 	//GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "RBPE-Demo", 0, 0);
 	//glfwSetWindowPos( window, 100, 50);
 	//glfwMakeContextCurrent(window);
@@ -78,17 +78,17 @@ void Demo::run(){
 
 	//plane für boden
 //	plane = new CVK::Plane();
-	CVK::Node* planeNode = new CVK::Node("Plane");
+	//CVK::Node* planeNode = new CVK::Node("Plane");
 //	CVK::Material mat_brick((char*)RESOURCES_PATH "/brick.bmp", black, darkgrey, 100.0f);
-	planeNode->setGeometry(plane);
+	//planeNode->setGeometry(plane);
 //	planeNode->setMaterial(&mat_brick);
-	planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
-	demo->sceneRoot->addChild(planeNode);
-	demo->partRoot->addChild(planeNode);
+	//planeNode->setModelMatrix(glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)), glm::vec3(10)), -90.0f, glm::vec3(1, 0, 0)));	//0.4=partdurchmesser
+	//demo->sceneRoot->addChild(planeNode);
+	//demo->partRoot->addChild(planeNode);
 
-	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
+	/*camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
 	camera->setRadius( 30);
-	camera->setNearFar( 1.0f, 100.0f);
+	camera->setNearFar( 1.0f, 100.0f);*/
 
 	//glfwSetWindowSizeCallback( window, resizeCallback);
 
@@ -99,19 +99,19 @@ void Demo::run(){
 	//CVK::ShaderPhong phongShader( VERTEX_SHADER_BIT|FRAGMENT_SHADER_BIT, shadernames);
 
 	//OpenGL parameters
-	glClearColor(1.0, 1.0, 1.0, 0.0);
+	/*glClearColor(1.0, 1.0, 1.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 
-	CVK::State::getInstance()->setCamera( camera);
+	//CVK::State::getInstance()->setCamera( camera);
 
 	//define light
-	CVK::Light plight( glm::vec4( -1, 1, 1, 1), grey, glm::vec3( 0, 0, 0), 1.0f, 0.0f);
-	CVK::State::getInstance()->addLight( &plight);
+	//CVK::Light plight( glm::vec4( -1, 1, 1, 1), grey, glm::vec3( 0, 0, 0), 1.0f, 0.0f);
+	//CVK::State::getInstance()->addLight( &plight);
 
 	//define Scene uniforms (ambient and fog)
-	CVK::State::getInstance()->updateSceneSettings( darkgrey, 0, white, 1, 10, 1);
+	//CVK::State::getInstance()->updateSceneSettings( darkgrey, 0, white, 1, 10, 1);
 	//CVK::State::getInstance()->setShader(&phongShader);
 
 	//init cuda
@@ -122,7 +122,7 @@ void Demo::run(){
 	bool test = true;
 	while( test == true){
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert
 
 		//time->startFrame();
 
@@ -152,7 +152,7 @@ void Demo::run(){
 		}
 
 		//glfwSwapBuffers(window);
-		glfwPollEvents();
+		//glfwPollEvents();
 
 		//time->endFrame();
 
@@ -166,7 +166,7 @@ void Demo::run(){
 	cuda->~Cuda();	//free cuda stuff
 
 	//glfwDestroyWindow( window);
-	glfwTerminate();
+	//glfwTerminate();
 }
 
 void Demo::initScene(){
@@ -254,15 +254,14 @@ void Demo::updateVOs(){
 
 void Demo::renderPartGPU(){
 	
-	//TODO
-	CVK::Node* partGPUNode = new CVK::Node("partGPU");
-	partGPUNode->setGeometry(partGeometry);
-	partGPUNode->setMaterial(partMaterial);
+	//CVK::Node* partGPUNode = new CVK::Node("partGPU");
+	//partGPUNode->setGeometry(partGeometry);
+	//partGPUNode->setMaterial(partMaterial);
 
 	for (int j = 0; j < world->getAllPartNum(); j++){
 		glm::vec3 temP = cuda->h_uVOpPos[j];	//h_uVOpPos
 		//cout << temP.y << endl;
-		partGPUNode->setModelMatrix(glm::translate(glm::mat4(1.0f), temP));
-		partGPUNode->render();
+		//partGPUNode->setModelMatrix(glm::translate(glm::mat4(1.0f), temP));
+		//partGPUNode->render();
 	}
 }

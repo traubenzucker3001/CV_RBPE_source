@@ -24,18 +24,18 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 	gridIndex = glm::ivec3(0,0,0);
 	partIndex = 0;
 
-	partNode = new CVK::Node();
-	partNode->setGeometry(demo->partGeometry);
-	partNode->setMaterial((demo->partMaterial));
-	partNode->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
-	demo->partRoot->addChild(partNode);
+	//partNode = new CVK::Node();
+	//partNode->setGeometry(demo->partGeometry);
+	//partNode->setMaterial((demo->partMaterial));
+	//partNode->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
+	//demo->partRoot->addChild(partNode);
 	//demo->sceneRoot->addChild(partNode);	//!for transparency!
 }
 
 Particle::~Particle(){
 
 	//no pointers to clear!
-	delete partNode;
+	//delete partNode;
 }
 
 glm::vec3 Particle::calculateForces(bool wgIN){
@@ -226,7 +226,7 @@ void Particle::applyRot(glm::mat3 rotatMatrix, glm::vec3 relatPos, glm::vec3 bod
 
 	//modelmatrix von node aktualisieren
 	glm::mat4 modMat = glm::mat4(glm::translate(glm::mat4(1.0f), position));
-	partNode->setModelMatrix(modMat);
+	//partNode->setModelMatrix(modMat);
 }
 
 void Particle::populateArray(){

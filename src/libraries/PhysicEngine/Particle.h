@@ -24,7 +24,7 @@ private:
 
 	static int indexCount; 	/**< help variable to populate all global particle array */
 
-	CVK::Node* partNode;	/**< particle force */
+	//CVK::Node* partNode;	/**< particle force */
 
 public:
 

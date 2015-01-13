@@ -19,7 +19,7 @@ class VirtualObject
 private:
 	RigidBody* physicBody;		/**< RigidBody as physics component of this object */
 
-	CVK::Node* graphicBody;		/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
+	//CVK::Node* graphicBody;		/**< CVK Geometry (Sphere or Cube) as graphics component of this object */
 
 	glm::vec3 position;			/**< position */	//eig  überflüssig wenn model matrix habe
 

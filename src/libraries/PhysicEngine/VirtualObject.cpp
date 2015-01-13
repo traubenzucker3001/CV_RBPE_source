@@ -31,19 +31,19 @@ VirtualObject::VirtualObject(glm::vec3 posIN, int bodyCount, float massIN, bool 
 
 	world->allBodies[bodyCount] = physicBody;
 
-	graphicBody = new CVK::Node();
+	//graphicBody = new CVK::Node();
 
-	graphicBody->setGeometry(demo->cubeGeometry);
-	graphicBody->setMaterial((demo->cubeMaterial));
+	//graphicBody->setGeometry(demo->cubeGeometry);
+	//graphicBody->setMaterial((demo->cubeMaterial));
 
-	graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
-	demo->sceneRoot->addChild(graphicBody);
+	//graphicBody->setModelMatrix(glm::translate(glm::mat4(1.0f), position));
+	//demo->sceneRoot->addChild(graphicBody);
 }
 
 VirtualObject::~VirtualObject(){
 
 	delete physicBody;
-	delete graphicBody;
+	//delete graphicBody;
 }
 
 //nicht über cuda - opengl austausch
@@ -62,7 +62,7 @@ void VirtualObject::updateCPU(){
 	modelMatrix = t * r;
 
 	//set new modelmatrix from node
-	graphicBody->setModelMatrix(modelMatrix);
+	//graphicBody->setModelMatrix(modelMatrix);
 }
 
 void VirtualObject::updateGPU(){
@@ -82,5 +82,5 @@ void VirtualObject::updateGPU(){
 	modelMatrix = t * r;
 
 	//set new modelmatrix from node
-	graphicBody->setModelMatrix(modelMatrix);
+	//graphicBody->setModelMatrix(modelMatrix);
 }

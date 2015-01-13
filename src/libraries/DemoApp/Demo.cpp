@@ -123,6 +123,13 @@ void Demo::run(){
 	ofstream file;
 	file.open("testMR.txt");
 
+	int tBN = world->getAllBodyNum();
+	file << "Box Anzahl: " << tBN << endl;
+	file << "isGPU: " << isGPU << endl;
+	file << "withGrid: " << withGrid << endl;
+	file << "renderParticle: " << renderPart << endl;
+	file << " ----- " << endl;
+
 	while( !glfwWindowShouldClose(window)){
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert

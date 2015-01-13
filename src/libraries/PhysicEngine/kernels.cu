@@ -107,7 +107,7 @@ void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3*
 	//thread pro part.
 	int p = world->getAllPartNum();
 		
-	int blockSize = 512;
+	int blockSize = 64;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 	

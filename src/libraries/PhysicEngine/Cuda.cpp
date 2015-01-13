@@ -319,9 +319,9 @@ void Cuda::stepCUDA(){
 
 void Cuda::updateVOarrays(){
 
-	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);		//zum performanz-test auskommentiert
-	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);	//zum performanz-test auskommentiert
-	cudaMemcpy(h_uVOpPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+	//cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);		//zum performanz-test auskommentiert
+	//cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);	//zum performanz-test auskommentiert
+	//cudaMemcpy(h_uVOpPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 
 	/*for (int i = 0; i < world->getAllPartNum(); i++){								//zum debuggen
 		cout << "voPos " << h_uVOpPos[i].y << endl;									//zum debuggen

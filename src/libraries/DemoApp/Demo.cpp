@@ -142,6 +142,13 @@ void Demo::run(){
 	ofstream file;
 	file.open("testOR.txt");
 
+	int tBN = world->getAllBodyNum();
+	file << "Box Anzahl: " << tBN << endl;
+	file << "isGPU: " << isGPU << endl;
+	file << "withGrid: " << withGrid << endl;
+	file << "renderParticle: " << renderPart << endl;
+	file << " ----- " << endl;
+
 	//bool test = true;
 	while(test == true){
 

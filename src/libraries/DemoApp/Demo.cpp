@@ -140,7 +140,7 @@ void Demo::run(){
 	}
 
 	ofstream file;
-	file.open("test.txt");
+	file.open("testOR.txt");
 
 	//bool test = true;
 	while(test == true){

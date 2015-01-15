@@ -149,6 +149,8 @@ void Demo::run(){
 	file << "renderParticle: " << renderPart << endl;
 	file << " ----- " << endl;
 
+	int oldT = -1;
+
 	//bool test = true;
 	while(test == true){
 
@@ -193,10 +195,15 @@ void Demo::run(){
 		sprintf_s(title, "Rigid Body | %d fps", fps);
 		glfwSetWindowTitle(window, title);*/
 
-		cout << "fps: " << fps << endl;
+		//cout << "fps: " << fps << endl;
 
 		int tempT = time->getTime();
-		file << "fps: " << fps << " at time: " << tempT << endl;
+		//file << "fps: " << fps << " at time: " << tempT << endl;
+		//TODO dateiausgabe abändern!
+		if (tempT != oldT){
+			file << fps << endl;
+		}
+		oldT = tempT;
 	}
 	file.close();
 

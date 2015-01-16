@@ -16,7 +16,7 @@ Timing::Timing(){
 	endTime = 0;
 	totalTime = 0;
 	afd = 0;
-
+	previousTime = 0;
 }
 
 Timing::~Timing(){
@@ -57,15 +57,15 @@ float Timing::updateFPS(){
 	//  Get the number of milliseconds since glutInit called
 	//  (or first call to glutGet(GLUT ELAPSED TIME)).
 	currentTime = (int)glfwGetTime();
-
+	
 	//  Calculate time passed
 	int timeInterval = currentTime - previousTime;
-
+	
 	if (timeInterval > 1)
 	{
 		//  calculate the number of frames per second
 		fps = frameNum / (timeInterval / 1.0f);
-
+		
 		//  Set time
 		previousTime = currentTime;
 
@@ -77,6 +77,6 @@ float Timing::updateFPS(){
 
 	frameNum = 0;
 	totalTime = 0;*/
-
+	
 	return fps;
 }

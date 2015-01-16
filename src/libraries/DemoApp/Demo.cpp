@@ -198,6 +198,7 @@ void Demo::run(){
 		//cout << "fps: " << fps << endl;
 
 		int tempT = time->getTime();
+		//cout << "time: " << tempT << endl;
 		//file << "fps: " << fps << " at time: " << tempT << endl;
 		//TODO dateiausgabe abändern!
 		if (tempT != oldT){

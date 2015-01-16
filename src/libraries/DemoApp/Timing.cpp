@@ -16,7 +16,7 @@ Timing::Timing(){
 	endTime = 0;
 	totalTime = 0;
 	afd = 0;
-
+	previousTime = 0;
 }
 
 Timing::~Timing(){

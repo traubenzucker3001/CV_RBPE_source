@@ -23,7 +23,7 @@ bool renderP = false;		//auf cpu und gpu möglich
 float worldSize = 15.0f;	//Half length of world	//15
 float partRadius = 0.40f;
 float boxHSize = partRadius * 3;
-int bodyNumber = 10;
+int bodyNumber = 50;
 
 int main() {
 

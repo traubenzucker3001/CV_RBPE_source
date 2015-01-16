@@ -51,7 +51,7 @@ void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g){
 		
 	//blocks und threads berechn.
 	//thread pro gitterzelle
-	int blockSize = 1024;	//64, 256, 512, 1024	
+	int blockSize = 1024;	//64, 128, 256, 512, 1024	
 	//int numThreads = (int)fmin(blockSize, g);
 	int numThreads = blockSize;
 	int numBlocks = nearHighVal(g, numThreads);	

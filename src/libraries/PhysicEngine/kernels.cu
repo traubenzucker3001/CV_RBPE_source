@@ -51,7 +51,7 @@ void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g){
 		
 	//blocks und threads berechn.
 	//thread pro gitterzelle
-	int blockSize = 1024;	//64, 128, 256, 512, 1024	
+	int blockSize = 64;	//64, 128, 256, 512, 1024	
 	//int numThreads = (int)fmin(blockSize, g);
 	int numThreads = blockSize;
 	int numBlocks = nearHighVal(g, numThreads);	
@@ -68,7 +68,7 @@ void updateGrid(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::
 	//thread pro part.
 	int p = world->getAllPartNum();
 
-	int blockSize = 1024;
+	int blockSize = 64;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 
@@ -81,7 +81,7 @@ void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* r
 
 	//thread pro body
 	int b = world->getAllBodyNum();
-	int blockSize = 1024;
+	int blockSize = 64;
 	int numThreads = (int)fmin(blockSize, b);
 	int numBlocks = nearHighVal(b, numThreads);
 
@@ -93,7 +93,7 @@ void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbL
 
 	//thread pro body
 	int b = world->getAllBodyNum();
-	int blockSize = 1024;
+	int blockSize = 64;
 	int numThreads = (int)fmin(blockSize, b);
 	int numBlocks = nearHighVal(b, numThreads);
 
@@ -107,7 +107,7 @@ void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3*
 	//thread pro part.
 	int p = world->getAllPartNum();
 		
-	int blockSize = 1024;
+	int blockSize = 64;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 	
@@ -119,7 +119,7 @@ void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::
 
 	//threads pro part.
 	int p = world->getAllPartNum();
-	int blockSize = 1024;
+	int blockSize = 64;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 

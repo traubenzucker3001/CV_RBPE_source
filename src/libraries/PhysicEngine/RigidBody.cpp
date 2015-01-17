@@ -27,7 +27,7 @@ RigidBody::RigidBody(float massIN, bool staticIN, glm::vec3 posIN, float sizeIN)
 
 	glm::vec3 pOrigIN = posIN;
 	float pMassIN = massIN; 
-	int numPartIN = 27;
+	int numPartIN = 8;		//eig 27 (3x3x3), jetzt 8 (2x2x2) oder 64 (4x4x4)
 	float halfsizeIN = sizeIN;
 
 	// inertiatensor diagonale berechnen

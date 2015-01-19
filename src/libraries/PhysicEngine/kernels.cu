@@ -11,6 +11,9 @@
 #include "kernels.cuh"
 #include "kernels_impl.cuh"
 
+//#include <ctime>
+#include <chrono>
+
 //link fix try 4
 extern World* world;
 
@@ -58,9 +61,18 @@ void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g){
 	//int numBlocks = ((g + 1024 -1) / 1024);
 	
 	//int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;	//aus vectorAdd
+	
+	//int start_s = clock();
+	auto start_time = std::chrono::high_resolution_clock::now();
 
 	resetGridC <<< numBlocks, numThreads >>>(gridCounters, gridCells, g);
 	cudaThreadSynchronize();
+
+	//int stop_s = clock();
+	//cout << "time: " << (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000 << endl;
+	auto end_time = std::chrono::high_resolution_clock::now();
+	auto time = end_time - start_time;
+	cout << "fib(100) took " << chrono::duration_cast<microseconds>(time).count() << " to run.\n";
 }
 
 void updateGrid(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::ivec3* pGridIndex){	//, float voxelSL, int gridSL , glm::vec3 gridMinPosVec

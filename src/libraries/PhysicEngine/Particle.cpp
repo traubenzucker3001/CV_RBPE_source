@@ -94,7 +94,7 @@ glm::vec3 Particle::calculateForces(bool wgIN){
 			int* neighborParticles = UniformGrid::getInstance()->getNeighborPartIndices(gridIndex);
 			int ppv = UniformGrid::getInstance()->getPartPerVoxel();
 		
-			int target = ppv * 27;
+			int target = ppv * 8;	//27
 			for (int i=0; i<target; i++) {
 				int neighborIndex = neighborParticles[i];
 				if (neighborIndex != -1 && neighborIndex != this->partIndex) {

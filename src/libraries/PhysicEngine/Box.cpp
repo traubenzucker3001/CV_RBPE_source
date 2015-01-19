@@ -22,9 +22,9 @@ void Box::calcParticles(){
 	int i=0;
 	float partR = world->getPartRadius();
 	float space = partR * 2.0f;
-	for (int j=-1; j<=1; j++) {
-		for (int k=-1; k<=1; k++) {
-			for (int l=-1; l<=1; l++) {
+	for (int j=0; j<=1; j++) {
+		for (int k=0; k<=1; k++) {
+			for (int l=0; l<=1; l++) {
 				float x = origin.x + space * j;
 				float y = origin.y + space * k;
 				float z = origin.z + space * l;
@@ -41,9 +41,9 @@ void Box::applyRotToPart(glm::mat3 rotMatrix){
 	int i=0;
 	float partR = world->getPartRadius();
 	float space = partR * 2.0f;
-	for (int j=-1; j<=1; j++) {
-		for (int k=-1; k<=1; k++) {
-			for (int l=-1; l<=1; l++) {
+	for (int j=0; j<=1; j++) {
+		for (int k=0; k<=1; k++) {
+			for (int l=0; l<=1; l++) {
 				float x = space*j;
 				float y = space*k;
 				float z = space*l;

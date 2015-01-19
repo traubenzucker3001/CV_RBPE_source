@@ -95,7 +95,7 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 
 	int bi = blockDim.x * blockIdx.x + threadIdx.x;
 
-	int particleIndex = bi * 27;
+	int particleIndex = bi * 8;	//27
 	if (bi >= nob){
 		return;
 	}
@@ -108,7 +108,7 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 		glm::vec3 torque = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		//Calculate body force and torque
-		for (int i = 0; i < 27; i++) {
+		for (int i = 0; i < 8; i++) {	//27
 			rbForce[bi] = rbForce[bi] + pForce[particleIndex + i];
 			glm::vec3 relativePos = pPos[particleIndex + i] - rbPos[bi];
 		
@@ -301,7 +301,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 
 		int flatGridIndex = gridIndex.x * xSteps + gridIndex.y * ySteps + gridIndex.z;
 
-		glm::vec4 neighborCells[27];	//int4??
+		glm::vec4 neighborCells[8];		//27
 		int cellIndexJ = 0;
 
 		flatGridIndex = flatGridIndex - xSteps;
@@ -325,7 +325,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 			flatGridIndex = flatGridIndex + xSteps;
 		}
 
-		for (int j = 0; j < 27; j++) {
+		for (int j = 0; j < 8; j++) {	//27
 
 			glm::vec4 neighborParticles = glm::vec4(neighborCells[j].x,
 													neighborCells[j].y,
@@ -402,7 +402,7 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, int nop){	// float pRadius,
 
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
-	int bi = pi / 27;
+	int bi = pi / 8;	//27
 
 	if (pi >= nop){
 		return;
@@ -411,7 +411,7 @@ __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbR
 		glm::vec3 originalRelativePos;
 		//Calculate original relative position
 		{
-		int relativeIndex = pi % 27;
+		int relativeIndex = pi % 8;		//27
 
 		int xIndex = relativeIndex / 9;
 		relativeIndex = relativeIndex - xIndex * 9;

@@ -136,7 +136,7 @@ int* UniformGrid::getNeighborPartIndices(glm::ivec3 gridIndex){
 	glm::ivec3 checkIndex = glm::ivec3(gridIndex.x - 1, gridIndex.y - 1, gridIndex.z - 1);
 	
 	int neighborCount = 0;
-	int* indices = new int[27 * partPerVoxel];
+	int* indices = new int[8 * partPerVoxel];	//27
 
 	for (int ix = 0; ix < 3; ix++) {
 		checkIndex.y = gridIndex.y - 1; //reset y index before y-loop

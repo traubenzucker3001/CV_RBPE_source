@@ -17,7 +17,7 @@ World::World(float wsIN, float prIN, float scIN, float dcIN, int bNum){
 	gravity = 9.81f;
 	allBodyNum = bNum;
 	allBodies = new RigidBody*[allBodyNum];
-	allPartNum = bNum * 27;
+	allPartNum = bNum * 8;		//27
 	allParticles = new Particle*[allPartNum];		
 	grid = new UniformGrid();
 	cuda = new Cuda(allBodyNum, allPartNum);

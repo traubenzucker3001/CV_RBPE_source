@@ -88,7 +88,7 @@ void Demo::run(){
 	demo->partRoot->addChild(planeNode);
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
-	camera->setRadius(40);
+	camera->setRadius(60);
 	camera->setNearFar( 1.0f, 100.0f);
 
 	glfwSetWindowSizeCallback( window, resizeCallback);

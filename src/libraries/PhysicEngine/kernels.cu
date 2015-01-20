@@ -12,7 +12,8 @@
 #include "kernels_impl.cuh"
 
 //#include <ctime>
-#include <chrono>
+//#include <chrono>
+#include <windows.h>
 
 //link fix try 4
 extern World* world;
@@ -52,9 +53,12 @@ void fillDeviceSymbols(float voxelS, int gridSL, float worldS, float springC, fl
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>	
 void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g){
 		
+	LARGE_INTEGER StartingTime, EndingTime, ElapsedMicroseconds;
+	LARGE_INTEGER Frequency;
+
 	//blocks und threads berechn.
 	//thread pro gitterzelle
-	int blockSize = 64;	//64, 128, 256, 512, 1024	
+	int blockSize = 128;	//64, 128, 256, 512, 1024	
 	//int numThreads = (int)fmin(blockSize, g);
 	int numThreads = blockSize;
 	int numBlocks = nearHighVal(g, numThreads);	
@@ -63,16 +67,25 @@ void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g){
 	//int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;	//aus vectorAdd
 	
 	//int start_s = clock();
-	auto start_time = std::chrono::high_resolution_clock::now();
+	//auto start_time = std::chrono::high_resolution_clock::now();
+	QueryPerformanceFrequency(&Frequency);
+	QueryPerformanceCounter(&StartingTime);
 
 	resetGridC <<< numBlocks, numThreads >>>(gridCounters, gridCells, g);
 	cudaThreadSynchronize();
 
 	//int stop_s = clock();
 	//cout << "time: " << (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000 << endl;
-	auto end_time = std::chrono::high_resolution_clock::now();
-	auto time = end_time - start_time;
-	cout << "fib(100) took " << chrono::duration_cast<microseconds>(time).count() << " to run.\n";
+	//auto end_time = std::chrono::high_resolution_clock::now();
+	//auto time = end_time - start_time;
+	//cout << "fib(100) took " << chrono::duration_cast<microseconds>(time).count() << " to run.\n";
+	QueryPerformanceCounter(&EndingTime);
+	ElapsedMicroseconds.QuadPart = EndingTime.QuadPart - StartingTime.QuadPart;
+	cout << ElapsedMicroseconds.QuadPart << endl;
+	ElapsedMicroseconds.QuadPart *= 1000000;
+	ElapsedMicroseconds.QuadPart /= Frequency.QuadPart;
+
+	cout << ElapsedMicroseconds.QuadPart << endl;
 }
 
 void updateGrid(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::ivec3* pGridIndex){	//, float voxelSL, int gridSL , glm::vec3 gridMinPosVec
@@ -80,7 +93,7 @@ void updateGrid(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::
 	//thread pro part.
 	int p = world->getAllPartNum();
 
-	int blockSize = 64;
+	int blockSize = 128;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 
@@ -93,7 +106,7 @@ void updateMom(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* r
 
 	//thread pro body
 	int b = world->getAllBodyNum();
-	int blockSize = 64;
+	int blockSize = 128;
 	int numThreads = (int)fmin(blockSize, b);
 	int numBlocks = nearHighVal(b, numThreads);
 
@@ -105,7 +118,7 @@ void iterate(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbL
 
 	//thread pro body
 	int b = world->getAllBodyNum();
-	int blockSize = 64;
+	int blockSize = 128;
 	int numThreads = (int)fmin(blockSize, b);
 	int numBlocks = nearHighVal(b, numThreads);
 
@@ -119,7 +132,7 @@ void calcCollForces(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3*
 	//thread pro part.
 	int p = world->getAllPartNum();
 		
-	int blockSize = 64;
+	int blockSize = 128;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 	
@@ -131,7 +144,7 @@ void updatePart(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::
 
 	//threads pro part.
 	int p = world->getAllPartNum();
-	int blockSize = 64;
+	int blockSize = 128;
 	int numThreads = (int)fmin(blockSize, p);
 	int numBlocks = nearHighVal(p, numThreads);
 

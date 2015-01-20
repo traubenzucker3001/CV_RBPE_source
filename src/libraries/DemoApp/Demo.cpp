@@ -139,15 +139,15 @@ void Demo::run(){
 		cuda->initCUDA();
 	}
 
-	ofstream file;
-	file.open("testOR.txt");
+	//ofstream file;
+	//file.open("testOR.txt");
 
-	int tBN = world->getAllBodyNum();
+	/*int tBN = world->getAllBodyNum();
 	file << "Box Anzahl: " << tBN << endl;
 	file << "isGPU: " << isGPU << endl;
 	file << "withGrid: " << withGrid << endl;
 	file << "renderParticle: " << renderPart << endl;
-	file << " ----- " << endl;
+	file << " ----- " << endl;*/
 
 	int oldT = -1;
 
@@ -201,12 +201,12 @@ void Demo::run(){
 		//cout << "time: " << tempT << endl;
 		//file << "fps: " << fps << " at time: " << tempT << endl;
 		//TODO dateiausgabe abändern!
-		if (tempT != oldT){
+		/*if (tempT != oldT){
 			file << fps << endl;
 		}
-		oldT = tempT;
+		oldT = tempT;*/
 	}
-	file.close();
+	//file.close();
 
 	cuda->~Cuda();	//free cuda stuff
 

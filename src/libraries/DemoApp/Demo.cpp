@@ -140,7 +140,19 @@ void Demo::run(){
 	}
 
 	//ofstream file;
-	//file.open("testOR.txt");
+	file1.open("kernel1.txt");
+	file2.open("kernel2.txt");
+	file3.open("kernel3.txt");
+	file4.open("kernel4.txt");
+	file5.open("kernel5.txt");
+	file6.open("kernel6.txt");
+
+	file1 << "resetGrid" << endl;
+	file2 << "updateGrid" << endl;
+	file3 << "updateMom" << endl;
+	file4 << "iterate" << endl;
+	file5 << "calcCollForces" << endl;
+	file6 << "updatePart" << endl;
 
 	/*int tBN = world->getAllBodyNum();
 	file << "Box Anzahl: " << tBN << endl;
@@ -206,7 +218,12 @@ void Demo::run(){
 		}
 		oldT = tempT;*/
 	}
-	//file.close();
+	file1.close();
+	file2.close();
+	file3.close();
+	file4.close();
+	file5.close();
+	file6.close();
 
 	cuda->~Cuda();	//free cuda stuff
 

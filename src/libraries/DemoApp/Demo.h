@@ -7,6 +7,7 @@
 // <<<<<<<<<< includes >>>>>>>>>> //
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 #include "Timing.h"
 #include "PhysicEngine\World.h"
@@ -63,6 +64,12 @@ public:
 	//CVK::Node* partGPURoot;				/**< cvk scenegraph root node, for particles */
 
 	bool test;
+	ofstream file1;
+	ofstream file2;
+	ofstream file3;
+	ofstream file4;
+	ofstream file5;
+	ofstream file6;
 
 	/** \brief constructor
 	*

@@ -10,21 +10,26 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-__device__ __constant__ float d_voxelS;
-__device__ __constant__ int d_gridSL;
-__device__ __constant__ float d_worldS;
-__device__ __constant__ float d_springC;
-__device__ __constant__ float d_dampC;
-__device__ __constant__ float d_pRadius;
-__device__ __constant__ float d_duration;
-__device__ __constant__ float d_termVeloc;
+__device__ __constant__ float d_voxelS;		/**< voxel size in constant device memory */
+__device__ __constant__ int d_gridSL;		/**< grid side lenght in constant device memory */
+__device__ __constant__ float d_worldS;		/**< world size in constant device memory */
+__device__ __constant__ float d_springC;	/**<  spring coefficent in constant device memory */
+__device__ __constant__ float d_dampC;		/**< damping coefficent in constant device memory */
+__device__ __constant__ float d_pRadius;	/**< particle radius in constant device memory */
+__device__ __constant__ float d_duration;	/**< duration in constant device memory */
+__device__ __constant__ float d_termVeloc;	/**< terminal velocity in constant device memory */
 
 //__device__ __constant__ glm::vec3 d_gridMinPosVector;
-__device__ __constant__ float d_gridMinPosVecX;
-__device__ __constant__ float d_gridMinPosVecY;
-__device__ __constant__ float d_gridMinPosVecZ;
+__device__ __constant__ float d_gridMinPosVecX;		/**< grid minimum positon vector x component in constant device memory */
+__device__ __constant__ float d_gridMinPosVecY;		/**< grid minimum positon vector y component in constant device memory */
+__device__ __constant__ float d_gridMinPosVecZ;		/**< grid minimum positon vector z component in constant device memory */
 
 //<<<<<<<<<< uniformgrid kernels >>>>>>>>>>
+
+/** \brief reset grid kernel
+*
+* reset grid cells and counter
+*/
 __global__ void resetGridC(int* gridCounters, glm::ivec4* gridCells, int numElements){
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
@@ -42,6 +47,10 @@ __global__ void resetGridC(int* gridCounters, glm::ivec4* gridCells, int numElem
 	}
 }
 
+/** \brief update grid kernel
+*
+* update particle grid indices
+*/
 __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3* pPos, glm::ivec3* pGridIndex, int nop){	//, float voxelSL, int gridSL , glm::vec3 gridMinPosVec
 
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
@@ -91,6 +100,11 @@ __global__ void updateGridC(int* gridCounters, glm::ivec4* gridCells, glm::vec3*
 
 
 //<<<<<<<<<< rigidbody kernels >>>>>>>>>>
+
+/** \brief update momenta kernel
+*
+* update rigid body momenta
+*/
 __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, glm::vec3* rbLinMom, glm::vec3* rbAngMom, glm::vec3* pPos, glm::vec3* pForce, int nob){	// float duration, float termVeloc,
 
 	int bi = blockDim.x * blockIdx.x + threadIdx.x;
@@ -130,6 +144,10 @@ __global__ void updateMomC(float* rbMass, glm::vec3* rbForce, glm::vec3* rbPos, 
 	}
 }
 
+/** \brief iterate kernel
+*
+* update velocity and position
+*/
 __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, glm::vec3* rbLinMom, glm::quat* rbRotQuat, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* rbAngMom, glm::vec3* initIITDiago, glm::mat3* inverInertTens, int nob){	//float duration, float pRadius
 
 	int bi = blockDim.x * blockIdx.x + threadIdx.x;
@@ -280,6 +298,11 @@ __global__ void iterateC(float* rbMass, glm::vec3* rbPos, glm::vec3* rbVeloc, gl
 
 
 //<<<<<<<<<< particle kernels >>>>>>>>>>
+
+/** \brief calculate collison forces kernel
+*
+* calculate collison forces between particles and simulation borders
+*/
 __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc, glm::vec3* pForce, glm::ivec3* pGridIndex, int* gridCounters, glm::ivec4* gridCells, int nop){	//, int gridSL , float pRadius, float worldS, float springC, float dampC
 
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;
@@ -399,6 +422,10 @@ __global__ void calcCollForcesC(float* pMass, glm::vec3* pPos, glm::vec3* pVeloc
 	}
 }
 
+/** \brief update particle kernel
+*
+* update particle velocity and position
+*/
 __global__ void updatePartC(glm::vec3* rbPos, glm::vec3* rbVeloc, glm::mat3* rbRotMat, glm::vec3* rbAngVeloc, glm::vec3* pPos, glm::vec3* pVeloc, int nop){	// float pRadius,
 
 	int pi = blockDim.x * blockIdx.x + threadIdx.x;

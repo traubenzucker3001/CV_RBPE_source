@@ -15,6 +15,10 @@
 extern World* world;
 
 
+/** \brief nearest highest value
+*
+* find nearest highest value of a and b
+*/
 int nearHighVal(int a, int b){
 	return (a % b != 0) ? (a / b + 1) : (a / b);
 }

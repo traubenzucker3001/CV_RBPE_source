@@ -15,8 +15,7 @@ Timing::Timing(){
 	startTime = 0;
 	endTime = 0;
 	totalTime = 0;
-	afd = 0;
-
+	//afd = 0;
 }
 
 Timing::~Timing(){
@@ -44,10 +43,10 @@ int Timing::getTime(){
 	return currTime;
 }
 
-void Timing::updateAFD(){
+/*void Timing::updateAFD(){
 
 	//...
-}
+}*/
 
 float Timing::updateFPS(){
 

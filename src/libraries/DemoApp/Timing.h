@@ -17,15 +17,15 @@ private:
 	int frameNum;		/**< frame number */
 	float fps;			/**< frames per second */
 
-	float afd;			/**< average frame duration */
+	//float afd;			/**< average frame duration */
 
 	int totalTime;		/**< total running time */
 
 	int startTime;		/**< frame start time */
 	int endTime;		/**< frame end time */
 
-	int currentTime;
-	int previousTime;
+	int currentTime;	/**< current frame duration */
+	int previousTime;	/**< frame duration of previous simulation step */
 
 public:
 
@@ -62,13 +62,7 @@ public:
 	*/
 	int getTime();
 
-	/** \brief update average frame duration
-	*
-	* recalculate the average frame duration
-	* -not yet implemented-
-	* @return void
-	*/
-	void updateAFD();
+	//void updateAFD();
 
 	/** \brief update frames per second
 	*

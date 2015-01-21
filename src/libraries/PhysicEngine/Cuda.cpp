@@ -31,7 +31,7 @@ Cuda::Cuda(int bnIN, int pnIN){
 
 	bodyNum = bnIN;
 	partNum = pnIN;
-	gridSize = 0;	// UniformGrid::getInstance()->getGridSize();	//wy 0?
+	gridSize = 0;	// UniformGrid::getInstance()->getGridSize();
 
 	h_rbMass = 0;
 	h_rbForce = 0;
@@ -300,11 +300,6 @@ void Cuda::stepCUDA(){
 
 	updatePart(d_rbPos, d_rbVeloc, d_rbRotMat, d_rbAngVeloc, d_pPos, d_pVeloc);	//, d_pRadius
 
-	/*cudaMemcpy(h_pPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);	//zum debuggen
-	for (int i = 0; i < world->getAllPartNum(); i++){								//zum debuggen
-		cout << "Pos " << h_pPos[i].y << endl;												//zum debuggen
-	}	*/																			//zum debuggen
-
 	//VOs updaten
 	//bzw. cuda opengl austausch
 	// siehe --> cuda samples - 2_graphics - simpleGL
@@ -319,12 +314,9 @@ void Cuda::stepCUDA(){
 
 void Cuda::updateVOarrays(){
 
-	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);		//zum performanz-test auskommentiert
-	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);	//zum performanz-test auskommentiert
+	cudaMemcpy(h_uVOpos, d_rbPos, bodyNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
+	cudaMemcpy(h_uVOrot, d_rbRotQuat, bodyNum*sizeof(glm::quat), cudaMemcpyDeviceToHost);
 	cudaMemcpy(h_uVOpPos, d_pPos, partNum*sizeof(glm::vec3), cudaMemcpyDeviceToHost);
 
-	/*for (int i = 0; i < world->getAllPartNum(); i++){								//zum debuggen
-		cout << "voPos " << h_uVOpPos[i].y << endl;									//zum debuggen
-	}	*/																			//zum debuggen
 }
 

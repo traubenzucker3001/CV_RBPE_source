@@ -22,7 +22,7 @@ private:
 
 	int partPerVoxel = 4;	/**< particles per voxel */		//4 nach gpu gems
 
-	float gridMinPos;		/**< grid minimum position */	//?
+	float gridMinPos;		/**< grid minimum position */
 	int gridLength;			/**< grid lenght */
 
 	int gridSize;			/**< grid size */

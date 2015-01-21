@@ -19,11 +19,11 @@ int bodycount = 0;
 RigidBody::RigidBody(float massIN, bool staticIN, glm::vec3 posIN, float sizeIN){
 
 	mass = massIN;
-	inverseMass = ((float)1.0)/mass;
+	//inverseMass = ((float)1.0)/mass;
 
 	position = posIN;
 
-	isStatic = staticIN;
+	//isStatic = staticIN;
 
 	glm::vec3 pOrigIN = posIN;
 	float pMassIN = massIN; 
@@ -247,10 +247,10 @@ void RigidBody::updateMomenta(float duration){
 	angularMomentum.z = angularMomentum.z + torque.z * duration;
 }
 
-void RigidBody::reset(float newPosition){
+/*void RigidBody::reset(float newPosition){
 
 	//...
-}
+}*/
 
 void RigidBody::updateCUDArray(int bodyIndex){
 

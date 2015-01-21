@@ -23,12 +23,10 @@ private:
 	float partRadius;					/**< particle radius */
 
 	float springCoeff;					/**< spring coefficient */
-
 	float dampCoeff;					/**< damping coefficient */
 	float gravity;						/**< gravity force value */
 
 	int allBodyNum;						/**< number of bodies in the world */
-	
 	int allPartNum;						/**< number of particles in the world */
 
 	UniformGrid *grid;					/**< uniform grid */

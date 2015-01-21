@@ -3,7 +3,11 @@
 #include <glm\glm.hpp>
 
 
-
+/** \brief test
+*
+* blablablub
+* @param test1 lalala
+*/
 void fillDeviceSymbols(float voxelS, int gridSL, float worldS, float springC, float dampC, float pRadius, float duration, float termVeloc, glm::vec3 gridMinPosVector);
 
 void resetGrid(int* gridCounters, glm::ivec4* gridCells, int g);

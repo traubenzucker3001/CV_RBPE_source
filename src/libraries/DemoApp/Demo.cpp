@@ -121,7 +121,7 @@ void Demo::run(){
 
 	while( !glfwWindowShouldClose(window)){
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //zum performanz-test auskommentiert
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//time->startFrame();
 
@@ -135,8 +135,8 @@ void Demo::run(){
 
 		if (renderPart == false){
 			//render würfel
-			updateVOs();			//zum performanz-test auskommentiert
-			sceneRoot->render();	//zum performanz-test auskommentiert
+			updateVOs();
+			sceneRoot->render();
 		}
 		if (renderPart == true){
 			//render partikel
@@ -155,7 +155,7 @@ void Demo::run(){
 
 		//time->endFrame();
 
-		int fps = time->updateFPS();	//TODO korrigieren
+		int fps = time->updateFPS();
 		char title[64];
 		sprintf_s(title, "Rigid Body | %d fps", fps);
 		glfwSetWindowTitle(window, title);
@@ -226,10 +226,10 @@ void Demo::stepSimulation(float duration){
 
 }
 
-void Demo::resetScene(){
+/*void Demo::resetScene(){
 
 	//...
-}
+}*/
 
 void Demo::updateVOs(){
 
@@ -251,7 +251,6 @@ void Demo::updateVOs(){
 
 void Demo::renderPartGPU(){
 	
-	//TODO
 	CVK::Node* partGPUNode = new CVK::Node("partGPU");
 	partGPUNode->setGeometry(partGeometry);
 	partGPUNode->setMaterial(partMaterial);

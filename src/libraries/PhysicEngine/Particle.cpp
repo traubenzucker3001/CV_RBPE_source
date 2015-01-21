@@ -34,7 +34,6 @@ Particle::Particle(glm::vec3 posIN, float massIN){
 
 Particle::~Particle(){
 
-	//no pointers to clear!
 	delete partNode;
 }
 
@@ -237,10 +236,10 @@ void Particle::populateArray(){
 	indexCount++;
 }
 
-void Particle::reset(float* oldBodyPos, float* newBodyPos){
+/*void Particle::reset(float* oldBodyPos, float* newBodyPos){
 
 	//...
-}
+}*/
 
 void Particle::updateGridIndex(){
 

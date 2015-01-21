@@ -22,12 +22,12 @@ class RigidBody {
 private:
 
 	float mass;								/**< body mass */
-	float inverseMass;						/**< body inverse mass */	//ka ob nötig
+	//float inverseMass;						/**< body inverse mass */	//ka ob nötig
 
 	glm::vec3 position;						/**< body position */
 	glm::vec3 velocity;						/**< body velocity */
 
-	glm::vec3 lastFrameVeloc;				/**< body last frame velocity */	//ka ob nötig
+	//glm::vec3 lastFrameVeloc;				/**< body last frame velocity */	//ka ob nötig
 
 	glm::quat rotationQuat;					/**< body rotation quaternion */
 	glm::mat3 rotationMat;					/**< body rotation matrix */
@@ -45,7 +45,7 @@ private:
 
 	glm::vec3 force;						/**< body force */
 
-	bool isStatic;							/**< true if object is static, false if object is dynamic */
+	//bool isStatic;							/**< true if object is static, false if object is dynamic */
 
 	glm::mat4 transformMatrix;				/**< transformation matrix */
 
@@ -115,14 +115,7 @@ public:
 	 */
 	void updateMomenta(float duration);
 
-	/** \brief reset body
-	 *
-	 * reset a rigid body to a given position
-	 * -not yet implemented-
-	 * @param newPosition new origin of the rigid body
-	 * @return void
-	 */
-	void reset(float newPosition);
+	//void reset(float newPosition);
 
 
 	// <<<<<<<<<< gpu parts >>>>>>>>>> //

@@ -1,6 +1,4 @@
 
-//TODO callback funcs
-
 #ifndef DEMO_H_
 #define DEMO_H_
 
@@ -115,13 +113,7 @@ public:
 	*/
 	void stepSimulation(float duration);
 
-	/** \brief reset scene
-	*
-	* reset the scene and their objects
-	* -not yet implemented-
-	* @return void
-	*/
-	void resetScene();
+	//void resetScene();
 
 	/** \brief update virtual objects
 	*
@@ -131,41 +123,17 @@ public:
 
 	/** \brief render particles in gpu version
 	*
-	* ...
+	* function to render particles when gpu-version of the simulation is running
 	*/
 	void renderPartGPU();
 
 	// <<<<<<<<<< callback funcs >>>>>>>>>> //
-	//schauen wie das mit cvk läuft
-	/** \brief mouse button callback
-	*
-	* calls whenever a mouse button is pressed
-	* @param button mouse button
-	* @param state mouse button state (pressed, etc.)
-	* @param x mouse x coordinates
-	* @param y mouse y coordinates
-	* @return void
-	*/
-	void mouseButtonCallback(int button, int state, int x, int y);
 
-	/** \brief mouse motion callback
-	*
-	* calls whenever the mouse is moved
-	* @param x mouse x coordinates
-	* @param y mouse y coordinates
-	* @return void
-	*/
-	void mouseMotionCallback(int x, int y);
+	//void mouseButtonCallback(int button, int state, int x, int y);
 
-	/** \brief key callback
-	*
-	* calls whenever a keyboard button is pressed
-	* @param key pressed keyboard button
-	* @param x mouse x coordinates
-	* @param y mouse y coordinates
-	* @return void
-	*/
-	void keyCallback(unsigned char key, int x, int y);
+	//void mouseMotionCallback(int x, int y);
+
+	//void keyCallback(unsigned char key, int x, int y);
 
 
 	// <<<<<<<<<< getter + setter >>>>>>>>>> //

@@ -82,15 +82,7 @@ public:
 	 */
 	void populateArray();
 
-	/** \brief reset particle
-	 *
-	 * reset a particle of an objekt
-	 * -not yet implemented-
-	 * @param oldBodyPos
-	 * @param newBodyPos
-	 * @return void
-	 */
-	void reset(float* oldBodyPos, float* newBodyPos);
+	//void reset(float* oldBodyPos, float* newBodyPos);
 
 	/** \brief update grid index
 	 *

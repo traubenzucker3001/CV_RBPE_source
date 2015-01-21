@@ -9,8 +9,6 @@
 
 #include "DesignPatterns\Singleton.h"
 
-//link fix try 4
-
 
 /** \brief cuda data structure
 *
@@ -79,7 +77,7 @@ private:
 	glm::ivec3 *d_pGridIndex;	/**< device array for particle grid indices */
 
 	int* d_gridCounters;		/**< device array for grid counters */
-	glm::ivec4 *d_gridCells;	/**< device array for grid cells */		//int4?!
+	glm::ivec4 *d_gridCells;	/**< device array for grid cells */	
 
 	float h_voxelS;						/**< host variable for voxel size */
 	int h_gridSL;						/**< host variable for grid side lenght */

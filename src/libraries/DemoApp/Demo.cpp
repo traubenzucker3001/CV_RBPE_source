@@ -88,7 +88,7 @@ void Demo::run(){
 	demo->partRoot->addChild(planeNode);
 
 	camera->setCenter( glm::vec3( 0.0f, 0.0f, 0.0f));
-	camera->setRadius(60);
+	camera->setRadius(40);
 	camera->setNearFar( 1.0f, 100.0f);
 
 	glfwSetWindowSizeCallback( window, resizeCallback);
@@ -108,7 +108,7 @@ void Demo::run(){
 	CVK::State::getInstance()->setCamera( camera);
 
 	//define light
-	CVK::Light plight( glm::vec4( -1, 1, 1, 1), grey, glm::vec3( 0, 0, 0), 1.0f, 0.0f);
+	CVK::Light plight( glm::vec4( -1, 11, 1, 1), grey, glm::vec3( 0, 0, 0), 1.0f, 0.0f);
 	CVK::State::getInstance()->addLight( &plight);
 
 	//define Scene uniforms (ambient and fog)
